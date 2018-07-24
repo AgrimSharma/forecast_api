@@ -85,20 +85,32 @@ class GetForeCastGeneric(generics.CreateAPIView):
     serializer_class = GetForecastSerializers
 
     def post(self, request, *args, **kwargs):
-        data = []
+        private = []
+        public = []
         user_id = request.data['user_id']
         forecast = ForeCast.objects.filter(user__id=int(user_id))
         for f in forecast:
-            data.append(dict(category=f.category.id,
-                             sub_category=f.sub_category.id,
-                             heading=f.heading,
-                             tags=f.tags,
-                             status=f.status.id,
-                             private=f.private.id,
-                             expire=f.expire,
-                             id=f.id
-                             ))
-        return JsonResponse(dict(status=200,data=data))
+            if f.private.id == 1:
+                private.append(dict(category=f.category.id,
+                                    sub_category=f.sub_category.id,
+                                    heading=f.heading,
+                                    tags=f.tags,
+                                    status=f.status.id,
+                                    private=f.private.id,
+                                    expire=f.expire,
+                                    id=f.id
+                                    ))
+            else:
+                public.append(dict(category=f.category.id,
+                                   sub_category=f.sub_category.id,
+                                   heading=f.heading,
+                                   tags=f.tags,
+                                   status=f.status.id,
+                                   private=f.private.id,
+                                   expire=f.expire,
+                                   id=f.id
+                                   ))
+        return JsonResponse(dict(status=200, private_forecast=private, public_forecast=public))
 
 
 class PlaceBetGeneric(generics.ListCreateAPIView):
@@ -333,7 +345,10 @@ class UserProfileGeneric(generics.CreateAPIView):
                          "point": point,
                          "total_forecast": fore,
                          "status": predict_status(profile, suc_per),
-                         "balance": total
+                         "balance": total,
+                         "points_earned": profile.points_earned,
+                         "points_won": profile.points_won,
+                         "points_lost": profile.points_lost,
                          })
 
 
