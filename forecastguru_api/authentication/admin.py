@@ -69,6 +69,10 @@ class CategoryAdmin(admin.ModelAdmin):
     inlines = (SubCatInline,)
 
 
+class AdvertisementPointsAdmin(admin.ModelAdmin):
+    pass
+
+
 class BettingAdmin(admin.ModelAdmin):
     list_display = ["user_email", 'forecast_heading', "forecast_category", "forecast_sub_category", "bet_for", "bet_against"]
 
@@ -109,6 +113,7 @@ admin.site.register(SubCategory, SubCategoryAdmin)
 admin.site.register(Winning, WinningAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Approved, ApprovedAdmin)
+admin.site.register(AdvertisementPoints, AdvertisementPointsAdmin)
 
 
 admin.site.site_title = 'ForeCast Guru'
