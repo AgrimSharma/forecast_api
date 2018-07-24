@@ -5,7 +5,7 @@ from django.contrib import admin
 
 
 class AuthenticationAdmin(admin.ModelAdmin):
-    list_display = ['email', 'facebook_id', 'last_login']
+    list_display = ['email']
 
 
 class DailyPointsFreeAdmin(admin.ModelAdmin):
@@ -17,20 +17,12 @@ class JoiningBonusAdmin(admin.ModelAdmin):
 
 
 class ForecastAdmin(admin.ModelAdmin):
-    list_display = ["forecast_heading", "forecast_category", "forecast_sub_category",
-                    "forecast_user", "forecast_status", "forecast_expire"]
-
-    def forecast_sub_category(self, obj):
-        return obj.sub_category.name
-
-    def forecast_category(self, obj):
-        return obj.category.name
+    raw_id_fields = ['user', 'category', 'sub_category']
+    list_display = ["forecast_heading", "category", "sub_category",
+                    "user", "status", "forecast_expire"]
 
     def forecast_heading(self, obj):
         return obj.heading
-
-    def forecast_user(self, obj):
-        return obj.user.email
 
     def forecast_status(self, obj):
         return obj.status.name
@@ -64,8 +56,8 @@ class SubCatInline(admin.TabularInline):
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['name', "identifier"]
-    ordering = ('identifier',)
+    list_display = ['name']
+    ordering = ('name',)
     inlines = (SubCatInline,)
 
 
@@ -75,6 +67,7 @@ class AdvertisementPointsAdmin(admin.ModelAdmin):
 
 class BettingAdmin(admin.ModelAdmin):
     list_display = ["user_email", 'forecast_heading', "forecast_category", "forecast_sub_category", "bet_for", "bet_against"]
+    raw_id_fields = ['users', 'forecast']
 
     def user_email(self, obj):
         return obj.users.email
@@ -91,6 +84,7 @@ class BettingAdmin(admin.ModelAdmin):
 
 class ReferralCodeAdmin(admin.ModelAdmin):
     list_display = ["user_email", 'referral_code']
+    raw_id_fields = ['user_joined']
 
     def user_email(self, obj):
         return obj.user_joined.email
@@ -100,8 +94,19 @@ class ReferralPointsAdmin(admin.ModelAdmin):
     pass
 
 
+class RateAppAdmin(admin.ModelAdmin):
+    list_display = ["user", 'rating']
+    raw_id_fields = ['user']
+
+
+class MarketFeeAdmin(admin.ModelAdmin):
+    pass
+
+
 admin.site.register(Authentication, AuthenticationAdmin)
+admin.site.register(MarketFee, MarketFeeAdmin)
 admin.site.register(ReferralCodePoints, ReferralPointsAdmin)
+admin.site.register(RateApp, RateAppAdmin)
 admin.site.register(DailyFreePoints, DailyPointsFreeAdmin)
 admin.site.register(ReferralCodeRegistered, ReferralCodeAdmin)
 admin.site.register(Betting, BettingAdmin)

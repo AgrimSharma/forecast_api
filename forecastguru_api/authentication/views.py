@@ -141,7 +141,7 @@ class PlaceBetGeneric(generics.ListCreateAPIView):
                     bet.bet_against += points
                 else:
                     return JsonResponse(dict(status=400, message='BET id can be 1 or 2'))
-                user.forecast_palyed += 1
+                user.forecast_played += 1
                 user.save()
                 bet.save()
                 return JsonResponse(dict(status=200, message='Bet Updated Successful'))
@@ -156,7 +156,7 @@ class PlaceBetGeneric(generics.ListCreateAPIView):
                 else:
                     return JsonResponse(dict(status=400, message='BET id can be 1 or 2'))
                 bet.save()
-                user.forecast_palyed += 1
+                user.forecast_played += 1
                 user.save()
                 return JsonResponse(dict(status=200, message='Bet Saved Successful'))
 
@@ -383,3 +383,40 @@ class AdvertisementPointsGeneric(generics.CreateAPIView):
         points = AdvertisementPoints.objects.latest('id').points
         user.points_earned += points
         return Response(dict(status=200, message="{} points credited".format(points)))
+
+
+class RatingGeneric(generics.ListCreateAPIView):
+    queryset = RateApp.objects.all()
+    serializer_class = RateAppSerializer
+
+    def create(self, request, *args, **kwargs):
+        rating = request.data['rating']
+        serializer = RateAppSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            if float(rating) >= 4:
+                data = serializer.data
+                data['redirect_url'] = "https://play.google.com/store/apps/details?id=com.sirez.forecastguru"
+                return JsonResponse(dict(status=200, message="saved successful", data=data))
+            else:
+                return JsonResponse(dict(status=200, message="saved successful", data=serializer.data))
+        else:
+            return JsonResponse(dict(status=400, message="All fields are mandatory"))
+
+
+class GetRatingGeneric(generics.CreateAPIView):
+    queryset = RateApp.objects.all()
+    serializer_class = GetRateAppSerializer
+
+    def create(self, request, *args, **kwargs):
+        user_id = request.data['user_id']
+        try:
+            user = Authentication.objects.get(id=user_id)
+        except Exception:
+            return Response(dict(status=400, message="User Not found"))
+        rating = RateApp.objects.get(user=user)
+        return JsonResponse(dict(status=200, message="success", data=dict(
+            user=rating.user.email,
+            rating=rating.rating,
+            feedback=rating.feedback
+        )))

@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import *
 import string, random
 import re
+from django.utils.translation import ugettext_lazy as _
 
 
 def id_generator(name):
@@ -10,6 +11,11 @@ def id_generator(name):
 
 
 class SignUpSerializer(serializers.ModelSerializer):
+    facebook_id = serializers.CharField(help_text=_("User Facebook ID(Character)"))
+    full_name = serializers.CharField(help_text=_("User Full Name(Character)"))
+    gender = serializers.CharField(help_text=_("Gender(Character)"))
+    email = serializers.CharField(help_text=_("User Email"))
+    mobile = serializers.IntegerField(help_text=_("User Mobile(Integer)"))
 
     class Meta:
         model = Authentication
@@ -24,8 +30,8 @@ class SignUpSerializer(serializers.ModelSerializer):
 
 
 class LastLoginSerializer(serializers.ModelSerializer):
-    user_id = serializers.IntegerField()
-    login_date = serializers.DateField()
+    user_id = serializers.IntegerField(help_text=_("User Id field "))
+    login_date = serializers.DateField(help_text=_("Today Date YYYY-MM-DD"))
 
     class Meta:
         model = Authentication
@@ -33,17 +39,23 @@ class LastLoginSerializer(serializers.ModelSerializer):
 
 
 class ForecastSerializers(serializers.ModelSerializer):
+    category = serializers.IntegerField(help_text=_("Category ID(Integer)"))
+    sub_category = serializers.IntegerField(help_text=_("Sub-Category ID(Integer)"))
+    user = serializers.IntegerField(help_text=_("User ID(Integer)"))
+    heading = serializers.CharField(help_text=_("Forecast Heading(Character)"))
+    tags = serializers.CharField(help_text=_("Forecast Search Tags(Character)"))
+    expire = serializers.DateTimeField(help_text=_("Date in YYYY-MM-DD HH:MM:SS"))
+
     class Meta:
         model = ForeCast
-        fields = ["id", "category", "sub_category", 'user', "heading", "status",
-                  "tags","expire"]
+        fields = ["id", "category", "sub_category", 'user', "heading","tags","expire"]
 
     def create(self, validated_data):
         return ForeCast.objects.create(**validated_data)
 
 
 class GetForecastSerializers(serializers.ModelSerializer):
-    user_id = serializers.IntegerField()
+    user_id = serializers.IntegerField(help_text=_("User ID"))
 
     class Meta:
         model = ForeCast
@@ -51,10 +63,10 @@ class GetForecastSerializers(serializers.ModelSerializer):
 
 
 class PlaceBetSerializers(serializers.ModelSerializer):
-    user_id = serializers.IntegerField()
-    forecast_id = serializers.IntegerField()
-    points = serializers.IntegerField()
-    bet_id = serializers.IntegerField()
+    user_id = serializers.IntegerField(help_text=_("User ID"))
+    forecast_id = serializers.IntegerField(help_text=_("Forecast ID"))
+    points = serializers.IntegerField(help_text=_("Points to play"))
+    bet_id = serializers.IntegerField(help_text=_("Bet ID 1 for Yes and 2 for No"))
 
     class Meta:
         model = ForeCast
@@ -62,7 +74,7 @@ class PlaceBetSerializers(serializers.ModelSerializer):
 
 
 class GetPlayedForecastSerializers(serializers.ModelSerializer):
-    user_id = serializers.IntegerField()
+    user_id = serializers.IntegerField(help_text=_("User ID"))
 
     class Meta:
         model = Betting
@@ -70,8 +82,8 @@ class GetPlayedForecastSerializers(serializers.ModelSerializer):
 
 
 class ReferralCodeSerializer(serializers.ModelSerializer):
-    referral_code = serializers.CharField()
-    user_joined = serializers.IntegerField()
+    referral_code = serializers.CharField(help_text=_("Referral Code"))
+    user_joined = serializers.IntegerField(help_text=_("User ID"))
 
     class Meta:
         model = Betting
@@ -79,8 +91,8 @@ class ReferralCodeSerializer(serializers.ModelSerializer):
 
 
 class UserInterestSerializer(serializers.ModelSerializer):
-    user_id = serializers.IntegerField(required=True)
-    interest = serializers.CharField(required=True)
+    user_id = serializers.IntegerField(required=True, help_text=_("User ID"))
+    interest = serializers.CharField(required=True, help_text=_("Comma separated ID"))
 
     class Meta:
         model = UserInterest
@@ -88,7 +100,7 @@ class UserInterestSerializer(serializers.ModelSerializer):
 
 
 class ResultSerializer(serializers.ModelSerializer):
-    user_id = serializers.IntegerField()
+    user_id = serializers.IntegerField(help_text=_("User ID"))
 
     class Meta:
         model = ForeCast
@@ -96,7 +108,7 @@ class ResultSerializer(serializers.ModelSerializer):
 
 
 class AuthenticationSerializer(serializers.ModelSerializer):
-    user_id = serializers.IntegerField()
+    user_id = serializers.IntegerField(help_text=_("User ID"))
 
     class Meta:
         model = Authentication
@@ -104,8 +116,30 @@ class AuthenticationSerializer(serializers.ModelSerializer):
 
 
 class AdvertisementPointsSerializer(serializers.ModelSerializer):
-    user_id = serializers.IntegerField()
+    user_id = serializers.IntegerField(help_text=_("User ID"))
 
     class Meta:
         model = AdvertisementPoints
+        fields = ["user_id"]
+
+
+class RateAppSerializer(serializers.ModelSerializer):
+    user_id = serializers.IntegerField(required=True,help_text=_("User ID"))
+    rating = serializers.CharField(max_length=10, required=True, help_text=_("Rating for APP 1 to 5"))
+    feedback = serializers.CharField(max_length=1000, required=True, help_text=_("Feedback for app"))
+
+    class Meta:
+        model = RateApp
+        fields = ["user_id", "rating", "feedback"]
+
+    def create(self, validated_data):
+        auth = RateApp.objects.create(**validated_data)
+        return auth
+
+
+class GetRateAppSerializer(serializers.ModelSerializer):
+    user_id = serializers.IntegerField(required=True, help_text=_("User ID"))
+
+    class Meta:
+        model = RateApp
         fields = ["user_id"]

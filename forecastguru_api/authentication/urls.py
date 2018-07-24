@@ -27,6 +27,8 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^docs/', include_docs_urls(title='ForeCast API', public=False)),
     url(r'^last_login/', LastLoginApi.as_view()),
+    url(r'^rate_app/', RatingGeneric.as_view()),
+    url(r'^get_user_rating/', GetRatingGeneric.as_view()),
     url(r'^get_forecast/', GetForeCastGeneric.as_view()),
     url(r'^register/', SignUpGeneric.as_view()),
     url(r'^play_forecast/', PlaceBetGeneric.as_view()),
@@ -36,4 +38,5 @@ urlpatterns = [
     url(r'^result/', ResultGeneric.as_view()),
     url(r'^user_profile/', UserProfileGeneric.as_view()),
     url(r'^advertisement_points/', AdvertisementPointsGeneric.as_view()),
+
 ]

@@ -14,6 +14,7 @@ class Authentication(models.Model):
     points_won = models.IntegerField(default=0)
     successful_forecast = models.IntegerField(default=0)
     unsuccessful_forecast = models.IntegerField(default=0)
+    forecast_played = models.IntegerField(default=0)
     market_fee = models.IntegerField(default=0)
     market_fee_paid = models.IntegerField(default=0)
     points_earned = models.IntegerField(default=0)
@@ -193,8 +194,8 @@ class ForeCast(models.Model):
     created = models.DateField(auto_now=True)
 
     class Meta:
-        ordering = ['-category']
-        verbose_name_plural = "FORECAST"
+        ordering = ['-expire']
+        verbose_name_plural = "Forecast"
 
     def __str__(self):
         return "{} : {} : {}".format(self.category, self.sub_category, self.heading)
@@ -247,3 +248,79 @@ class AdvertisementPoints(models.Model):
 
     def __unicode__(self):
         return "{}".format(self.points)
+
+
+class MarketFee(models.Model):
+    points = models.IntegerField()
+
+    class Meta:
+        ordering = ['-points']
+        verbose_name_plural = "Market Fee"
+
+    def __str__(self):
+        return "{}".format(self.points)
+
+    def __unicode__(self):
+        return "{}".format(self.points)
+
+
+class RateApp(models.Model):
+    user = models.ForeignKey(to=Authentication, on_delete=models.CASCADE)
+    rating = models.CharField(max_length=10)
+    feedback = models.CharField(max_length=1000)
+
+    class Meta:
+        ordering = ['-rating']
+        verbose_name_plural = "Application Rating"
+
+    def __str__(self):
+        return "{} : {}".format(self.user, self.rating)
+
+    def __unicode__(self):
+        return "{} : {}".format(self.user, self.rating)
+
+
+class ShareForecast(models.Model):
+    points = models.IntegerField()
+
+    class Meta:
+        ordering = ['-points']
+        verbose_name_plural = "Share Forecast Points"
+
+    def __str__(self):
+        return "{}".format(self.points)
+
+    def __unicode__(self):
+        return "{}".format(self.points)
+
+
+class HideForecast(models.Model):
+    user = models.ForeignKey(to=Authentication, on_delete=models.CASCADE)
+    forecast = models.ForeignKey(to=ForeCast, on_delete=models.CASCADE)
+    status = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['-user']
+        verbose_name_plural = "Hidden Forecast"
+
+    def __str__(self):
+        return "{} : {} : {}".format(self.user, self.forecast, self.status)
+
+    def __unicode__(self):
+        return "{} : {} : {}".format(self.user, self.forecast, self.status)
+
+
+class ReportAbuseForecast(models.Model):
+    user = models.ForeignKey(to=Authentication, on_delete=models.CASCADE)
+    forecast = models.ForeignKey(to=ForeCast, on_delete=models.CASCADE)
+    status = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['-user']
+        verbose_name_plural = "Report Abuse Forecast"
+
+    def __str__(self):
+        return "{} : {} : {}".format(self.user, self.forecast, self.status)
+
+    def __unicode__(self):
+        return "{} : {} : {}".format(self.user, self.forecast, self.status)
