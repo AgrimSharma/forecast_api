@@ -35,4 +35,5 @@ urlpatterns = [
     url(r'^user_interest/', InterestAPI.as_view()),
     url(r'^result/', ResultGeneric.as_view()),
     url(r'^user_profile/', UserProfileGeneric.as_view()),
+    url(r'^advertisement_points/', AdvertisementPointsGeneric.as_view()),
 ]

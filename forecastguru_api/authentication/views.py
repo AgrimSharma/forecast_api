@@ -75,7 +75,7 @@ class ForecastGeneric(viewsets.ModelViewSet):
         serializer = ForecastSerializers(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(dict(status=200, message="Forecast Created"))
+            return JsonResponse(dict(status=200, message="Forecast Created", data=serializer.data))
         else:
             return JsonResponse(dict(status=400, message="Some error"))
 
@@ -353,3 +353,18 @@ def predict_status(profile, suc_per):
     else:
         status = "Beginner"
         return status
+
+
+class AdvertisementPointsGeneric(generics.CreateAPIView):
+    queryset = AdvertisementPoints.objects.all()
+    serializer_class = AdvertisementPointsSerializer
+
+    def create(self, request, *args, **kwargs):
+        user_id = request.data['user_id']
+        try:
+            user = Authentication.objects.get(id=user_id)
+        except Exception:
+            return Response(dict(status=400, message="User Not found"))
+        points = AdvertisementPoints.objects.latest('id').points
+        user.points_earned += points
+        return Response(dict(status=300, message="{} points credited".format(points)))

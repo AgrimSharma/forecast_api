@@ -101,3 +101,11 @@ class AuthenticationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Authentication
         fields = ["user_id"]
+
+
+class AdvertisementPointsSerializer(serializers.ModelSerializer):
+    user_id = serializers.IntegerField()
+
+    class Meta:
+        model = AdvertisementPoints
+        fields = ["user_id"]

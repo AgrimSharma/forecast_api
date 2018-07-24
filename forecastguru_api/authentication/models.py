@@ -233,3 +233,17 @@ class UserInterest(models.Model):
 
     def __unicode__(self):
         return "{} : {}".format(self.user, self.interest)
+
+
+class AdvertisementPoints(models.Model):
+    points = models.IntegerField()
+
+    class Meta:
+        ordering = ['-points']
+        verbose_name_plural = "Advertisement Points"
+
+    def __str__(self):
+        return "{}".format(self.points)
+
+    def __unicode__(self):
+        return "{}".format(self.points)
