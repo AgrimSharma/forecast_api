@@ -367,4 +367,4 @@ class AdvertisementPointsGeneric(generics.CreateAPIView):
             return Response(dict(status=400, message="User Not found"))
         points = AdvertisementPoints.objects.latest('id').points
         user.points_earned += points
-        return Response(dict(status=300, message="{} points credited".format(points)))
+        return Response(dict(status=200, message="{} points credited".format(points)))
