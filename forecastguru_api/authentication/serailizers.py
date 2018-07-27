@@ -23,9 +23,6 @@ class SignUpSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         auth = Authentication.objects.create(**validated_data)
-        joining = JoiningPoints.objects.get(id=1).points
-        auth.joining_points = joining
-        auth.referral_code = id_generator(auth.full_name)
         return auth
 
 

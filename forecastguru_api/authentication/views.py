@@ -8,11 +8,16 @@ from rest_framework import viewsets
 from django.db.models import Sum
 
 
+def id_generator(name):
+    r = re.compile(r"\s+", re.MULTILINE)
+    return r.sub("", str(name)).capitalize() + str(random.randrange(1111, 9999))
+
+
 class SignUpGeneric(generics.CreateAPIView):
     queryset = Authentication.objects.all()
     serializer_class = SignUpSerializer
 
-    def post(self, request, *args, **kwargs):
+    def create(self, request, *args, **kwargs):
         try:
             email = request.data['email']
             auth = Authentication.objects.get(email=email)
@@ -24,6 +29,11 @@ class SignUpGeneric(generics.CreateAPIView):
             serializer = SignUpSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()
+                auth = Authentication.objects.get(id=serializer.data['id'])
+                joining = JoiningPoints.objects.get(id=1).points
+                auth.joining_points = joining
+                auth.referral_code = id_generator(auth.full_name)
+                auth.save()
                 return JsonResponse(dict(status=200, message="saved successful", data=serializer.data))
             else:
                 return JsonResponse(dict(status=400, message="full_name is missing"))
@@ -38,7 +48,7 @@ class LastLoginApi(generics.CreateAPIView):
     queryset = Authentication.objects.all().order_by('created')
     serializer_class = LastLoginSerializer
 
-    def post(self, request, *args, **kwargs):
+    def create(self, request, *args, **kwargs):
         login_date = request.data['login_date']
         user_id = request.data['user_id']
 
@@ -84,7 +94,7 @@ class GetForeCastGeneric(generics.CreateAPIView):
     queryset = ForeCast.objects.all().order_by('expire')
     serializer_class = GetForecastSerializers
 
-    def post(self, request, *args, **kwargs):
+    def create(self, request, *args, **kwargs):
         private = []
         public = []
         user_id = request.data['user_id']
@@ -161,11 +171,11 @@ class PlaceBetGeneric(generics.ListCreateAPIView):
                 return JsonResponse(dict(status=200, message='Bet Saved Successful'))
 
 
-class GetPlayedForecastGeneric(generics.ListAPIView):
+class GetPlayedForecastGeneric(generics.CreateAPIView):
     queryset = Betting.objects.all()
     serializer_class = GetPlayedForecastSerializers
 
-    def post(self, request, *args, **kwargs):
+    def create(self, request, *args, **kwargs):
         data = []
         user_id = request.data['user_id']
         forecast = Betting.objects.filter(users__id=int(user_id))
@@ -184,7 +194,7 @@ class ReferralCodeGeneric(generics.CreateAPIView):
     queryset = ReferralCodeRegistered.objects.all()
     serializer_class = ReferralCodeSerializer
 
-    def post(self, request, *args, **kwargs):
+    def create(self, request, *args, **kwargs):
         user_id = request.data['user_joined']
         referral_code = request.data['referral_code']
 
@@ -217,7 +227,7 @@ class InterestAPI(generics.ListCreateAPIView):
         sub_category = SubCategory.objects.all()
         return Response(dict(status=200, interest=[dict(id=s.id, name=s.name, image=s.image) for s in sub_category]))
 
-    def post(self,request, *args, **kwargs):
+    def create(self, request, *args, **kwargs):
         user_id = request.data['user_id']
         interest_list = request.data['interest']
         try:
@@ -254,7 +264,7 @@ class ResultGeneric(generics.ListCreateAPIView):
                              ))
         return Response(dict(data=data, status=200))
 
-    def post(self, request, *args, **kwargs):
+    def create(self, request, *args, **kwargs):
         user_id = request.data['user_id']
         try:
             auth = Authentication.objects.get(id=user_id)
