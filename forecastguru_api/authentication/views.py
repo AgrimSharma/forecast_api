@@ -37,7 +37,7 @@ class SignUpGeneric(generics.CreateAPIView):
                 auth.save()
                 return JsonResponse(dict(status=200, message="saved successful", data=serializer.data))
             else:
-                return JsonResponse(dict(status=400, message="full_name is missing"))
+                return JsonResponse(dict(status=400, message="some thing is missing"))
 
 
 class LastLoginApi(generics.CreateAPIView):
