@@ -13,9 +13,9 @@ def id_generator(name):
 class SignUpSerializer(serializers.ModelSerializer):
     facebook_id = serializers.CharField(help_text=_("User Facebook ID(Character)"))
     full_name = serializers.CharField(help_text=_("User Full Name(Character)"))
-    gender = serializers.CharField(help_text=_("Gender(Character)"))
+    gender = serializers.CharField(help_text=_("Gender(Character)"), required=False)
     email = serializers.CharField(help_text=_("User Email"))
-    mobile = serializers.IntegerField(help_text=_("User Mobile(Integer)"))
+    mobile = serializers.IntegerField(help_text=_("User Mobile(Integer)"), required=False)
 
     class Meta:
         model = Authentication
