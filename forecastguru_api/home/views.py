@@ -32,4 +32,4 @@ def login_user(request):
 
 @login_required
 def home(request):
-    return request.user.username
+    return HttpResponse(request.user.username)
