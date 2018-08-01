@@ -14,15 +14,17 @@ def login(request):
         userID = json.loads(request.POST['userID'])
         try:
             user = User.objects.get(username=userID)
-            auth = authenticate(username=userID, password=userID)
+            auth = authenticate(request, username=userID, password=userID)
             if auth:
-                login(request, user)
+                login(request, auth)
             return HttpResponse("registered")
         except Exception:
             user = User.objects.create(username=userID)
             user.set_password(userID)
             user.save()
-            login(request, user)
+            auth = authenticate(request, username=userID, password=userID)
+            if auth:
+                login(request, auth)
             return HttpResponse("success")
     else:
         return render(request, "home/index.html", {})
