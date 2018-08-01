@@ -132,8 +132,8 @@
     if (response.status === 'connected') {
       // Logged into your app and Facebook.
       _i();
-      alert(response);
-               
+      alert(JSON.parse(response));
+
     } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not your app.
       document.getElementById('status').innerHTML = 'Please log ' +
@@ -146,7 +146,7 @@
        // handle the response
        if(response.status==='connected') {
         _i();
-        alert(response);
+        alert(JSON.parse(response));
        }
      }, {scope: 'public_profile,email'});
  }
