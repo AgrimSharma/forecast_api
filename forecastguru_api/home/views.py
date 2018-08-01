@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 
 
 @csrf_exempt
-def login(request):
+def login_user(request):
     if request.method == "POST":
         userID = json.loads(request.POST['userID'])
         try:
