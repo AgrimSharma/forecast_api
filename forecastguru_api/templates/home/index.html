@@ -150,8 +150,6 @@
                 data: {'data': data,},
 
                 success: function(resp){
-                    var data = JSON.parse(resp);
-
                     if(data.message == 'success'){
                         console.log('Login Success');
                     }else{
@@ -180,8 +178,6 @@
                 data: {'data': data,},
 
                 success: function(resp){
-                    var data = JSON.parse(resp);
-
                     if(data.message == 'success'){
                         console.log('Login Success');
                     }else{
