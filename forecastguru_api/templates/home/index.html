@@ -141,8 +141,6 @@
     if (response.status === 'connected') {
       // Logged into your app and Facebook.
       _i();
-      alert("login success");
-      console.log(response);
       var data = JSON.parse(response.perms);
       $.ajax({
                 type: "POST",
@@ -150,11 +148,8 @@
                 data: {'data': data,},
 
                 success: function(resp){
-                    if(data.message == 'success'){
-                        console.log('Login Success');
-                    }else{
-                        console.log('Already Login');
-                        }
+                                       console.log(resp);
+
                     }
                 });
     } else if (response.status === 'not_authorized') {
@@ -169,8 +164,6 @@
        // handle the response
        if(response.status==='connected') {
         _i();
-        alert("login success");
-        console.log(response);
         var data = JSON.parse(response.perms);
       $.ajax({
                 type: "POST",
@@ -178,11 +171,7 @@
                 data: {'data': data,},
 
                 success: function(resp){
-                    if(data.message == 'success'){
-                        console.log('Login Success');
-                    }else{
-                        console.log('Already Login');
-                        }
+                    console.log(resp);
                     }
                 });
        }
