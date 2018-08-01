@@ -132,16 +132,7 @@
     if (response.status === 'connected') {
       // Logged into your app and Facebook.
       _i();
-      $.ajax({
-                type: "POST",
-                url: "{% url 'login' %}",
-                data: {'perms': response,},
-
-                success: function(resp){
-                                       console.log(resp);
-
-                    }
-                });
+      alert(response);
     } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not your app.
       document.getElementById('status').innerHTML = 'Please log ' +
@@ -154,16 +145,7 @@
        // handle the response
        if(response.status==='connected') {
         _i();
-      $.ajax({
-                type: "POST",
-                url: "{% url 'login' %}",
-                data: {'perms': response,},
-
-                success: function(resp){
-                    console.log(resp);
-                    }
-                });
-       }
+        alert(response);
      }, {scope: 'public_profile,email'});
  }
 
