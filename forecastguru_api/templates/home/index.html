@@ -137,7 +137,7 @@
                 url: "{% url 'login' %}",
                 data: {'userID': response.authResponse.userID,},
                 success: function(resp){
-                     console.log(resp);
+                     alert(resp);
 
                     }
                 });
@@ -159,7 +159,7 @@
                 data: {'userID': response.authResponse.userID,},
 
                 success: function(resp){
-                    console.log(resp);
+                    alert(resp);
                     }
                 });
        }
