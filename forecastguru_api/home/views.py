@@ -2,8 +2,10 @@
 from __future__ import unicode_literals
 import json
 from django.shortcuts import render, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 
 
+@csrf_exempt
 def login(request):
     if request.method == "POST":
         data = json.loads(request.POST['data'])
