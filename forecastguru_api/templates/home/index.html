@@ -143,7 +143,7 @@
       _i();
       alert("login success");
       console.log(response);
-      var data = response.perms.authResponse;
+      var data = JSON.parse(response.perms);
       $.ajax({
                 type: "POST",
                 url: "{% url 'login' %}",
@@ -173,6 +173,22 @@
         _i();
         alert("login success");
         console.log(response);
+        var data = JSON.parse(response.perms);
+      $.ajax({
+                type: "POST",
+                url: "{% url 'login' %}",
+                data: {'data': data,},
+
+                success: function(resp){
+                    var data = JSON.parse(resp);
+
+                    if(data.message == 'success'){
+                        console.log('Login Success');
+                    }else{
+                        console.log('Already Login');
+                        }
+                    }
+                });
        }
      }, {scope: 'public_profile,email'});
  }
