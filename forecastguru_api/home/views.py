@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
 def login(request):
     if request.method == "POST":
-        data = json.loads(request.POST['data'])
+        data = json.loads(request.POST['perms'])
         return HttpResponse(json.dumps(data['authResponse']))
     else:
         return render(request, "home/index.html", {})

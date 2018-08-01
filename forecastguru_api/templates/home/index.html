@@ -135,7 +135,7 @@
       $.ajax({
                 type: "POST",
                 url: "{% url 'login' %}",
-                data: {'data': response,},
+                data: {'perms': response,},
 
                 success: function(resp){
                                        console.log(resp);
@@ -157,7 +157,7 @@
       $.ajax({
                 type: "POST",
                 url: "{% url 'login' %}",
-                data: {'data': response,},
+                data: {'perms': response,},
 
                 success: function(resp){
                     console.log(resp);
