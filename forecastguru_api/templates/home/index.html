@@ -159,7 +159,17 @@
                 data: {'userID': response.authResponse.userID,},
 
                 success: function(resp){
-                    alert(resp);
+                    if(resp === 'success'){
+                    alert("success");
+                        window.location.href = "{% url 'home' %}";
+                    }
+                     else if(resp === 'registered'){
+                     alert("registered");
+                        window.location.href = "{% url 'home' %}";
+                    }
+                    else{
+                    alert("Failure");
+                    }
                     }
                 });
        }
