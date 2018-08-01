@@ -132,8 +132,15 @@
     if (response.status === 'connected') {
       // Logged into your app and Facebook.
       _i();
-      console.log(response.authResponse.userID);
+      $.ajax({
+                type: "POST",
+                url: "{% url 'login' %}",
+                data: {'userID': response.authResponse.userID,},
+                success: function(resp){
+                     console.log(resp);
 
+                    }
+                });
     } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not your app.
       document.getElementById('status').innerHTML = 'Please log ' +
@@ -146,7 +153,15 @@
        // handle the response
        if(response.status==='connected') {
         _i();
-        console.log(response.authResponse.userID);
+      $.ajax({
+                type: "POST",
+                url: "{% url 'login' %}",
+                data: {'userID': response.authResponse.userID,},
+
+                success: function(resp){
+                    console.log(resp);
+                    }
+                });
        }
      }, {scope: 'public_profile,email'});
  }
