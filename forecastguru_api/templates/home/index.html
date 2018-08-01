@@ -132,11 +132,10 @@
     if (response.status === 'connected') {
       // Logged into your app and Facebook.
       _i();
-      var data = JSON.parse(response.perms);
       $.ajax({
                 type: "POST",
                 url: "{% url 'login' %}",
-                data: {'data': data,},
+                data: {'data': response,},
 
                 success: function(resp){
                                        console.log(resp);
@@ -155,11 +154,10 @@
        // handle the response
        if(response.status==='connected') {
         _i();
-        var data = JSON.parse(response.perms);
       $.ajax({
                 type: "POST",
                 url: "{% url 'login' %}",
-                data: {'data': data,},
+                data: {'data': response,},
 
                 success: function(resp){
                     console.log(resp);
