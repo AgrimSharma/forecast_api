@@ -5,7 +5,7 @@ from django.contrib import admin
 
 
 class AuthenticationAdmin(admin.ModelAdmin):
-    list_display = ['email', "first_name", "last_name", 'facebook_id', 'last_login']
+    list_display = ['facebook_id', 'email', "first_name", "last_name", 'last_login']
 
 
 class DailyPointsFreeAdmin(admin.ModelAdmin):
