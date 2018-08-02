@@ -906,8 +906,8 @@ header .btn-header {color: #fff; background: none; border: none; box-shadow: non
   }
 
   .img_listing label img {
-	height: 70px;
-	width: 70px;
+	height: 50px;
+	width: 50px;
 	transition-duration: 0.2s;
 	transform-origin: 50% 50%;
 	margin-bottom: 5px
