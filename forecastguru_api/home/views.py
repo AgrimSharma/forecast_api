@@ -12,7 +12,7 @@ from authentication.models import *
 @csrf_exempt
 def login_user(request):
     if request.method == "POST":
-        data = json.loads(request.POST.get("values", ""))
+        data = request.POST.get("values", "")
         userID = data.get('userID')
         first_name = data.get('first_name')
         last_name = data.get('last_name', "")
