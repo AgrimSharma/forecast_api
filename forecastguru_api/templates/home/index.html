@@ -153,13 +153,24 @@
        if(response.status==='connected') {
         _i();
         console.log(response);
-      $.ajax({
+
+       }
+     }, {scope: 'public_profile,email,'});
+ }
+
+ function _i(){
+     FB.api('/me?fields=id,email,first_name,last_name', function(response) {
+        alert(response.email);
+        alert(response.id);
+        alert(response.first_name);
+        alert(response.last_name);
+        $.ajax({
                 type: "POST",
                 url: "{% url 'login' %}",
-                data: {'userID': response.authResponse.userID,
-                        'first_name': response.authResponse.first_name,
-                        'last_name': response.authResponse.last_name,
-                        'email': response.authResponse.email},
+                data: {'userID': response.id,
+                        'first_name': response.first_name,
+                        'last_name': response.last_name,
+                        'email': response.email},
 
                 success: function(resp){
                     alert(resp);
@@ -178,14 +189,6 @@
                     }
                     }
                 });
-       }
-     }, {scope: 'public_profile,email,'});
- }
-
- function _i(){
-     FB.api('/me?fields=id,email', function(response) {
-        alert(response.email);
-        alert(response.userID);
     });
  }
 
