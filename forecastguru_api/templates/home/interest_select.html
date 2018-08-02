@@ -70,8 +70,8 @@
   <div class="row">
     <div class="col-md-12">
           {% for category in sub %}
-        <div class="col-md-12" style="font-size:25px;text-align:center;padding-top:20px;text-align:center;">{{category.name}}</div>
-            <div class="img_listing" style="width:100%;text-align:center;">
+        <button  data-target="#{{category.name}}" style="font-size:25px;text-align:center;padding-top:20px;text-align:center;">{{category.name}}</button>
+            <div class="img_listing" id="{{category.name}}" style="width:100%;text-align:center;">
 
             <ul>
               {% for s in category.subcategory_set.all %}
