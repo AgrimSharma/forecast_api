@@ -8,14 +8,15 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from authentication.models import *
 
+
 @csrf_exempt
 def login_user(request):
     if request.method == "POST":
-        userID = json.loads(request.POST.get('userID', ""))
-        first_name = json.loads(request.POST.get('first_name', ""))
-        last_name = json.loads(request.POST.get('last_name', ""))
-        mobile = json.loads(request.POST.get('mobile', ""))
-        email = json.loads(request.POST.get('email', ""))
+        data = json.loads(request.POST.get("values", ""))
+        userID = data.get('userID')
+        first_name = data.get('first_name')
+        last_name = data.get('last_name', "")
+        email = data.get('email', "")
         try:
             user = User.objects.get(username=userID)
             auth = authenticate(request, username=userID, password=userID)
@@ -24,8 +25,10 @@ def login_user(request):
                 login(request, auth)
             return HttpResponse("registered")
         except Exception:
-            user = User.objects.create(username=userID, email=email)
-            fuser = Authentication.objects.create(facebook_id = userID)
+            user = User.objects.create(username=userID, email=email, first_name=first_name, last_name=last_name)
+            fuser = Authentication.objects.create(facebook_id=userID, first_name=first_name, last_name=last_name,
+                                                  email=email)
+            fuser.save()
             user.set_password(userID)
             user.save()
             auth = authenticate(request, username=userID, password=userID)
