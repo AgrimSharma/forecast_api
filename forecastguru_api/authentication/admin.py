@@ -5,7 +5,7 @@ from django.contrib import admin
 
 
 class AuthenticationAdmin(admin.ModelAdmin):
-    list_display = ['email']
+    list_display = ['email', "first_name", "last_name", 'facebook_id', 'last_login']
 
 
 class DailyPointsFreeAdmin(admin.ModelAdmin):
@@ -103,6 +103,10 @@ class MarketFeeAdmin(admin.ModelAdmin):
     pass
 
 
+class UserInterestAdmin(admin.ModelAdmin):
+    pass
+
+
 admin.site.register(Authentication, AuthenticationAdmin)
 admin.site.register(MarketFee, MarketFeeAdmin)
 admin.site.register(ReferralCodePoints, ReferralPointsAdmin)
@@ -114,6 +118,7 @@ admin.site.register(JoiningPoints, JoiningBonusAdmin)
 admin.site.register(ForeCast, ForecastAdmin)
 admin.site.register(Status, StatusAdmin)
 admin.site.register(Private, PrivateAdmin)
+admin.site.register(UserInterest, UserInterestAdmin)
 admin.site.register(SubCategory, SubCategoryAdmin)
 admin.site.register(Winning, WinningAdmin)
 admin.site.register(Category, CategoryAdmin)

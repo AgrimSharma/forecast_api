@@ -3,7 +3,11 @@ from .views import *
 
 urlpatterns = [
     url(r'^login/', login_user, name='login'),
-    url(r'^', home, name='home'),
+    url(r'^referral_code/', referral_code, name='referral_code'),
+    url(r'^check_referral/', check_referral, name='check_referral'),
+    url(r'^interest_select/', interest, name='interest_select'),
+    url(r'^live_forecast/', live_forecast, name='live_forecast'),
+    url(r'^', index, name='index'),
 
 ]
 

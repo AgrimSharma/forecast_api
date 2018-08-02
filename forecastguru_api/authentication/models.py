@@ -225,7 +225,7 @@ class Betting(models.Model):
 
 class UserInterest(models.Model):
     user = models.ForeignKey(to=Authentication, on_delete=models.CASCADE)
-    interest = models.ManyToManyField(to=SubCategory)
+    interest = models.ForeignKey(to=SubCategory, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ['-user']
