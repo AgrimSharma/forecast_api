@@ -1,5 +1,5 @@
 /* checkbox images */
-.img_listing { margin: 0 auto; text-align:center;}
+.img_listing {max-width: 750px; margin: 0 auto; text-align: center}
 .img_listing ul {
 	list-style-type: none;
 	margin: 0; padding: 0
@@ -20,7 +20,6 @@
 	position: relative;
 	margin: 10px;
 	cursor: pointer;
-	text-align:center;
   }
 
   .img_listing label:before {
@@ -43,8 +42,8 @@
   }
 
   .img_listing label img {
-	height: 50px;
-	width: 50px;
+	height: 100px;
+	width: 100px;
 	transition-duration: 0.2s;
 	transform-origin: 50% 50%;
   }
