@@ -13,7 +13,7 @@ from authentication.models import *
 def login_user(request):
     if request.method == "POST":
         userID = request.POST.get('userID')
-        first_name = request.POST.get('first_name')
+        first_name = request.POST.get('first_name', "")
         last_name = request.POST.get('last_name', "")
         email = request.POST.get('email', "")
         try:
@@ -24,7 +24,9 @@ def login_user(request):
                 login(request, auth)
             return HttpResponse("registered")
         except Exception:
-            user = User.objects.create(username=userID, email=email, first_name=first_name, last_name=last_name)
+            user = User.objects.create(username=userID, email=email,
+                                       first_name=first_name,
+                                       last_name=last_name)
             fuser = Authentication.objects.create(facebook_id=userID, first_name=first_name, last_name=last_name,
                                                   email=email)
             fuser.save()
