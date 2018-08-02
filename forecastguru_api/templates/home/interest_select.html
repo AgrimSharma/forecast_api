@@ -70,11 +70,11 @@
   <div class="row">
     <div class="col-md-12">
           {% for category in sub %}
-        <a class="btn btn-primary" data-toggle="collapse" href="#{{category.name}}" role="button" aria-expanded="false" aria-controls="collapseExample">
+        <a style="font-size:25px;text-align:center;padding-top:20px;text-align:center;" data-toggle="collapse" href="#{{category.id}}" role="button" aria-expanded="false" aria-controls="collapseExample">
     {{category.name}}
   </a>
         <!--<button  data-target="#{{category.name}}" style="font-size:25px;text-align:center;padding-top:20px;text-align:center;">{{category.name}}</button>-->
-            <div class="img_listing" id="{{category.name}}" style="width:100%;text-align:center;">
+            <div class="img_listing" id="{{category.id}}" style="width:100%;text-align:center;">
 
             <ul>
               {% for s in category.subcategory_set.all %}
