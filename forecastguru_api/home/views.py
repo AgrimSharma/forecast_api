@@ -36,8 +36,8 @@ def login_user(request):
     #         if auth:
     #             login(request, auth)
     #         return HttpResponse("success")
-    # else:
-    #     return render(request, "home/index.html", {})
+    else:
+        return render(request, "home/index.html", {})
 
 
 def index(request):
