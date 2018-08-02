@@ -51,7 +51,7 @@ def index(request):
     joining = JoiningPoints.objects.latest('id')
     return render(request, "home/main_page.html", {"points": joining.points})
 
-
+@login_required
 @login_required
 def referral_code(request):
     user = request.user.username
@@ -63,7 +63,7 @@ def referral_code(request):
     else:
         return redirect("/interest_select/")
 
-
+@login_required
 @csrf_exempt
 def check_referral(request):
     if request.method == "POST":
@@ -87,6 +87,7 @@ def check_referral(request):
         return redirect("/interest_select/")
 
 
+@login_required
 @csrf_exempt
 def interest(request):
     if request.method == 'GET':
@@ -129,6 +130,7 @@ def interest(request):
                 return HttpResponse("login")
 
 
+@login_required
 def live_forecast(request):
     return render(request, "home/live_forecast.html",{ "heading": "Live Forecast",
                                                                      "title": "ForecastGuru",
