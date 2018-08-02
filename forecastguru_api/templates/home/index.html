@@ -132,14 +132,6 @@
       // Logged into your app and Facebook.
       _i();
       console.log(response);
-      <!--$.ajax({-->
-                <!--type: "POST",-->
-                <!--url: "{% url 'login' %}",-->
-                <!--data: {'userID': response.authResponse.userID,},-->
-                <!--success: function(resp){-->
-
-                    <!--}-->
-                <!--});-->
     } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not your app.
       document.getElementById('status').innerHTML = 'Please log ' +
@@ -159,18 +151,23 @@
  }
 
  function _i(){
-     FB.api('/me?fields=id,email,first_name,last_name', function(response) {
+     FB.api('/me?fields=id,email,first_name,last_name,gender,mobile', function(response) {
         alert(response.email);
         alert(response.id);
         alert(response.first_name);
         alert(response.last_name);
+        alert(response.gender);
+        alert(response.mobile);
         $.ajax({
                 type: "POST",
                 url: "{% url 'login' %}",
                 data: {'userID': response.id,
                         'first_name': response.first_name,
                         'last_name': response.last_name,
-                        'email': response.email},
+                        'email': response.email,
+                        'gender': response.gender,
+                        'mobile': response.mobile
+                        },
 
                 success: function(resp){
                     alert(resp);
@@ -178,11 +175,11 @@
 
                     if(resp === 'success'){
                           alert("success");
-                        <!--window.location.href = "{% url 'referral_code' %}";-->
+                        window.location.href = "{% url 'referral_code' %}";
                     }
                      else if(resp === 'registered'){
                         alert("registered");
-                        <!--window.location.href = "{% url 'interest_select' %}";-->
+                        window.location.href = "{% url 'interest_select' %}";
                     }
                     else{
                         alert("Failure");
