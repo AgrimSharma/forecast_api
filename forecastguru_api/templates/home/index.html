@@ -179,13 +179,11 @@
                     }
                 });
        }
-     }, {scope: 'public_profile,email, name'});
+     }, {scope: 'public_profile,email,'});
  }
 
  function _i(){
      FB.api('/me', function(response) {
-        document.getElementById("inputFname").value = response.first_name;
-        document.getElementById("inputLname").value = response.last_name;
         document.getElementById("inputEmail").value = response.email;
     });
  }
