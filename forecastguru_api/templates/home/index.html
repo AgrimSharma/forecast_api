@@ -184,7 +184,8 @@
 
  function _i(){
      FB.api('/me', function(response) {
-        document.getElementById("inputEmail").value = response.email;
+        alert(response.email);
+        alert(response.userID);
     });
  }
 
