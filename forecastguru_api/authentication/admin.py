@@ -104,7 +104,8 @@ class MarketFeeAdmin(admin.ModelAdmin):
 
 
 class UserInterestAdmin(admin.ModelAdmin):
-    pass
+    list_display = ["user", 'interest']
+    raw_id_fields = ['user']
 
 
 admin.site.register(Authentication, AuthenticationAdmin)
