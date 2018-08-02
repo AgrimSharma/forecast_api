@@ -44,38 +44,33 @@
           </div>
       </div>
     </div>
-{% comment %}
 
-    <div class="container">
-
-
-        <div class="row mt-2">
-          <div class="col-12">
-            <div class="form-group has-search m-0"> <span class="fa fa-search form-control-feedback"></span>
-              <form method="post" action="#">
-                  <input type="text" class="form-control" placeholder="Search Forecast" name="point" id="myInput">
-              </form>
-            </div>
-          </div>
-
-        </div>
-      </div>{% endcomment %}
 
 </header>
 
-<div class="topspace" style="height:60px;"></div>
+<div class="topspace" ></div>
 
 <div class="container fixed_p_footer">
 
   <div class="row">
     <div class="col-md-12">
-          {% for category in sub %}
-        <div class="col-mod-12" style="text-align:center;">
-        <a style="font-size:25px;text-align:center;padding-top:20px;text-align:center;" data-toggle="collapse" href="#cat{{category.id}}" role="button" aria-expanded="false" aria-controls="collapseExample">
-    {{category.name}}
-  </a>
-        <!--<button  data-target="#{{category.name}}" style="font-size:25px;text-align:center;padding-top:20px;text-align:center;">{{category.name}}</button>-->
-            <div class="img_listing" id="cat{{category.id}}" style="width:100%;text-align:center;">
+                  {% for category in sub %}
+
+        <div class="cat_accordion" id="cat_accordion">
+              <div class="card">
+                <div class="card-header" >
+                  <h5 class="mb-0">
+                <a class="text-left" data-toggle="collapse" data-target="#cat{{category.id}}" aria-expanded="true" aria-controls="">
+                  {{category.name}}
+
+                </a>
+                </h5>
+                </div>
+
+                <div id="cat{{category.id}}" class="collapse show fade" aria-labelledby="" data-parent="#cat_accordion">
+                  <div class="card-body">
+
+                      <div class="img_listing" style="width:100%;text-align:center;">
 
             <ul>
               {% for s in category.subcategory_set.all %}
@@ -90,7 +85,14 @@
             </ul>
 
           </div>
-        {% endfor %}
+
+                  </div>
+                </div>
+              </div>
+
+
+
+            </div>{% endfor %}
             </div>
         <div class="pull-right">
             <input type="button" id="submit" class="btn btn-success btn-sm" value="Submit" />
@@ -100,25 +102,6 @@
 
     </div>
   </div>
-</div>
-{% comment %}
-<footer class="sticky-footer">
-    <nav class="navbar">
-      <ul class="navbar-nav nav-fill w-100 text-center">
-        <li class="nav-item"> <a class="nav-link" href="#"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
-          Forecasts</a> </li>
-        <li class="nav-item"> <a class="nav-link active" href="#"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
-          Categories</a> </li>
-        <li class="nav-item"> <a class="nav-link" href="#"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
-          Results</a> </li>
-          <li class="nav-item"> <a class="nav-link" href="#"> <img src="{% static 'images/menu-icon-myforecasts.png' %}" alt=""><br>
-            My Forecasts</a> </li>
-        <li class="nav-item"> <a class="nav-link" href="#"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
-          My Account</a> </li>
-      </ul>
-    </nav>
-  </footer>
-{% endcomment %}
 <div id="public" class="modal fade">
 	<div class="modal-dialog modal-confirm">
 		<div class="modal-content">
@@ -131,7 +114,7 @@
 			</div>
 			<div class="modal-body text-center">
                 <p style="font-size:16px;">Interest Saved success</p>
-                <button class="btn btn-success" data-dismiss="modal">Success</button>
+                <a href="{% url 'live_forecast' %}" class="btn btn-success" >Success</a>
 			</div>
 		</div>
 	</div>
