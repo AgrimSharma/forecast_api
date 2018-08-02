@@ -24,6 +24,81 @@
     <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/interest.css' %}" />
 
     <link rel="manifest" href="/manifest.json" />
+    <style>
+        .img_listing {margin: 0 auto; text-align: center}
+.img_listing ul {
+	list-style-type: none;
+	margin: 0; padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center
+  }
+
+ .img_listing li {
+	display: flex;
+	max-width: 95px;
+	vertical-align: top
+  }
+
+ .img_listing input[type="checkbox"][id^="cb"] {
+	display: none;
+  }
+  .img_listing label {
+	border: 1px solid #fff;
+	padding: 0px;
+	display: block;
+	position: relative;
+	margin: 5px;
+	cursor: pointer;
+	box-shadow: 0 0 5px rgba(0,0,0,.2)
+  }
+  .img_listing label:before {
+	background-color: white;
+	color: white;
+	content: " ";
+	display: block;
+	border-radius: 50%;
+	border: 1px solid grey;
+	position: absolute;
+	top: -5px;
+	left: -5px;
+	width: 25px;
+	height: 25px;
+	text-align: center;
+	line-height: 28px;
+	transition-duration: 0.4s;
+	transform: scale(0);
+	z-index: 10;
+  }
+
+  .img_listing label img {
+	height: 70px;
+	width: 70px;
+	transition-duration: 0.2s;
+	transform-origin: 50% 50%;
+	margin-bottom: 5px
+  }
+
+  .img_listing :checked + label {
+	border-color: #ddd;
+  }
+
+  .img_listing :checked + label:before {
+	content: "✓";
+	background-color: #ff4d00;
+	transform: scale(1);
+  }
+
+  .img_listing :checked + label img {
+	box-shadow: 0 0 5px #333;
+	z-index: -1;
+  }
+  .cat_accordion .card-header {padding: 0}
+  .cat_accordion .card-header a{padding: 10px 15px; display: block; position: relative; cursor: pointer}
+  .cat_accordion .card-header a:after{position: absolute; font-family: 'FontAwesome'; content: "\f078"; right: 15px; top: 10px}
+  .cat_accordion .card-header a.collapsed:after {content: "\f054";}
+
+    </style>
 </head>
 <body class="gray-bg">
 <header class="position-fixed w-100">
@@ -98,7 +173,7 @@
 
     </div>
   </div>
-<div class="pull-right" style="padding-right: 70px;padding-bottom:100px;">
+<div class="pull-right" style="padding-right: 100px;padding-bottom:100px;">
 
             <input type="button" id="submit" class="btn btn-success btn-sm" value="Submit" />
             <a href="$" style="font-size:16px;">Skip</a>
