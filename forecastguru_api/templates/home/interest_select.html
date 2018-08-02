@@ -135,10 +135,16 @@
               <div class="card">
                 <div class="card-header" >
                   <h5 class="mb-0">
+                      {% if category.name == 'Sports' %}
                 <a class="text-left" data-toggle="collapse" data-target="#cat{{category.id}}" aria-expanded="true" aria-controls="">
                   {{category.name}}
 
                 </a>
+                    {% else %}  <a class="text-left collapsed" data-toggle="collapse" data-target="#cat{{category.id}}" aria-expanded="true" aria-controls="">
+                  {{category.name}}
+
+                </a>
+                      {% endif %}
                 </h5>
                 </div>
 
@@ -149,7 +155,6 @@
 
             <ul>
               {% for s in category.subcategory_set.all %}
-
                 <li>
 
                         <input type="checkbox" id="{{s.id}}" style="display:none;"/>
@@ -173,9 +178,10 @@
 
     </div>
   </div>
-<div class="pull-right" style="padding-right: 100px;padding-bottom:100px;">
+<div style="text-align:center;">
 
             <input type="button" id="submit" class="btn btn-success btn-sm" value="Submit" />
+    <br><br><br>
             <a href="$" style="font-size:16px;">Skip</a>
 
         </div>
