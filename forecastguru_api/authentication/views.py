@@ -7,11 +7,11 @@ from .serailizers import *
 from rest_framework import viewsets
 from django.db.models import Sum
 import re
+from django.contrib.auth.models import User
 
-
-def id_generator(name):
+def id_generator(fname, lname):
     r = re.compile(r"\s+", re.MULTILINE)
-    return r.sub("", str(name)).capitalize() + str(random.randrange(1111, 9999))
+    return r.sub("", str(fname)).capitalize() + str(lname).capitalize() + str(random.randrange(1111, 9999))
 
 
 class SignUpGeneric(generics.CreateAPIView):
@@ -23,17 +23,28 @@ class SignUpGeneric(generics.CreateAPIView):
             email = request.data['email']
             auth = Authentication.objects.get(email=email)
             return JsonResponse(dict(status=200, message="Already Registered", data=dict(
-                id=auth.id, full_name=auth.full_name, facebook_id=auth.facebook_id,
-                email=auth.email, mobile=auth.mobile, gender=auth.gender
+                id=auth.id,
+                first_name=auth.first_name,
+                last_name=auth.last_name,
+                facebook_id=auth.facebook_id,
+                email=auth.email,
+                mobile=auth.mobile,
+                gender=auth.gender
             )))
         except Exception:
             serializer = SignUpSerializer(data=request.data)
+            first_name = request.data['first_name']
+            last_name = request.data['last_name']
+            facebook_id = request.data['facebook_id']
+            email = request.data['email']
             if serializer.is_valid():
                 serializer.save()
+                user = User.objects.create(username=facebook_id, first_name=first_name, last_name=last_name, email=email)
+                user.set_password(facebook_id)
                 auth = Authentication.objects.get(id=serializer.data['id'])
                 joining = JoiningPoints.objects.get(id=1).points
                 auth.joining_points = joining
-                auth.referral_code = id_generator(auth.full_name)
+                auth.referral_code = id_generator(auth.first_name, auth.last_name)
                 auth.save()
                 return JsonResponse(dict(status=200, message="saved successful", data=serializer.data))
             else:

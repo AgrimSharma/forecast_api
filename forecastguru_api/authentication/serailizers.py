@@ -12,14 +12,13 @@ def id_generator(name):
 
 class SignUpSerializer(serializers.ModelSerializer):
     facebook_id = serializers.CharField(help_text=_("User Facebook ID(Character)"))
-    full_name = serializers.CharField(help_text=_("User Full Name(Character)"))
-    gender = serializers.CharField(help_text=_("Gender(Character)"), required=False)
+    first_name = serializers.CharField(help_text=_("User First Name(Character)"))
+    last_name = serializers.CharField(help_text=_("User Last Name(Character)"))
     email = serializers.CharField(help_text=_("User Email"))
-    mobile = serializers.IntegerField(help_text=_("User Mobile(Integer)"), required=False)
 
     class Meta:
         model = Authentication
-        fields = ["id", "facebook_id", "full_name", 'gender', "email", "mobile"]
+        fields = ["id", "facebook_id", "first_name", "last_name", "email"]
 
     def create(self, validated_data):
         auth = Authentication.objects.create(**validated_data)

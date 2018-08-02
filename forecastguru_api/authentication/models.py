@@ -5,11 +5,12 @@ from django.db import models
 
 
 class Authentication(models.Model):
-    facebook_id = models.CharField(max_length=100, unique=True)
-    full_name = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    mobile = models.CharField(max_length=100, null=True, blank=True)
-    gender = models.CharField(max_length=100, null=True, blank=True)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    facebook_id = models.CharField(max_length=100)
+    email = models.EmailField(max_length=100)
+    # mobile = models.CharField(max_length=100, null=True, blank=True)
+    # gender = models.CharField(max_length=100, null=True, blank=True)
     joining_points = models.IntegerField(default=0)
     points_won = models.IntegerField(default=0)
     successful_forecast = models.IntegerField(default=0)
@@ -21,6 +22,7 @@ class Authentication(models.Model):
     forecast_participated = models.IntegerField(default=0)
     points_lost = models.IntegerField(default=0)
     referral_code = models.CharField(max_length=100)
+    referral_status = models.IntegerField(default=0)
     created = models.DateTimeField(auto_now=True)
     login_count = models.IntegerField(default=0)
     last_login = models.DateField(default=datetime.datetime.now().date())
