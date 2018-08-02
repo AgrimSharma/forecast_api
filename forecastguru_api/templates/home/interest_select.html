@@ -129,49 +129,7 @@
 
   <div class="row">
     <div class="col-md-12">
-        {% for category in sub %}
-            {% if category.name == 'Sports' %}
-
-        <div class="cat_accordion" id="cat_accordion">
-              <div class="card">
-                <div class="card-header" >
-                  <h5 class="mb-0">
-                <a class="text-left" data-toggle="collapse" data-target="#cat{{category.id}}" aria-expanded="true" aria-controls="">
-                  {{category.name}}
-
-                </a>
-                </h5>
-                </div>
-                      {% if category.name == 'Sports' %}
-
-                <div id="cat{{category.id}}" class="collapse show fade" aria-labelledby="" data-parent="#cat_accordion">
-
-                  <div class="card-body">
-
-                      <div class="img_listing" style="width:100%;text-align:center;">
-
-            <ul>
-              {% for s in category.subcategory_set.all %}
-                <li>
-
-                        <input type="checkbox" id="{{s.id}}" style="display:none;"/>
-                <label for="{{s.id}}"><img src="{{s.image}}" width="50px" height="50px"/><br><b>{{s.name|upper}}</b></label>
-
-              </li>
-            {% endfor %}
-            </ul>
-
-          </div>
-
-                  </div>
-                </div>
-              </div>
-
-
-
-            </div>
-
-        {% else %}
+                  {% for category in sub %}
 
         <div class="cat_accordion" id="cat_accordion">
               <div class="card">
@@ -183,10 +141,8 @@
                 </a>
                 </h5>
                 </div>
-                      {% if category.name == 'Sports' %}
 
                 <div id="cat{{category.id}}" class="collapse fade" aria-labelledby="" data-parent="#cat_accordion">
-
                   <div class="card-body">
 
                       <div class="img_listing" style="width:100%;text-align:center;">
@@ -210,9 +166,7 @@
 
 
 
-            </div>
-
-        {% endfor %}
+            </div>{% endfor %}
             </div>
 
 
