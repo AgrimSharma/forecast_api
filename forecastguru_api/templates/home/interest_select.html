@@ -70,11 +70,12 @@
   <div class="row">
     <div class="col-md-12">
           {% for category in sub %}
-        <a style="font-size:25px;text-align:center;padding-top:20px;text-align:center;" data-toggle="collapse" href="#{{category.id}}" role="button" aria-expanded="false" aria-controls="collapseExample">
+        <div class="col-mod-12" style="text-align:center;">
+        <a style="font-size:25px;text-align:center;padding-top:20px;text-align:center;" data-toggle="collapse" href="#cat{{category.id}}" role="button" aria-expanded="false" aria-controls="collapseExample">
     {{category.name}}
   </a>
         <!--<button  data-target="#{{category.name}}" style="font-size:25px;text-align:center;padding-top:20px;text-align:center;">{{category.name}}</button>-->
-            <div class="img_listing" id="{{category.id}}" style="width:100%;text-align:center;">
+            <div class="img_listing" id="cat{{category.id}}" style="width:100%;text-align:center;">
 
             <ul>
               {% for s in category.subcategory_set.all %}
@@ -90,6 +91,7 @@
 
           </div>
         {% endfor %}
+            </div>
         <div class="pull-right">
             <input type="button" id="submit" class="btn btn-success btn-sm" value="Submit" />
             <a href="$" style="font-size:16px;">Skip</a>
