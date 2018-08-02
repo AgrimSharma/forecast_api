@@ -849,7 +849,7 @@ header .btn-header {color: #fff; background: none; border: none; box-shadow: non
 .slick-dots {bottom: -25px; left: 0; z-index: 10}
 
 /* checkbox images */
-.img_listing {max-width: 750px; margin: 0 auto; text-align: center}
+.img_listing { margin: 0 auto; }
 .img_listing ul {
 	list-style-type: none;
 	margin: 0; padding: 0
@@ -892,8 +892,8 @@ header .btn-header {color: #fff; background: none; border: none; box-shadow: non
   }
   
   .img_listing label img {
-	height: 100px;
-	width: 100px;
+	height: 50px;
+	width: 50px;
 	transition-duration: 0.2s;
 	transform-origin: 50% 50%;
   }
