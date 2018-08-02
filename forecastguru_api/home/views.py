@@ -7,6 +7,11 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from authentication.models import *
+import re
+
+def id_generator(fname, lname):
+    r = re.compile(r"\s+", re.MULTILINE)
+    return r.sub("", str(fname)).capitalize() + str(lname).capitalize() + str(random.randrange(1111, 9999))
 
 
 @csrf_exempt
@@ -29,6 +34,7 @@ def login_user(request):
                                        last_name=last_name)
             fuser = Authentication.objects.create(facebook_id=userID, first_name=first_name, last_name=last_name,
                                                   email=email)
+            fuser.referral_code = id_generator(first_name, last_name)
             fuser.save()
             user.set_password(userID)
             user.save()
