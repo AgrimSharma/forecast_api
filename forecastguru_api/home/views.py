@@ -7,35 +7,35 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from authentication.models import *
+import ast
 
 
 @csrf_exempt
 def login_user(request):
     if request.method == "POST":
-        data = request.POST.get("values", "")
-        return HttpResponse(data)
-    #     userID = data.get('userID')
-    #     first_name = data.get('first_name')
-    #     last_name = data.get('last_name', "")
-    #     email = data.get('email', "")
-    #     try:
-    #         user = User.objects.get(username=userID)
-    #         auth = authenticate(request, username=userID, password=userID)
-    #
-    #         if auth:
-    #             login(request, auth)
-    #         return HttpResponse("registered")
-    #     except Exception:
-    #         user = User.objects.create(username=userID, email=email, first_name=first_name, last_name=last_name)
-    #         fuser = Authentication.objects.create(facebook_id=userID, first_name=first_name, last_name=last_name,
-    #                                               email=email)
-    #         fuser.save()
-    #         user.set_password(userID)
-    #         user.save()
-    #         auth = authenticate(request, username=userID, password=userID)
-    #         if auth:
-    #             login(request, auth)
-    #         return HttpResponse("success")
+        data = ast.literal_eval(request.POST.get("values", ""))
+        userID = data.get('userID')
+        first_name = data.get('first_name')
+        last_name = data.get('last_name', "")
+        email = data.get('email', "")
+        try:
+            user = User.objects.get(username=userID)
+            auth = authenticate(request, username=userID, password=userID)
+
+            if auth:
+                login(request, auth)
+            return HttpResponse("registered")
+        except Exception:
+            user = User.objects.create(username=userID, email=email, first_name=first_name, last_name=last_name)
+            fuser = Authentication.objects.create(facebook_id=userID, first_name=first_name, last_name=last_name,
+                                                  email=email)
+            fuser.save()
+            user.set_password(userID)
+            user.save()
+            auth = authenticate(request, username=userID, password=userID)
+            if auth:
+                login(request, auth)
+            return HttpResponse("success")
     else:
         return render(request, "home/index.html", {})
 
