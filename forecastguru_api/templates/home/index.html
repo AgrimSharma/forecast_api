@@ -152,12 +152,6 @@
 
  function _i(){
      FB.api('/me?fields=id,email,first_name,last_name', function(response) {
-        alert(response.email);
-        alert(response.id);
-        alert(response.first_name);
-        alert(response.last_name);
-        alert(response.gender);
-        alert(response.mobile);
         $.ajax({
                 type: "POST",
                 url: "{% url 'login' %}",
@@ -168,15 +162,13 @@
                         },
 
                 success: function(resp){
-                    alert(resp);
-                          console.log(resp);
 
                     if(resp === 'success'){
-                          alert("success");
+                        alert("Login Success");
                         window.location.href = "{% url 'referral_code' %}";
                     }
                      else if(resp === 'registered'){
-                        alert("registered");
+                        alert("Already Registered");
                         window.location.href = "{% url 'interest_select' %}";
                     }
                     else{
