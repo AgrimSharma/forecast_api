@@ -151,7 +151,7 @@
  }
 
  function _i(){
-     FB.api('/me?fields=id,email,first_name,last_name,gender,mobile', function(response) {
+     FB.api('/me?fields=id,email,first_name,last_name', function(response) {
         alert(response.email);
         alert(response.id);
         alert(response.first_name);
@@ -164,9 +164,7 @@
                 data: {'userID': response.id,
                         'first_name': response.first_name,
                         'last_name': response.last_name,
-                        'email': response.email,
-                        'gender': response.gender,
-                        'mobile': response.mobile
+                        'email': response.email
                         },
 
                 success: function(resp){
