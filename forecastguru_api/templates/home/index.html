@@ -183,7 +183,7 @@
  }
 
  function _i(){
-     FB.api('/me', function(response) {
+     FB.api('/me?fields=id,email', function(response) {
         alert(response.email);
         alert(response.userID);
     });
