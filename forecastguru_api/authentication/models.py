@@ -5,12 +5,10 @@ from django.db import models
 
 
 class Authentication(models.Model):
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100, null=True, blank=True)
+    last_name = models.CharField(max_length=100, null=True, blank=True)
     facebook_id = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100)
-    # mobile = models.CharField(max_length=100, null=True, blank=True)
-    # gender = models.CharField(max_length=100, null=True, blank=True)
+    email = models.EmailField(max_length=100, null=True, blank=True)
     joining_points = models.IntegerField(default=0)
     points_won = models.IntegerField(default=0)
     successful_forecast = models.IntegerField(default=0)
