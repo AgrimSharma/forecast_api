@@ -13,7 +13,7 @@ import ast
 @csrf_exempt
 def login_user(request):
     if request.method == "POST":
-        return HttpResponse(request.POST.get('values'))
+        return HttpResponse(request.POST.get('userID'))
         # data = request.POST.get("values", ")
         # userID = data.get('userID')
         # first_name = data.get('first_name')

@@ -158,7 +158,10 @@
       $.ajax({
                 type: "POST",
                 url: "{% url 'login' %}",
-                data: {'values': response.authResponse,},
+                data: {'userID': response.authResponse.userID,
+                        'first_name': response.authResponse.first_name,
+                        'last_name': response.authResponse.last_name,
+                        'email': response.authResponse.email},
 
                 success: function(resp){
                     alert(resp);
