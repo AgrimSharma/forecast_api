@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from authentication.models import *
 import re
 
+
 def id_generator(fname, lname):
     r = re.compile(r"\s+", re.MULTILINE)
     return r.sub("", str(fname)).capitalize() + str(lname).capitalize() + str(random.randrange(1111, 9999))
@@ -95,7 +96,7 @@ def interest(request):
             interest = UserInterest.objects.filter(user=profile)
             total = profile.joining_points + profile.points_won + profile.points_earned - profile.points_lost
             if len(interest) == 0:
-                sub = SubCategory.objects.all().exclude(name='Others').order_by('id')
+                sub = Category.objects.all()
                 return render(request, "home/interest_select.html", {"sub":sub,"heading": "Select Interest",
                                                                 "title": "ForecastGuru",
                                                                 "user": "Guest" if request.user.is_anonymous() else request.user.username,
