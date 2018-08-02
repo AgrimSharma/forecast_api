@@ -77,7 +77,7 @@ def check_referral(request):
         auth.referral_status = 1
         auth.save()
         total = auth.joining_points + auth.points_won + auth.points_earned - auth.points_lost
-        return render(request, "home/interest_select.html",{"total": total})
+        return redirect("/interest_select/")
 
 
 @csrf_exempt
