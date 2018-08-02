@@ -161,17 +161,7 @@
                 data: {'values': response.authResponse,},
 
                 success: function(resp){
-                    if(resp === 'success'){
-                    alert("success");
-                        window.location.href = "{% url 'referral_code' %}";
-                    }
-                     else if(resp === 'registered'){
-                        alert("registered");
-                        window.location.href = "{% url 'interest_select' %}";
-                    }
-                    else{
-                        alert("Failure");
-                    }
+                    alert(resp);
                     }
                 });
        }
@@ -189,3 +179,14 @@
 </script>
 </html>
 
+/* if(resp === 'success'){
+                    alert("success");
+                        window.location.href = "{% url 'referral_code' %}";
+                    }
+                     else if(resp === 'registered'){
+                        alert("registered");
+                        window.location.href = "{% url 'interest_select' %}";
+                    }
+                    else{
+                        alert("Failure");
+                    }*/
