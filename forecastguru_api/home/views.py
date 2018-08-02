@@ -37,7 +37,7 @@ def login_user(request):
                 login(request, auth)
             return HttpResponse("success")
     else:
-        return render(request, "home/index.html", {})
+        return render(request, "home/index.html", {"points": JoiningPoints.objects.latest('id').points})
 
 
 def index(request):
