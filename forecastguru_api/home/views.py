@@ -48,8 +48,13 @@ def login_user(request):
 
 
 def index(request):
-    joining = JoiningPoints.objects.latest('id')
-    return render(request, "home/main_page.html", {"points": joining.points})
+    try:
+        user = request.user.username
+        auth = Authentication.objects.get(facebook_id=user)
+        return redirect("/live_forecast/")
+    except Exception:
+        joining = JoiningPoints.objects.latest('id')
+        return render(request, "home/main_page.html", {"points": joining.points})
 
 
 @login_required
