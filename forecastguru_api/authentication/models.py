@@ -21,6 +21,7 @@ class Authentication(models.Model):
     points_lost = models.IntegerField(default=0)
     referral_code = models.CharField(max_length=100)
     referral_status = models.IntegerField(default=0)
+    interest_status = models.IntegerField(default=0)
     created = models.DateTimeField(auto_now=True)
     login_count = models.IntegerField(default=0)
     last_login = models.DateField(default=datetime.datetime.now().date())

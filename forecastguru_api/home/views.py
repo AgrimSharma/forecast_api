@@ -132,8 +132,18 @@ def interest(request):
 
 
 @login_required
+def interest_skip(request):
+    user = request.user.username
+    auth = Authentication.objects.get(facebook_id=user)
+    auth.interest_status = 1
+    auth.save()
+    return render("/live_forecast/")
+
+
+@login_required
 def live_forecast(request):
-    return render(request, "home/live_forecast.html",{ "heading": "Live Forecast",
-                                                                     "title": "ForecastGuru",
-                                                                     "user": "Guest" if request.user.is_anonymous() else request.user.username
-                                                                     })
+    return render(request, "home/live_forecast.html", {"heading": "Live Forecast",
+                                                       "title": "ForecastGuru",
+                                                       "user": "Guest" if request.user.is_anonymous()
+                                                       else request.user.username
+                                                       })
