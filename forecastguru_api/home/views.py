@@ -44,12 +44,7 @@ def login_user(request):
                 login(request, auth)
             return HttpResponse("success")
     else:
-        try:
-            user = request.user.username
-            auth = Authentication.objects.get(facebook_id=user)
-            return render("/live_forecast/")
-        except Exception:
-            return render(request, "home/index.html", {"points": JoiningPoints.objects.latest('id').points})
+        return render(request, "home/index.html", {"points": JoiningPoints.objects.latest('id').points})
 
 
 def index(request):
