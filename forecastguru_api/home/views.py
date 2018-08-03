@@ -96,14 +96,14 @@ def interest(request):
             user = request.user.username
             profile = Authentication.objects.get(facebook_id=user)
             interest = UserInterest.objects.filter(user=profile)
-            # total = profile.joining_points + profile.points_won + profile.points_earned - profile.points_lost
+            total = profile.joining_points + profile.points_won + profile.points_earned - profile.points_lost
             if len(interest) == 0 and profile.interest_status == 0:
                 sub = Category.objects.all().order_by('id')
                 return render(request, "home/interest_select.html", {"sub":sub,"heading": "Select Interest",
                                                                 "title": "ForecastGuru",
                                                                 "first_name": request.user.first_name,
                                                                 "user": "Guest" if request.user.is_anonymous() else request.user.username,
-                                                                "total": 0
+                                                                "total": total
                                                                 })
             else:
 
@@ -138,7 +138,7 @@ def interest_skip(request):
     auth = Authentication.objects.get(facebook_id=user)
     auth.interest_status = 1
     auth.save()
-    return render("/live_forecast/")
+    return redirect("/live_forecast/")
 
 
 @login_required
