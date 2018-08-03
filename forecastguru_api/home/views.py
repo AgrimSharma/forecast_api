@@ -92,24 +92,25 @@ def check_referral(request):
 @csrf_exempt
 def interest(request):
     if request.method == 'GET':
-        # try:
-        user = request.user.username
-        profile = Authentication.objects.get(facebook_id=user)
-        interest = UserInterest.objects.filter(user=profile)
-        total = profile.joining_points + profile.points_won + profile.points_earned - profile.points_lost
-        if len(interest) == 0:
-            sub = Category.objects.all().order_by('id')
-            return render(request, "home/interest_select.html", {"sub":sub,"heading": "Select Interest",
-                                                            "title": "ForecastGuru",
-                                                            "first_name": request.user.first_name,
-                                                            "user": "Guest" if request.user.is_anonymous() else request.user.username,
-                                                            "total": total
-                                                            })
-        else:
-            return redirect("/live_forecast/")
+        try:
+            user = request.user.username
+            profile = Authentication.objects.get(facebook_id=user)
+            interest = UserInterest.objects.filter(user=profile)
+            total = profile.joining_points + profile.points_won + profile.points_earned - profile.points_lost
+            if len(interest) == 0 and profile.interest_skip==0:
+                sub = Category.objects.all().order_by('id')
+                return render(request, "home/interest_select.html", {"sub":sub,"heading": "Select Interest",
+                                                                "title": "ForecastGuru",
+                                                                "first_name": request.user.first_name,
+                                                                "user": "Guest" if request.user.is_anonymous() else request.user.username,
+                                                                "total": total
+                                                                })
+            else:
 
-        # except Exception:
-        #     return redirect("/login/")
+                return redirect("/live_forecast/")
+
+        except Exception:
+            return redirect("/login/")
     elif request.method == "POST":
 
         data = request.POST.getlist('data[]',"")
