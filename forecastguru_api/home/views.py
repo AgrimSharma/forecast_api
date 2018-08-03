@@ -145,6 +145,6 @@ def interest_skip(request):
 def live_forecast(request):
     return render(request, "home/live_forecast.html", {"heading": "Live Forecast",
                                                        "title": "ForecastGuru",
-                                                       "user": "Guest" if request.user.is_anonymous()
-                                                       else request.user.username
+                                                       "first_name": "Guest" if request.user.is_anonymous()
+                                                       else request.user.first_name
                                                        })
