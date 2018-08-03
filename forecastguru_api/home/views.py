@@ -44,14 +44,19 @@ def login_user(request):
                 login(request, auth)
             return HttpResponse("success")
     else:
-        return render(request, "home/index.html", {"points": JoiningPoints.objects.latest('id').points})
+        try:
+            user = request.user.username
+            auth = Authentication.objects.get(facebook_id=user)
+            return render("/live_forecast/")
+        except Exception:
+            return render(request, "home/index.html", {"points": JoiningPoints.objects.latest('id').points})
 
 
 def index(request):
     joining = JoiningPoints.objects.latest('id')
     return render(request, "home/main_page.html", {"points": joining.points})
 
-@login_required
+
 @login_required
 def referral_code(request):
     user = request.user.username
@@ -62,6 +67,7 @@ def referral_code(request):
                                                            "total": total})
     else:
         return redirect("/interest_select/")
+
 
 @login_required
 @csrf_exempt
