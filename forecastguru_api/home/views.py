@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from authentication.models import *
 import re
+from random import randrange
 
 
 def id_generator(fname, lname):
@@ -44,7 +45,12 @@ def login_user(request):
                 login(request, auth)
             return HttpResponse("success")
     else:
-        return render(request, "home/index.html", {"points": JoiningPoints.objects.latest('id').points})
+        try:
+            user = request.user.username
+            auth = Authentication.objects.get(facebook_id=user)
+            return render("/referral_code/")
+        except Exception:
+            return render(request, "home/index.html", {"points": JoiningPoints.objects.latest('id').points})
 
 
 def index(request):
@@ -153,3 +159,86 @@ def live_forecast(request):
                                                        "first_name": "Guest" if request.user.is_anonymous()
                                                        else request.user.first_name
                                                        })
+
+
+@csrf_exempt
+def create_forecast(request):
+    if request.method == 'POST':
+        current = datetime.datetime.now()
+        user = request.POST.get('user', '')
+        category = request.POST.get('category', '')
+        sub_category = request.POST.get('sub_cat', '')
+        tags = request.POST.get('tags', '')
+        heading = request.POST.get('heading', '')
+        time = request.POST.get('time', '')
+        date = request.POST.get('date', '')
+        cat = Category.objects.get(id=category)
+        sub_cat = SubCategory.objects.get(id=sub_category)
+        expires = datetime.datetime.strptime(date + " " + time, "%d/%m/%Y %I:%M %p")
+
+        if expires < current:
+            return HttpResponse(json.dumps(dict(status=400, message='end')))
+        try:
+            users = Authentication.objects.get(user=request.user.username)
+        except Exception:
+            return HttpResponse(json.dumps(dict(status=400, message='Please Login')))
+        private = Private.objects.get(id=2)
+        verified = Verified.objects.get(id=2)
+        approved = Approved.objects.get(id=2)
+        status = Status.objects.get(name='In-Progress')
+        ForeCast.objects.create(category=cat, sub_category=sub_cat,
+                                user=users, heading=heading,
+                                expire=expires,
+                                start=datetime.datetime.now(),
+                                approved=approved,
+                                status=status, created=current,
+                                private=private, verified=verified, tags=tags
+                                )
+        f = ForeCast.objects.get(category=cat, sub_category=sub_cat,
+                                 user=users, heading=heading,
+                                 )
+        # fid = f.id
+        f.user.forecast_created += 1
+        f.user.save()
+        f.save()
+        yes = randrange(1000, 9000, 1000)
+        no = randrange(1000, 9000, 1000)
+        admin = Authentication.objects.get(facebook_id="admin")
+        Betting.objects.create(forecast=f, users=admin, bet_for=yes, bet_against=no)
+        # if private.name == 'no':
+        #     try:
+        #         NotificationPanel.objects.create(title="Forecast Guru", message="Thank You for creating a forecast " + str(heading),
+        #                           url="https://forecast.guru/forecast/{}/".format(fid), user=users, status=0)
+        #     except Exception:
+        #         pass
+        #     return HttpResponse(json.dumps(dict(status=200, message='Forecast Created', id=f.id)))
+        # else:
+        #
+        #     InviteFriends.objects.create(user=admin, forecast=f)
+        #     try:
+        #         NotificationPanel.objects.create(title="Forecast Guru",
+        #                                          message="Thank You for creating a forecast " + str(heading),
+        #                                          url="https://forecast.guru/forecast/{}/".format(fid), user=users,
+        #                                          status=0)
+        #     except Exception:
+        #         pass
+        #     return HttpResponse(json.dumps(
+        #         dict(status=200, message='Thank You for creating a private forecast', id=f.id)))
+
+    else:
+        try:
+            user = request.user.username
+            profile = Authentication.objects.get(facebook_id=user)
+            category = Category.objects.all().order_by('identifier')
+            return render(request, 'home/create_forecast.html', {'category': category,
+                                                            "current": datetime.datetime.now().strftime(
+                                                                "%Y-%m-%d %H:%M"),
+                                                            "user": "Guest" if request.user.is_anonymous() else request.user.first_name,
+                                                            "heading": "Create Forecast",
+                                                            "title": "ForecastGuru",
+                                                            })
+        except Exception:
+            return render(request, 'home/create_forecast_nl.html', {"heading": "Create Forecast",
+                                                               "title": "ForecastGuru",
+                                                               "user": "Guest" if request.user.is_anonymous() else request.user.first_name, })
+
