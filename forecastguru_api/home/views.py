@@ -182,16 +182,13 @@ def create_forecast(request):
         except Exception:
             return HttpResponse(json.dumps(dict(status=400, message='Please Login')))
         private = Private.objects.get(id=1)
-        verified = Verified.objects.get(id=2)
-        approved = Approved.objects.get(id=2)
         status = Status.objects.get(name='Progress')
         ForeCast.objects.create(category=cat, sub_category=sub_cat,
                                 user=users, heading=heading,
                                 expire=expires,
                                 start=datetime.datetime.now(),
-                                approved=approved,
                                 status=status, created=current,
-                                private=private, verified=verified, tags=tags
+                                private=private, tags=tags
                                 )
         f = ForeCast.objects.get(category=cat, sub_category=sub_cat,
                                  user=users, heading=heading,
