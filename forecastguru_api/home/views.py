@@ -242,3 +242,18 @@ def create_forecast(request):
         #                                                        "title": "ForecastGuru",
         #                                                        "user": "Guest" if request.user.is_anonymous() else request.user.first_name, })
 
+
+@csrf_exempt
+def get_sub_cat(request):
+    if request.method == "POST":
+        cat = Category.objects.get(id=int(request.POST.get('identifier', '')))
+        sub = SubCategory.objects.filter(category=cat).order_by('identifier')
+        data = [dict(id=x.id, name=x.name) for x in sub]
+        return HttpResponse(json.dumps(dict(data=data, source=sub[0].source)))
+
+
+@csrf_exempt
+def get_sub_source(request):
+    if request.method == "POST":
+        cat = SubCategory.objects.get(id=int(request.POST.get('identifier', '')))
+        return HttpResponse(json.dumps(cat.source))
