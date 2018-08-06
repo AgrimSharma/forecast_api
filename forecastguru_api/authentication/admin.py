@@ -35,6 +35,10 @@ class StatusAdmin(admin.ModelAdmin):
     pass
 
 
+class VerifiedAdmin(admin.ModelAdmin):
+    pass
+
+
 class ApprovedAdmin(admin.ModelAdmin):
     pass
 
@@ -123,6 +127,7 @@ admin.site.register(UserInterest, UserInterestAdmin)
 admin.site.register(SubCategory, SubCategoryAdmin)
 admin.site.register(Winning, WinningAdmin)
 admin.site.register(Category, CategoryAdmin)
+admin.site.register(Verified, VerifiedAdmin)
 admin.site.register(Approved, ApprovedAdmin)
 admin.site.register(AdvertisementPoints, AdvertisementPointsAdmin)
 
