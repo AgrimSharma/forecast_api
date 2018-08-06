@@ -375,7 +375,7 @@ $(".create").click(function(){
                             else if(data.message == "Please Login"){
                             $("#myModal").modal('show');
                                 $("#description").text("Please Login");
-                                 window.location.href = "{% url 'blank_page' %}";
+                                 window.location.href = "{% url 'login' %}";
                             }
                             else if(data.message == "end"){
                             $("#myModal").modal('show');
