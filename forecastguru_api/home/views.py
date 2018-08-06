@@ -178,7 +178,7 @@ def create_forecast(request):
         if expires < current:
             return HttpResponse(json.dumps(dict(status=400, message='end')))
         try:
-            users = Authentication.objects.get(user=request.user.username)
+            users = Authentication.objects.get(facebook_id=request.user.username)
         except Exception:
             return HttpResponse(json.dumps(dict(status=400, message='Please Login')))
         private = Private.objects.get(id=1)
