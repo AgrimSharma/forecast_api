@@ -186,7 +186,6 @@ def create_forecast(request):
         ForeCast.objects.create(category=cat, sub_category=sub_cat,
                                 user=users, heading=heading,
                                 expire=expires,
-                                start=datetime.datetime.now(),
                                 status=status, created=current,
                                 private=private, tags=tags
                                 )
