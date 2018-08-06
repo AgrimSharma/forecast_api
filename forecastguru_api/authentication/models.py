@@ -107,6 +107,20 @@ class Approved(models.Model):
         return self.name
 
 
+class Verified(models.Model):
+    name = models.CharField(max_length=10)
+
+    class Meta:
+        ordering = ['-name']
+        verbose_name_plural = 'Verified'
+
+    def __str__(self):
+        return self.name
+
+    def __unicode__(self):
+        return self.name
+
+
 class Private(models.Model):
     name = models.CharField(max_length=10)
 
