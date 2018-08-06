@@ -101,7 +101,20 @@
 
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/moment.min.js' %}"></script>
-<!-- End Facebook Pixel Code -->
-</body>
+  <script>
+    $('#mobile-nav').click(function(event) {
+      $(this).toggleClass('active');
+      $('nav').toggleClass('active');
+      event.stopPropagation();
+    });
+    $("nav").click(function(e){
+      e.stopPropagation();
+    });
+    $(document).click(function(){
+      $('#mobile-nav').removeClass('active');
+      $('nav').removeClass('active');
+    });
+
+  </script></body>
 </html>
 
