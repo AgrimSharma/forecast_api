@@ -82,22 +82,43 @@
 		</div>
 	</div>
 </div>
+
+    <div id="public" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box" style="display:flex;">
+					<img src="{% static 'images/TutorialScreen-icon1.jpg' %}" width="70px" height="50px"/>
+                    <h4 class="heading" style="padding-top:10px"> ForecastGuru</h4>
+				</div>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body text-center">
+                <p>Already Login. Please wait.</p><hr>
+				<a href="{% url 'referral_code' %}" class="btn btn-success" >Success</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="private" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box" style="display:flex;">
+					<img src="{% static 'images/TutorialScreen-icon1.jpg' %}" width="70px" height="50px"/>
+                    <h4 class="heading" style="padding-top:10px"> ForecastGuru</h4>
+				</div>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body text-center">
+                <p>Thank you for Sign Up.</p><hr>
+				<a href="{% url 'referral_code' %}" class="btn btn-success" >Success</a>
+			</div>
+		</div>
+	</div>
+</div>
 </body>
-<script>
-  !function(f,b,e,v,n,t,s)
-  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window, document,'script',
-  'https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '448296328916936');
-  fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=448296328916936&ev=PageView&noscript=1"
-/></noscript>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
  <script>
   // Load the SDK asynchronously
@@ -116,7 +137,7 @@
     cookie     : true,  // enable cookies to allow the server to access
                         // the session
     xfbml      : true,  // parse social plugins on this page
-    version    : 'v3.0' // use version 2.1
+    version    : 'v3.0' // use version 3.0
   });
 
   // These three cases are handled in the callback function.
@@ -164,12 +185,13 @@
                 success: function(resp){
 
                     if(resp === 'success'){
-                        alert("Login Success");
-                        window.location.href = "{% url 'referral_code' %}";
+                        $("#private").modal('show');
+                        <!--window.location.href = "{% url 'referral_code' %}";-->
                     }
                      else if(resp === 'registered'){
-                        alert("Already Registered");
-                        window.location.href = "{% url 'interest_select' %}";
+                        <!--alert("Already Registered");-->
+                        <!--window.location.href = "{% url 'interest_select' %}";-->
+                        $("#public").modal('show');
                     }
                     else{
                         alert("Failure");
