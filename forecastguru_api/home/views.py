@@ -217,8 +217,8 @@ def create_forecast(request):
         #                                          status=0)
         #     except Exception:
         #         pass
-        #     return HttpResponse(json.dumps(
-        #         dict(status=200, message='Thank You for creating a private forecast', id=f.id)))
+        return HttpResponse(json.dumps(
+            dict(status=200, message='Thank You for creating a private forecast', id=f.id)))
 
     else:
         # try:
