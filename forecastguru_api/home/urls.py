@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^interest_select/', interest, name='interest_select'),
     url(r'^live_forecast/', live_forecast, name='live_forecast'),
     url(r'^interest_skip/', interest_skip, name='interest_skip'),
+    url(r'^create_forecast/', create_forecast, name='create_forecast'),
     url(r'^', index, name='index'),
 
 ]
