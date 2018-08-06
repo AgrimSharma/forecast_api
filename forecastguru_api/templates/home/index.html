@@ -94,8 +94,8 @@
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 			</div>
 			<div class="modal-body text-center">
-                <p>Already Login. Please wait.</p><hr>
-				<a href="{% url 'referral_code' %}" class="btn btn-success" >Success</a>
+                <p style="font-size:16px;">Already Login. Please press continue.</p><hr>
+				<a href="{% url 'referral_code' %}" class="btn btn-success" >Continue</a>
 			</div>
 		</div>
 	</div>
@@ -112,8 +112,8 @@
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 			</div>
 			<div class="modal-body text-center">
-                <p>Thank you for Sign Up.</p><hr>
-				<a href="{% url 'referral_code' %}" class="btn btn-success" >Success</a>
+                <p style="font-size:16px;">Thank you for Sign Up. Please press continue.</p><hr>
+				<a href="{% url 'referral_code' %}" class="btn btn-success" >Continue</a>
 			</div>
 		</div>
 	</div>
@@ -186,11 +186,9 @@
 
                     if(resp === 'success'){
                         $("#private").modal('show');
-                        <!--window.location.href = "{% url 'referral_code' %}";-->
+
                     }
                      else if(resp === 'registered'){
-                        <!--alert("Already Registered");-->
-                        <!--window.location.href = "{% url 'interest_select' %}";-->
                         $("#public").modal('show');
                     }
                     else{
