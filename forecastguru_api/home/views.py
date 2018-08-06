@@ -165,7 +165,6 @@ def live_forecast(request):
 def create_forecast(request):
     if request.method == 'POST':
         current = datetime.datetime.now()
-        user = request.POST.get('user', '')
         category = request.POST.get('category', '')
         sub_category = request.POST.get('sub_cat', '')
         tags = request.POST.get('tags', '')
@@ -182,10 +181,10 @@ def create_forecast(request):
             users = Authentication.objects.get(user=request.user.username)
         except Exception:
             return HttpResponse(json.dumps(dict(status=400, message='Please Login')))
-        private = Private.objects.get(id=2)
+        private = Private.objects.get(id=1)
         verified = Verified.objects.get(id=2)
         approved = Approved.objects.get(id=2)
-        status = Status.objects.get(name='In-Progress')
+        status = Status.objects.get(name='Progress')
         ForeCast.objects.create(category=cat, sub_category=sub_cat,
                                 user=users, heading=heading,
                                 expire=expires,
