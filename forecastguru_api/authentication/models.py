@@ -17,6 +17,7 @@ class Authentication(models.Model):
     market_fee = models.IntegerField(default=0)
     market_fee_paid = models.IntegerField(default=0)
     points_earned = models.IntegerField(default=0)
+    forecast_created = models.IntegerField(default=0)
     forecast_participated = models.IntegerField(default=0)
     points_lost = models.IntegerField(default=0)
     referral_code = models.CharField(max_length=100)
