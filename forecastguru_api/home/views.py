@@ -226,19 +226,19 @@ def create_forecast(request):
         #         dict(status=200, message='Thank You for creating a private forecast', id=f.id)))
 
     else:
-        try:
-            user = request.user.username
-            profile = Authentication.objects.get(facebook_id=user)
-            category = Category.objects.all().order_by('identifier')
-            return render(request, 'home/create_forecast.html', {'category': category,
-                                                            "current": datetime.datetime.now().strftime(
-                                                                "%Y-%m-%d %H:%M"),
-                                                            "user": "Guest" if request.user.is_anonymous() else request.user.first_name,
-                                                            "heading": "Create Forecast",
-                                                            "title": "ForecastGuru",
-                                                            })
-        except Exception:
-            return render(request, 'home/create_forecast_nl.html', {"heading": "Create Forecast",
-                                                               "title": "ForecastGuru",
-                                                               "user": "Guest" if request.user.is_anonymous() else request.user.first_name, })
+        # try:
+        user = request.user.username
+        profile = Authentication.objects.get(facebook_id=user)
+        category = Category.objects.all().order_by('identifier')
+        return render(request, 'home/create_forecast.html', {'category': category,
+                                                        "current": datetime.datetime.now().strftime(
+                                                            "%Y-%m-%d %H:%M"),
+                                                        "user": "Guest" if request.user.is_anonymous() else request.user.first_name,
+                                                        "heading": "Create Forecast",
+                                                        "title": "ForecastGuru",
+                                                        })
+        # except Exception:
+        #     return render(request, 'home/create_forecast_nl.html', {"heading": "Create Forecast",
+        #                                                        "title": "ForecastGuru",
+        #                                                        "user": "Guest" if request.user.is_anonymous() else request.user.first_name, })
 
