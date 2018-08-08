@@ -13,6 +13,8 @@ urlpatterns = [
     url(r'^get_sub_source/', get_sub_source, name='get_sub_source'),
     url(r'^bet_save/', bet_post, name='bet_save'),
     url(r'^get_forecast/', get_forecast, name='get_forecast'),
+    url(r'^forecast/(?P<userid>\d+)/$', betting, name='betting'),
+
     url(r'^', index, name='index'),
 
 ]

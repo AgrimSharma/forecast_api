@@ -18,11 +18,8 @@ class JoiningBonusAdmin(admin.ModelAdmin):
 
 class ForecastAdmin(admin.ModelAdmin):
     raw_id_fields = ['user', 'category', 'sub_category']
-    list_display = ["forecast_heading", "category", "sub_category_obj",
+    list_display = ["forecast_heading", "category", "sub_category",
                     "user", "status", "forecast_expire"]
-
-    def sub_category_obj(self, obj):
-        return obj.category.subcategory_set.all()
 
     def forecast_heading(self, obj):
         return obj.heading
