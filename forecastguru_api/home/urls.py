@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^bet_save/', bet_post, name='bet_save'),
     url(r'^get_forecast/', get_forecast, name='get_forecast'),
     url(r'^forecast/(?P<userid>\d+)/$', betting, name='betting'),
+    url(r'^result_save/', result_save, name='result_save'),
 
     url(r'^', index, name='index'),
 

@@ -46,6 +46,7 @@ def login_user(request):
                                                   email=email
                                                   )
             fuser.referral_code = id_generator(first_name, last_name)
+            fuser.points_earned = JoiningPoints.objects.latest('id').points
             fuser.save()
             user.set_password(userID)
             user.save()
@@ -250,29 +251,49 @@ def bet_post(request):
             return HttpResponse(json.dumps(dict(message='Points should be multiple of 1000')))
         forecast = request.POST.get('forecast')
         forecasts = ForeCast.objects.get(id=forecast)
-        if account.fg_points_total - points > 0:
+        if account.points_earned - points > 0 or account.points_won_public - points > 0 or account.points_won_private- points > 0:
             try:
                 b = Betting.objects.get(forecast=forecasts, users=account)
                 if vote == 'email':
                     b.bet_for += points
-                    b.users.fg_points_total = b.users.fg_points_total - points
+                    if b.users.points_earned >= points:
+                        b.users.points_earned -= points
+                    elif b.users.points_won_public >= points:
+                        b.users.points_won_public -= points
+                    else:
+                        b.users.points_won_private -= points
                     b.users.save()
                     b.save()
                 else:
                     b.bet_against += points
-                    b.users.fg_points_total = b.users.fg_points_total - points
+                    if b.users.points_earned >= points:
+                        b.users.points_earned -= points
+                    elif b.users.points_won_public >= points:
+                        b.users.points_won_public -= points
+                    else:
+                        b.users.points_won_private -= points
                     b.users.save()
                     b.save()
             except Exception:
                 if vote == 'email':
                     b = Betting.objects.create(forecast=forecasts, users=account, bet_for=points, bet_against=0)
-                    b.users.fg_points_total = b.users.fg_points_total - points
+                    if b.users.points_earned >= points:
+                        b.users.points_earned -= points
+                    elif b.users.points_won_public >= points:
+                        b.users.points_won_public -= points
+                    else:
+                        b.users.points_won_private -= points
                     b.users.forecast_participated += 1
                     b.users.save()
                     b.save()
                 else:
                     b = Betting.objects.create(forecast=forecasts, users=account, bet_for=0, bet_against=points)
-                    b.users.fg_points_total = b.users.fg_points_total - points
+                    if b.users.points_earned >= points:
+                        b.users.points_earned -= points
+                    elif b.users.points_won_public >= points:
+                        b.users.points_won_public -= points
+                    else:
+                        b.users.points_won_private -= points
                     b.users.forecast_participated += 1
                     b.users.save()
                     b.save()
@@ -384,9 +405,9 @@ def betting(request, userid):
     else:
         status = 'Result Declared'
     try:
-        if forecast.won.lower() == 'yes':
+        if forecast.won.name.lower() == 'yes':
             won = 'yes'
-        elif forecast.won.lower() == 'no':
+        elif forecast.won.name.lower() == 'no':
             won = 'no'
     except Exception:
         won = "NA"
@@ -457,7 +478,7 @@ def betting(request, userid):
                                                 "end_date": end_date, "end_time": end_time,
                                                 'status': status, "percent": percent,
                                                 "success": success,
-                                                "users": forecast.user.user.username,
+                                                "users": request.user.first_name,
                                                 "sums": sums,"earned": int(earned),
                                                 "approved": approved,"ratio": ratio,
                                                 "user": users,"won": won,"market_fee_paid": int(market_fee_paid),
@@ -472,28 +493,42 @@ def betting(request, userid):
         betting_sum = Betting.objects.filter(forecast=forecast).aggregate(
             bet_for=Sum('bet_for'), bet_against=Sum('bet_against'))
         sums = betting_sum['bet_for'] + betting_sum['bet_against']
-        if forecast.won:
-            if forecast.won.lower() == "yes":
-                ratio = round(betting_sum['bet_for'] / sums, 2) + 1
-                won = "yes"
-            elif forecast.won.lower() == "no":
-                ratio = round(betting_sum['bet_against'] / sums, 2) + 1
-                won = "no"
+        if forecast.won.name.lower() == "yes":
+            ratio = round(betting_sum['bet_for'] / sums, 2) + 1
+            won = "yes"
+        elif forecast.won.name.lower() == "no":
+            ratio = round(betting_sum['bet_against'] / sums, 2) + 1
+            won = "no"
         else:
             ratio = "NA"
             won = "NA"
-        # friends = InviteFriends.objects.filter(forecast=forecast)
-        # for f in friends:
-        #     bet = Betting.objects.filter(forecast=forecast, users=f.user)
-        #     if len(bet) == 1:
-        #         bet = bet[0]
-        #         points.append(dict(user=f.user, bet_for=bet.bet_for, bet_against=bet.bet_against))
         return render(request, 'home/betting.html', {'forecast': forecast, 'betting': betting,
                                                     "approved": approved,
                                                     "user": users,'status': status,
-                                                    "users": forecast.user.user.username,
+                                                    "users": forecast.user.first_name,
                                                     "end_date": end_date, "end_time": end_time,
                                                     "won": won,"ratio": ratio,
                                                     "heading": "Forecast Details",
                                                     "title": "ForecastGuru", "private": "yes",
                                                     "points": points})
+
+
+@csrf_exempt
+def result_save(request):
+    if request.method == "POST":
+        user = request.user
+        profile = Authentication.objects.get(facebook_id=user.username)
+        vote = request.POST.get("vote","")
+        id = request.POST.get('forecast', '')
+        if vote == 'email':
+            vote = 'yes'
+        else:
+            vote = 'no'
+
+        verified = Verified.objects.get(id=1)
+        status = Status.objects.get(name='Closed')
+        forecast = ForeCast.objects.get(id=int(id))
+        ForeCast.objects.filter(id=id).update(won=vote, status=status, verified=verified)
+        return HttpResponse(request.path)
+    else:
+        return HttpResponse(json.dumps(dict(error="Try again later")))
