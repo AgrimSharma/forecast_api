@@ -37,8 +37,13 @@
       <nav>
 
         <figure class="userpic">
+            {% if first_name == 'Guest' %}
+                      <img src="{% static 'images/account_image.jpg' %}" alt="">
+                    <figcaption>GUEST</figcaption>
+            {% else %}
           <img src="https://graph.facebook.com/{{request.user.username}}/picture?type=large" alt="">
           <figcaption>{{request.user.first_name}} {{request.user.last_name}}</figcaption>
+            {% endif %}
         </figure>
 
         <ul class="menu">

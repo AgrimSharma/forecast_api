@@ -9,7 +9,9 @@ from django.contrib.auth.decorators import login_required
 from authentication.models import *
 import re
 from random import randrange
+import datetime
 
+current = datetime.datetime.now()
 
 def id_generator(fname, lname):
     r = re.compile(r"\s+", re.MULTILINE)
@@ -31,11 +33,16 @@ def login_user(request):
                 login(request, auth)
             return HttpResponse("registered")
         except Exception:
-            user = User.objects.create(username=userID, email=email,
+            user = User.objects.create(username=userID,
+                                       email=email,
                                        first_name=first_name,
-                                       last_name=last_name)
-            fuser = Authentication.objects.create(facebook_id=userID, first_name=first_name, last_name=last_name,
-                                                  email=email)
+                                       last_name=last_name
+                                       )
+            fuser = Authentication.objects.create(facebook_id=userID,
+                                                  first_name=first_name,
+                                                  last_name=last_name,
+                                                  email=email
+                                                  )
             fuser.referral_code = id_generator(first_name, last_name)
             fuser.save()
             user.set_password(userID)
@@ -48,9 +55,11 @@ def login_user(request):
         try:
             user = request.user.username
             auth = Authentication.objects.get(facebook_id=user)
-            return render("/referral_code/")
+            return redirect("/referral_code/")
         except Exception:
-            return render(request, "home/index.html", {"points": JoiningPoints.objects.latest('id').points})
+            return render(request, "home/index.html", {
+                "points": JoiningPoints.objects.latest('id').points
+            })
 
 
 def index(request):
@@ -60,7 +69,9 @@ def index(request):
         return redirect("/live_forecast/")
     except Exception:
         joining = JoiningPoints.objects.latest('id')
-        return render(request, "home/main_page.html", {"points": joining.points})
+        return render(request, "home/main_page.html", {
+            "points": joining.points
+        })
 
 
 @login_required
@@ -69,8 +80,10 @@ def referral_code(request):
     auth = Authentication.objects.get(facebook_id=user)
     if auth.referral_status == 0:
         total = auth.joining_points + auth.points_won + auth.points_earned - auth.points_lost
-        return render(request, "home/referral_code.html", {"first_name": auth.first_name,
-                                                           "total": total})
+        return render(request, "home/referral_code.html", {
+            "first_name": auth.first_name,
+            "total": total
+        })
     else:
         return redirect("/interest_select/")
 
@@ -110,12 +123,14 @@ def interest(request):
             total = profile.joining_points + profile.points_won + profile.points_earned - profile.points_lost
             if len(interest) == 0 and profile.interest_status == 0:
                 sub = Category.objects.all().order_by('id')
-                return render(request, "home/interest_select.html", {"sub":sub,"heading": "Select Interest",
-                                                                "title": "ForecastGuru",
-                                                                "first_name": request.user.first_name,
-                                                                "user": "Guest" if request.user.is_anonymous() else request.user.username,
-                                                                "total": total
-                                                                })
+                return render(request, "home/interest_select.html", {
+                    "sub": sub,
+                    "heading": "Select Interest",
+                    "title": "ForecastGuru",
+                    "first_name": request.user.first_name,
+                    "user": "Guest" if request.user.is_anonymous() else request.user.username,
+                    "total": total
+                })
             else:
 
                 return redirect("/live_forecast/")
@@ -152,13 +167,126 @@ def interest_skip(request):
     return redirect("/live_forecast/")
 
 
-@login_required
 def live_forecast(request):
-    return render(request, "home/live_forecast.html", {"heading": "Live Forecast",
-                                                       "title": "ForecastGuru",
-                                                       "first_name": "Guest" if request.user.is_anonymous()
-                                                       else request.user.first_name
-                                                       })
+    data = []
+    try:
+        user = request.user.username
+        profile = Authentication.objects.get(facebook_id=user)
+        interest = UserInterest.objects.filter(user=profile)
+        forecast_live = ForeCast.objects.filter(private__name='no',
+                                                status__name='In-Progress',
+                                                sub_category__in=interest).order_by("expire")
+    except Exception:
+        forecast_live = ForeCast.objects.filter(private__name='no',status__name='In-Progress').order_by("expire")
+    for f in forecast_live:
+        date = current.date()
+
+        bet_start = f.expire.date()
+        if date == bet_start:
+            start = f.expire + datetime.timedelta(hours=5, minutes=30)
+            start = start.time()
+            today = 'yes'
+        else:
+            start = f.expire
+
+            today = "no"
+        betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
+        betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
+        try:
+            total_wagered = betting_against + betting_for
+            bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
+            bet_for_user = Betting.objects.filter(forecast=f, users=profile).aggregate(bet_for=Sum('bet_for'))[
+                'bet_for']
+            bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))[
+                'bet_against']
+            bet_against_user = \
+                Betting.objects.filter(forecast=f, users=profile).aggregate(bet_against=Sum('bet_against'))[
+                    'bet_against']
+            totl = bet_against + bet_for
+            percent_for = (bet_for / totl) * 100
+            percent_against = (100 - percent_for)
+
+            total = Betting.objects.filter(forecast=f).count()
+        except Exception:
+            total_wagered = 0
+            bet_against_user = 0
+            bet_for_user = 0
+            percent_for = 0
+            percent_against = 0
+            bet_for = 0
+            bet_against = 0
+            total = Betting.objects.filter(forecast=f).count()
+        data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=f,
+                         total=total, start=start, total_user=betting_for + betting_against,
+                         betting_for=betting_for, betting_against=betting_against, today=today,
+                         participants=total_wagered, bet_for=bet_for,
+                         bet_against=bet_against,
+                         bet_for_user=bet_for_user if bet_for_user else 0,
+                         bet_against_user=bet_against_user if bet_against_user else 0))
+    return render(request, 'home/live_forecast.html', {"live": data,
+                                                  "heading": "Forecasts",
+                                                  "title": "ForecastGuru",
+                                                  "first_name": "Guest" if request.user.is_anonymous() else request.user.first_name})
+
+
+@csrf_exempt
+def bet_post(request):
+    if request.method == 'POST':
+        try:
+            user = request.user.username
+            account = Authentication.objects.get(facebook_id=user)
+        except Exception:
+            return HttpResponse(json.dumps(dict(message='login')))
+        vote = request.POST.get('vote')
+        points = int(request.POST.get('points'))
+        if int(points) % 1000 != 0:
+            return HttpResponse(json.dumps(dict(message='Points should be multiple of 1000')))
+        forecast = request.POST.get('forecast')
+        forecasts = ForeCast.objects.get(id=forecast)
+        if account.fg_points_total - points > 0:
+            try:
+                b = Betting.objects.get(forecast=forecasts, users=account)
+                if vote == 'email':
+                    b.bet_for += points
+                    b.users.fg_points_total = b.users.fg_points_total - points
+                    b.users.save()
+                    b.save()
+                else:
+                    b.bet_against += points
+                    b.users.fg_points_total = b.users.fg_points_total - points
+                    b.users.save()
+                    b.save()
+            except Exception:
+                if vote == 'email':
+                    b = Betting.objects.create(forecast=forecasts, users=account, bet_for=points, bet_against=0)
+                    b.users.fg_points_total = b.users.fg_points_total - points
+                    b.users.forecast_participated += 1
+                    b.users.save()
+                    b.save()
+                else:
+                    b = Betting.objects.create(forecast=forecasts, users=account, bet_for=0, bet_against=points)
+                    b.users.fg_points_total = b.users.fg_points_total - points
+                    b.users.forecast_participated += 1
+                    b.users.save()
+                    b.save()
+            return HttpResponse(json.dumps(dict(message='success')))
+        else:
+            return HttpResponse(json.dumps(dict(message='balance')))
+    else:
+        return HttpResponse(json.dumps(dict(message='Please use POST')))
+
+
+@csrf_exempt
+def get_forecast(request):
+    if request.method == "POST":
+        # try:
+        user = request.user.username
+        profile = Authentication.objects.get(facebook_id=user)
+        forecast = ForeCast.objects.get(id=request.POST.get('id', ''))
+        return HttpResponse(json.dumps(dict(heading=forecast.heading, id=forecast.id)))
+    else:
+
+        return HttpResponse(json.dumps(dict(error="Try again later")))
 
 
 @csrf_exempt
@@ -201,23 +329,6 @@ def create_forecast(request):
         admin = Authentication.objects.get(facebook_id="admin")
         bet = Betting.objects.create(forecast=f, users=admin, bet_for=yes, bet_against=no)
         bet.save()
-        # if private.name == 'no':
-        #     try:
-        #         NotificationPanel.objects.create(title="Forecast Guru", message="Thank You for creating a forecast " + str(heading),
-        #                           url="https://forecast.guru/forecast/{}/".format(fid), user=users, status=0)
-        #     except Exception:
-        #         pass
-        #     return HttpResponse(json.dumps(dict(status=200, message='Forecast Created', id=f.id)))
-        # else:
-        #
-        #     InviteFriends.objects.create(user=admin, forecast=f)
-        #     try:
-        #         NotificationPanel.objects.create(title="Forecast Guru",
-        #                                          message="Thank You for creating a forecast " + str(heading),
-        #                                          url="https://forecast.guru/forecast/{}/".format(fid), user=users,
-        #                                          status=0)
-        #     except Exception:
-        #         pass
         return HttpResponse(json.dumps(
             dict(status=200, message='Thank You for creating a private forecast', id=f.id)))
 
@@ -226,17 +337,18 @@ def create_forecast(request):
             user = request.user.username
             profile = Authentication.objects.get(facebook_id=user)
             category = Category.objects.all().order_by('identifier')
-            return render(request, 'home/create_forecast.html', {'category': category,
-                                                            "current": datetime.datetime.now().strftime(
-                                                                "%Y-%m-%d %H:%M"),
-                                                            "user": "Guest" if request.user.is_anonymous() else request.user.first_name,
-                                                            "heading": "Create Forecast",
-                                                            "title": "ForecastGuru",
-                                                            })
+            return render(request, 'home/create_forecast.html', {
+                'category': category,
+                "current": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
+                "user": "Guest" if request.user.is_anonymous() else request.user.first_name,
+                "heading": "Create Forecast",
+                "title": "ForecastGuru",
+            })
         except Exception:
-            return render(request, 'home/create_forecast_nl.html', {"heading": "Create Forecast",
-                                                               "title": "ForecastGuru",
-                                                               "user": "Guest" if request.user.is_anonymous() else request.user.first_name, })
+            return render(request, 'home/create_forecast_nl.html', {
+                "heading": "Create Forecast",
+                "title": "ForecastGuru",
+                "user": "Guest" if request.user.is_anonymous() else request.user.first_name, })
 
 
 @csrf_exempt
@@ -253,3 +365,4 @@ def get_sub_source(request):
     if request.method == "POST":
         cat = SubCategory.objects.get(id=int(request.POST.get('identifier', '')))
         return HttpResponse(json.dumps(cat.source))
+
