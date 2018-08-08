@@ -81,7 +81,8 @@ def referral_code(request):
     user = request.user.username
     auth = Authentication.objects.get(facebook_id=user)
     if auth.referral_status == 0:
-        total = auth.joining_points + auth.points_won_public + auth.points_won_private + auth.points_earned - auth.points_lost
+        total = auth.joining_points + auth.points_won_public + auth.points_won_private + auth.points_earned \
+                - auth.points_lost_public - auth.points_lost_private
         return render(request, "home/referral_code.html", {
             "first_name": auth.first_name,
             "total": total
@@ -123,7 +124,7 @@ def interest(request):
             profile = Authentication.objects.get(facebook_id=user)
             interest = UserInterest.objects.filter(user=profile)
             total = profile.joining_points + profile.points_won_public\
-                    + profile.points_won_private + profile.points_earned - profile.points_lost
+                    + profile.points_won_private + profile.points_earned - profile.points_lost_public - profile.points_lost_private
             if len(interest) == 0 and profile.interest_status == 0:
                 sub = Category.objects.all().order_by('id')
                 return render(request, "home/interest_select.html", {
