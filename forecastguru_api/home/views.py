@@ -183,7 +183,6 @@ def live_forecast(request):
                                                 sub_category__id__in=intrest).order_by("expire")
     except Exception:
         forecast_live = ForeCast.objects.filter(status__name='Progress').order_by("expire")
-    print(forecast_live)
 
     for f in forecast_live:
         date = current.date()
@@ -200,16 +199,17 @@ def live_forecast(request):
         betting_for = Betting.objects.filter(forecast=f, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=f, bet_against__gt=0).count()
         try:
+            import pdb;pdb.set_trace()
             total_wagered = betting_against + betting_for
-            bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
+            bet_for = float(Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for'])
             bet_for_user = Betting.objects.filter(forecast=f, users=profile).aggregate(bet_for=Sum('bet_for'))[
                 'bet_for']
-            bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))[
-                'bet_against']
+            bet_against = float(Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))[
+                'bet_against'])
             bet_against_user = \
                 Betting.objects.filter(forecast=f, users=profile).aggregate(bet_against=Sum('bet_against'))[
                     'bet_against']
-            totl = bet_against + bet_for
+            totl = float(bet_against + bet_for)
             percent_for = (bet_for / totl) * 100
             percent_against = (100 - percent_for)
 
@@ -223,6 +223,7 @@ def live_forecast(request):
             bet_for = 0
             bet_against = 0
             total = Betting.objects.filter(forecast=f).count()
+        print(percent_for, "==>", percent_against)
         data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=f,
                          total=total, start=start, total_user=betting_for + betting_against,
                          betting_for=betting_for, betting_against=betting_against, today=today,
@@ -230,7 +231,6 @@ def live_forecast(request):
                          bet_against=bet_against,
                          bet_for_user=bet_for_user if bet_for_user else 0,
                          bet_against_user=bet_against_user if bet_against_user else 0))
-    print(data)
     return render(request, 'home/live_forecast.html', {"live": data,
                                                   "heading": "Forecasts",
                                                   "title": "ForecastGuru",
@@ -404,13 +404,6 @@ def betting(request, userid):
         status = 'Currently Closed'
     else:
         status = 'Result Declared'
-    try:
-        if forecast.won.name.lower() == 'yes':
-            won = 'yes'
-        elif forecast.won.name.lower() == 'no':
-            won = 'no'
-    except Exception:
-        won = "NA"
     expires = forecast.expire + datetime.timedelta(hours=5, minutes=30)
     end_date = datetime.datetime.strftime(expires, '%b %d, %Y')
     end_time = datetime.datetime.strftime(expires, '%H:%M')
@@ -419,7 +412,7 @@ def betting(request, userid):
         users = "Guest"
     else:
         users = request.user.username
-    if forecast.private.name == 'N':
+    if forecast.private.name == 'No':
         betting_for = Betting.objects.filter(forecast=forecast, bet_for__gt=0).count()
         betting_against = Betting.objects.filter(forecast=forecast, bet_against__gt=0).count()
 
@@ -453,17 +446,16 @@ def betting(request, userid):
             bet_against_user = 0
             bet_for_user = 0
             market_fee = 0
-        if forecast.won and sums > 0:
-            if forecast.won.lower() == "yes":
-                ratio = round(betting_sum['bet_for'] / sums, 2) + 1
-                earned = bet_for_user * ratio
-                market_fee_paid = earned * 0.10
-                total_earning = earned - market_fee_paid + market_fee
-            elif forecast.won.lower() == "no":
-                ratio = round(betting_sum['bet_against'] / sums, 2) + 1
-                earned = bet_against_user * ratio
-                market_fee_paid = earned * 0.10
-                total_earning = earned - market_fee_paid + market_fee
+        if forecast.won.name.lower() == "yes":
+            ratio = round(betting_sum['bet_for'] / sums, 2) + 1
+            earned = bet_for_user * ratio
+            market_fee_paid = earned * 0.10
+            total_earning = earned - market_fee_paid + market_fee
+        elif forecast.won.name.lower() == "no":
+            ratio = round(betting_sum['bet_against'] / sums, 2) + 1
+            earned = bet_against_user * ratio
+            market_fee_paid = earned * 0.10
+            total_earning = earned - market_fee_paid + market_fee
         else:
             ratio = "NA"
             earned = 0
@@ -478,10 +470,10 @@ def betting(request, userid):
                                                 "end_date": end_date, "end_time": end_time,
                                                 'status': status, "percent": percent,
                                                 "success": success,
-                                                "users": request.user.first_name,
+                                                "users": request.user.username,
                                                 "sums": sums,"earned": int(earned),
                                                 "approved": approved,"ratio": ratio,
-                                                "user": users,"won": won,"market_fee_paid": int(market_fee_paid),
+                                                "user": users,"won": forecast.won.name,"market_fee_paid": int(market_fee_paid),
                                                 "heading": "Forecast Details",
                                                 "title": "ForecastGuru","private": "no",
                                                 "bet_against_user":bet_against_user,

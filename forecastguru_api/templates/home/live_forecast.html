@@ -43,7 +43,7 @@
                     <figcaption>GUEST</figcaption>
             {% else %}
           <img src="https://graph.facebook.com/{{request.user.username}}/picture?type=large" alt="">
-          <figcaption>{{request.user.first_name}} {{request.user.last_name}}</figcaption>
+          <figcaption>{{request.user.username}} {{request.user.last_name}}</figcaption>
             {% endif %}
         </figure>
 
@@ -401,6 +401,8 @@ $(document).ready(function(){
     });
 });
 
+</script>
+<script>
     $('#mobile-nav').click(function(event) {
       $(this).toggleClass('active');
       $('nav').toggleClass('active');
@@ -413,6 +415,6 @@ $(document).ready(function(){
       $('#mobile-nav').removeClass('active');
       $('nav').removeClass('active');
     });
-</script>
 
+  </script>
 </body></html>

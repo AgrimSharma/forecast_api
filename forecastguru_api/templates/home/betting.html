@@ -74,16 +74,6 @@
       <div class="col-12">
         <h2>{{forecast.heading}}</h2>
           {% if private == 'no' %}
-    <div class="clearfix"></div>
-      <div class="row white_box mr-0 ml-0 mb-3">
-
-          <div class="col-12">
-            <div class="row mb-2">
-                <div class="col-12">
-                     Share<div class="addthis_inline_share_toolbox_a0ek"></div></div>
-                 </div>
-              </div>
-      </div>
     {% else %}
 
     {% if request.user.username == users %}
@@ -115,7 +105,7 @@
         </div>
              <button class="btn btn-sm btn-orange text-uppercase submit_result"> Declare Result</button>
       {% endif %}
- {% if approved == 'yes' %}
+ {% if forecast.status.name == 'Progress' %}
 
           <hr>
            <div class="form-group form-inline">
@@ -150,7 +140,7 @@
           {% endif %}
 
           <hr class="hr">
-            <!--<p>Status :  {% if forecast.approved.name == 'yes' %}<span>{{status}}</span> {% else %}<span>Pending for approval</span>{% endif %} </p>-->
+            <p>Status :  <span>{{forecast.status.name}}</span> </p>
           <p style="padding-left:20px;">Closing date and time  <img src="{% static 'images/calender-blue.png' %}" class="ml-2 mr-2"> <span class="value-color">{{end_date}}</span> <img src="{% static 'images/time-blue.png' %}" class="ml-2 mr-2"> <span class="value-color">{{end_time}}</span> </p>
       </div>
     </div>
@@ -173,7 +163,7 @@
                       Status :
                   <!--</div>-->
                   <!--<div class="col-7 text-right value-color">-->
-                      <strong>{% if forecast.approved.name == 'yes' %}<span>{{status}}</span> {% else %}<span>Pending for approval</span>{% endif %}
+                      <strong><span>{{forecast.status.name}}</span>
                           {% if forecast.won == 'yes' %}(<span class="result_yes" style="color:green;">YES</span>){% elif forecast.won == 'no' %} (<span class="result_no" style="color:red;">NO</span>){% endif %}</strong>
                   </div>
                 </div>
@@ -291,17 +281,7 @@
 
 
         </div>
-      </div>{% comment %}
-      <div class="clearfix"></div>
-      <div class="row white_box mr-0 ml-0 mb-3">
-
-          <div class="col-12">
-            <div class="row mb-2">
-                <div class="col-12">
-                     Share<div class="addthis_inline_share_toolbox_a0ek"></div></div>
-                 </div>
-              </div>
-      </div>{% endcomment %}
+      </div>
 
       {% else %}
 
@@ -546,6 +526,20 @@ $(".submit_forecast").click(function(){
                                     }
     });
 </script>
+ <script>
+    $('#mobile-nav').click(function(event) {
+      $(this).toggleClass('active');
+      $('nav').toggleClass('active');
+      event.stopPropagation();
+    });
+    $("nav").click(function(e){
+      e.stopPropagation();
+    });
+    $(document).click(function(){
+      $('#mobile-nav').removeClass('active');
+      $('nav').removeClass('active');
+    });
 
+  </script>
 </body></html>
 
