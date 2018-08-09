@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^result_save/', result_save, name='result_save'),
     url(r'^terms_and_conditions/', terms, name="terms"),
     url(r'^profile/', profile, name="user_profile"),
+    url(r'^refer_and_earn/', refer_earn, name="refer_and_earn"),
     url(r'^faqs/', faq, name="faq"),
     url(r'^privacy_policy/', privacy, name="privacy_policy"),
     url(r'^import_csv/', import_csv, name="import_csv"),
