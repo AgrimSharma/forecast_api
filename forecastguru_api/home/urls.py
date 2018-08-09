@@ -15,7 +15,20 @@ urlpatterns = [
     url(r'^get_forecast/', get_forecast, name='get_forecast'),
     url(r'^forecast/(?P<userid>\d+)/$', betting, name='betting'),
     url(r'^result_save/', result_save, name='result_save'),
-
+    url(r'^terms_and_conditions/', terms, name="terms"),
+    url(r'^profile/', profile, name="user_profile"),
+    url(r'^faqs/', faq, name="faq"),
+    url(r'^privacy_policy/', privacy, name="privacy_policy"),
+    url(r'^import_csv/', import_csv, name="import_csv"),
+    url(r'^closed_status/', update_close_status, name="closed_status"),
+    url(r'^thank_you/', thank_you, name='thank_you'),
+    url(r'^trending/', trending_forecast, name='trending'),
+    url(r'^result_declared/', forecast_result, name='forecast_result'),
+    url(r'^my_result/', result_not_declared, name='result_not_declared'),
+    url(r'^my_forecast/', my_forecast, name='my_forecast'),
+    url(r'^private/', my_forecast_private, name='private'),
+    url(r'^logout_user/', logout_view, name='logout_user'),
+    url(r'^search_result/', search_result, name='search_result'),
     url(r'^', index, name='index'),
 
 ]

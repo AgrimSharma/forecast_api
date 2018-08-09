@@ -1,31 +1,39 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block content %}
 <div class="topspace"></div>
-<input type="text" value="{{request.path}}" style="display:none" id="path" name="path">
+<div class="container topnavlinks">
+  <nav class="navbar">
+    <ul class="navbar-nav nav-fill w-100 text-center">
+      <li class="nav-item text-uppercase"> <a class="nav-link" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;" href="{% url 'create_forecast' %}">Create Forecast</a> </li>
+      <li class="nav-item text-uppercase"> <a class="nav-link" href="#" style="background: #B0FEEE; color:  black; padding-left: 10px; padding-right: 10px;">Buy FG Points</a> </li>
+      <!--<li class="nav-item text-uppercase"> <a class="nav-link" href="#">Sort by</a> </li>-->
+    </ul>
+  </nav>
+</div>
+
+
 <div class="container fixed_p_footer">
   <div class="row">
 
       <div class="col-md-12">
 
-
       <div class="forcast_home">
-{% for f in live %}
+
+   {% for f in live %}
 
         <div class="forcast_box">
 
             <div class="row align-items-center" >
             <div class="col-3 col-md-2 text-center">
-                            <figure class="icon"> <img class="imag" src="{{f.forecast.sub_category.image}}" alt="">
-
-                            </figure>
+              <figure class="icon"> <img src="{{f.forecast.sub_category.image}}" alt="">
+                  <!--<span><img src="{% static 'images/logo-small-white.png' %}" alt=""></span> -->
+              </figure>
             </div>
-            <div class="col-9 col-md-10" >
-                <p class="title_desc"> <a href="{% url 'betting' f.forecast.id %}" style="color:black;font-size: 16px;">{{ f.forecast.heading }}</a>
-
-                </p>
+            <div class="col-9 col-md-10">
+              <p class="title_desc"> <a href="{% url 'betting' f.forecast.id %}" style="color:black; font-size: 16px;">{{ f.forecast.heading }}</a> </p>
             </div>
-
           </div>
           <div class="row">
             <div class="col-12">
@@ -51,7 +59,7 @@
 
                   <div class="col-6 text-right"> <span class="vote_no text-uppercase">No ({{f.bet_against}})</span> </div>
                 </div>
-                                                  <hr class="mt-2 mb-2">
+                <hr class="mt-2 mb-2">
 
                 <div class="row">
                   <div class="col-6 pr-0">
@@ -71,59 +79,40 @@
                         <button type="button" class="btn btn-orange shipment_sold" shipment_id="{{f.forecast.id}}" id="shipment_id{{f.forecast.id}}" >PLAY </button>
                           </form>
                 </div>
-
+                    <div class="col-4 text-right pl-0" style="display:none;">
+                        <div class="sharethis-inline-share-buttons"></div>
+                    </div>
 
 
                 </div>
 
-                              {% if f.bet_against_user > 0 or f.bet_for_user > 0  %}
-                <hr>
-                <div class="row">
-                  <div class="col-6 pr-0">
-                    <div class="time textwithicon pl-0">
-
-
-                       <span>My Points in Play</span>
-
-                        </div>
-                  </div>
-
-                  <div class="col-3 text-right pl-0">
-                     Yes({{f.bet_for_user}})
-                </div>
-                    <div class="col-3 text-right pl-0">
-                     No({{f.bet_against_user}})
-                </div>
-              </div>{% endif %}
+              </div>
             </div>
           </div>
         </div>
-
+                    {% endfor %}
       </div>
-          {% endfor %}
 
-      </div>
     </div>
-
-
   </div>
 </div>
 <footer class="sticky-footer">
-    <nav class="navbar">
-      <ul class="navbar-nav nav-fill w-100 text-center">
-        <li class="nav-item"> <a class="nav-link active" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
-          Forecasts</a> </li>
-        <li class="nav-item"> <a class="nav-link" href="#"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
-          Categories</a> </li>
-        <li class="nav-item"> <a class="nav-link" href="#"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
-          Results</a> </li>
-          <li class="nav-item"> <a class="nav-link" href="#"> <img src="{% static 'images/menu-icon-myforecasts.png' %}" alt=""><br>
+  <nav class="navbar">
+    <ul class="navbar-nav nav-fill w-100 text-center">
+      <li class="nav-item"> <a class="nav-link" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
+        Forecasts</a> </li>
+      <li class="nav-item"> <a class="nav-link" href="#"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
+        Categories</a> </li>
+      <li class="nav-item"> <a class="nav-link" href="#"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
+        Results</a> </li>
+      <li class="nav-item"> <a class="nav-link" href="#"> <img src="{% static 'images/menu-icon-myforecasts.png' %}" alt=""><br>
             My Forecasts</a> </li>
-        <li class="nav-item"> <a class="nav-link" href="#"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
-          My Account</a> </li>
-      </ul>
-    </nav>
-  </footer>
+      <li class="nav-item"> <a class="nav-link" href="{% url 'user_profile' %}"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
+        My Account</a> </li>
+    </ul>
+  </nav>
+</footer>
+
 
   <div id="id_shipment_sold" class="modal modal-center fade" role="dialog">
       <div class="modal-dialog">
@@ -187,7 +176,7 @@
 			</div>
 			<div class="modal-body text-center">
                 <p id="success_data" ></p>
-				<a href="{% url 'live_forecast' %}" class="btn btn-success" >Thank You</a>
+				<a href=href="{{request.path}}" class="btn btn-success" >Thank You</a>
 			</div>
 		</div>
 	</div>
@@ -230,7 +219,22 @@
 </div>
 
 <script>
+$('#myInput').keypress(function (e) {
+  if (e.which == 13) {
+  var test = $("#myInput").val();
 
+  $.ajax({
+    type:"POST",
+    url: "{% url 'search_result' %}",
+    data: {'point': test},
+    success: function(resp){
+
+    }
+});
+    <!--$('form').submit();-->
+    <!--return false;-->
+  }
+});
 
 $(".shipment_sold").click(function(){
 var shipment_id=$(this).attr("shipment_id");
@@ -330,7 +334,6 @@ $(document).ready(function(){
          $("#point_div").show();
     });
 });
-
 </script>
 
 {% endblock %}

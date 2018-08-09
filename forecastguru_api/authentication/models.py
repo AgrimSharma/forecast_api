@@ -14,7 +14,7 @@ class Authentication(models.Model):
     points_won_private = models.IntegerField(default=0)
     successful_forecast = models.IntegerField(default=0)
     unsuccessful_forecast = models.IntegerField(default=0)
-    # forecast_played = models.IntegerField(default=0)
+    forecast_played = models.IntegerField(default=0)
     market_fee = models.IntegerField(default=0)
     market_fee_paid = models.IntegerField(default=0)
     points_earned = models.IntegerField(default=0)
@@ -342,3 +342,18 @@ class ReportAbuseForecast(models.Model):
 
     def __unicode__(self):
         return "{} : {} : {}".format(self.user, self.forecast, self.status)
+
+
+class LoginStatus(models.Model):
+    user = models.ForeignKey(to=Authentication, on_delete=models.CASCADE)
+    status = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['-user']
+        verbose_name_plural = 'Login Status'
+
+    def __str__(self):
+        return "{} : {}" .format(self.user.user.username, self.status)
+
+    def __unicode__(self):
+        return "{} : {}".format(self.user.user.username, self.status)

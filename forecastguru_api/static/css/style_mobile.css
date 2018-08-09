@@ -9,7 +9,7 @@ input:focus {
 body {
 	font-family: Helvetica, Arial, sans-serif;
 	color: #303030;
-	 font-size: 13px;
+	font-size: 13px;
 }
 a, a:hover {
 	text-decoration: none
@@ -163,7 +163,7 @@ header h1 {
 	margin: 0
 }
 .topspace {
-	height: 100px
+	height: 90px
 }
 .topspace2 {
 	height: 50px
@@ -695,7 +695,6 @@ padding: .375rem .75rem
 }
 .my_account .account_desc .points_leger h2 {
 	font-size:  20px;
-	color: #737373
 }
 .my_account .account_desc .total_balance {
 	font-size: 18px;
@@ -724,6 +723,7 @@ padding: .375rem .75rem
 .my_account .account_desc .white_box{
  	box-shadow: 0px 0px 10px rgba(0,0,0,.2)
 }
+.my_account .account_desc a .fa-info-circle {color: #333; font-size: 16px}
 header .btn-orange {padding: 4px 10px; font-size: 13px; text-transform: uppercase; line-height: 1.1; text-align: left}
 header .header-right.with-btn{top: -5px}
 header .btn-header {color: #fff; background: none; border: none; box-shadow: none; font-size: 13px; text-transform: none}
@@ -1015,7 +1015,8 @@ header .btn-header {color: #fff; background: none; border: none; box-shadow: non
   .revealmenu #mobile-nav.active {
 	background-image: url(../images/icon-cross-white.png);
   }
-  .revealmenu figure {box-shadow: 0px 3px 6px rgba(0,0,0,.3); padding-bottom: 15px; text-align: right; padding-right: 15px; text-transform: uppercase; font-style: italic; font-weight: 600} 
+  .revealmenu figure {box-shadow: 0px 3px 6px rgba(0,0,0,.3); padding-bottom: 15px; text-align: center; padding-right: 15px; text-transform: uppercase; font-style: italic; font-weight: 600} 
+  .revealmenu .fg_balance{font-style: normal; font-weight: normal; display: inline-block; margin-top: 6px}
   .revealmenu .userpic img {width: 70px; height: 70px; border-radius: 50%; margin-bottom: 6px}
 header .logo img {max-width: 35px}
   @media(max-width: 767px){
@@ -1036,3 +1037,68 @@ header .logo img {max-width: 35px}
   .refer_container .card-header .invite_code {display: inline-block; padding: 3px 10px; background: #fff; color: #333}
   .refer_container .card-body li {padding: 0 0 0 30px; position: relative; margin-bottom: 7px; padding-bottom: 7px; border-bottom: solid 1px #cecece}
   .refer_container .card-body li:before {position: absolute; left: 0; top: -4px; font-family: 'FontAwesome'; content: "\f046"; font-size: 20px; color: #403c55}
+  .hp_container .card-body{ padding-left: 80px; position: relative;}
+  .hp_container .card-body .feed_img {position: absolute; left: 10px; top: 15px;}
+  .hp_container .card-body .feed_img img {width: 60px; height: 60px; border-radius: 50%}
+
+  /* top search */
+  #anim_search {position: absolute; right: 60px; top: -5px}
+  #anim_search input[type=search] {
+	background: transparent url(../images/search-icon.png) no-repeat 9px center;
+	border: none;
+	padding: 6px 22px 6px 10px;
+	width: 55px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	-webkit-transition: all .5s;
+	-moz-transition: all .5s;
+	transition: all .5s;
+}
+#anim_search input[type=search]:focus {
+	width: 240px;
+	background-color: #fff;
+	border-color: #66CC75;
+	-webkit-box-shadow: 0 0 5px rgba(109,207,246,.5);
+	-moz-box-shadow: 0 0 5px rgba(109,207,246,.5);
+	box-shadow: 0 0 5px rgba(109,207,246,.5);
+	background-image: url(../images/search-icon-black.png)
+}
+#anim_search input:-moz-placeholder {
+	color: #999;
+}
+#anim_search input::-webkit-input-placeholder {
+	color: #999;
+}
+#anim_search input[type=search] {
+	width: 15px;
+	padding-left: 10px;
+	color: transparent;
+	cursor: pointer;
+}
+#anim_search input[type=search]:hover {
+	background-color: #fff;
+	background-image: url(../images/search-icon-black.png)
+}
+#anim_search input[type=search]:focus {
+	width: 260px;
+	padding-left: 32px;
+	color: #000;
+	background-color: #fff;
+	cursor: auto;
+}
+#anim_search input:-moz-placeholder {
+	color: transparent;
+}
+#anim_search input::-webkit-input-placeholder {
+	color: transparent;
+}
+.otp_inputs input{width: 45px; height: 45px; border: solid 1px #ccc; margin: 0 15px; text-align: center; font-size: 20px}
+.resend_otp a{ color: #333}
+
+.thankyou_redeemed{
+	height: 85vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
