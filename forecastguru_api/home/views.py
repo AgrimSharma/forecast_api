@@ -1772,6 +1772,39 @@ def search_result(request):
 
 
 def refer_earn(request):
-    return render(request, "home/refer_earn.html",{
-        "heading": "Refer And Earn",
-        "user": "Guest" if request.user.is_anonymous() else request.user.first_name})
+    try:
+        profile = Authentication.objects.get(facebook_id=request.user.username)
+    except Exception:
+        profile =[]
+    return render(request, "home/refer_earn.html",
+                  {
+                      "heading": "Refer And Earn",
+                      "first_name": "Guest" if request.user.is_anonymous() else request.user.first_name,
+                      "profile": profile,
+                  })
+
+
+def earn_points(request):
+    try:
+        profile = Authentication.objects.get(facebook_id=request.user.username)
+    except Exception:
+        profile =[]
+    return render(request, "home/earn_points.html",
+                  {
+                      "heading": "Earn Points",
+                      "first_name": "Guest" if request.user.is_anonymous() else request.user.first_name,
+                      "profile": profile,
+                  })
+
+
+def redeem_points(request):
+    try:
+        profile = Authentication.objects.get(facebook_id=request.user.username)
+    except Exception:
+        profile =[]
+    return render(request, "home/redeem.html",
+                  {
+                      "heading": "Redeem Points",
+                      "first_name": "Guest" if request.user.is_anonymous() else request.user.first_name,
+                      "profile": profile,
+                  })

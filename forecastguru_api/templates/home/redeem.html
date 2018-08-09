@@ -1,57 +1,7 @@
-<!DOCTYPE html>
-<html>
+{% extends 'base.html' %}
+{% load static %}
 
-<head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Forecastguru</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="HandheldFriendly" content="true" />
-  <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700" rel="stylesheet">
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+"
-    crossorigin="anonymous">
-  <link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap.min.css" />
-
-  <link rel="stylesheet" type="text/css" media="screen" href="css/style.css" />
-</head>
-
-<body class="gray-bg">
-    <header class="position-fixed w-100">
-        <div class="container">
-          <div class="row align-items-center">
-            <div class="col-12 text-center position-relative">
-              <div class="goback position-absolute"><a href="#" class="text-white"><i class="fa fa-angle-left"></i></a>
-                <!--<a href="#" class="logo"><img src="images/logo-small-white.png" alt=""></a>-->
-              </div>
-              <h1>Redeem</h1>
-              <!-- reveal menu -->
-    <div class="revealmenu">
-    
-      <div id="mobile-nav"></div>
-      <nav>
-    
-        <figure class="userpic">
-          <img src="images/account_image.jpg" alt="">
-          <figcaption>Lorem Ipsum</figcaption>
-        </figure>
-    
-        <ul class="menu">
-          <li><a href="#"><i class="fa fa-user-plus"></i> Refer and Earn</a></li>
-          <li><a href="#"><i class="fa fa-money"></i> Earn Points</a></li>
-          <li><a href="#"><i class="fa fa-bell"></i> Notifications</a></li>
-          <li><a href="#"><i class="fa fa-star"></i> Rate App</a></li>
-          <li><a href="#"><i class="fa fa-question-circle"></i> Help</a></li>
-          <li><a href="#"><i class="fa fa-info-circle"></i> About</a></li>
-          <li><a href="#"><i class="fa fa-sign-out"></i> Sign out</a></li>
-        </ul>
-      </nav>
-      </div>
-            </div>
-          </div>
-          
-        </div>
-      </header>
-
+{% block content %}
 
 
   <div class="topspace2"></div>
@@ -70,7 +20,7 @@
             <div class="col-12">
              <div class="num_of_points text-center">
                 <span class="rounded-circle">
-                  20000<br>
+                  {{profile.points_won_public}}<br>
                   points
                 </span>
               </div>
@@ -118,40 +68,7 @@
       </div>
     </div>
   </div>
-  <footer class="sticky-footer">
-    <nav class="navbar">
-      <ul class="navbar-nav nav-fill w-100 text-center">
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <img src="images/menu-icon-forecast.png" alt="">
-            <br> Forecasts
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <img src="images/menu-icon-category.png" alt="">
-            <br> Categories
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <img src="images/menu-icon-results.png" alt="">
-            <br> Results
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <img src="images/menu-icon-myforecasts.png" alt="">
-            <br> My Forecasts</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="#">
-            <img src="images/menu-icon-friend.png" alt="">
-            <br> My Account</a>
-        </li>
-      </ul>
-    </nav>
-  </footer>
+
 
 
 <div class="modal fade redeem_popup" id="redeem_popup" data-backdrop="static">
@@ -229,26 +146,22 @@
     
   
   </div>
+<footer class="sticky-footer">
+    <nav class="navbar">
+      <ul class="navbar-nav nav-fill w-100 text-center">
+        <li class="nav-item"> <a class="nav-link active" href="{% url 'live_forecast' %}"> <img src="{% static 'images/menu-icon-forecast.png' %}" alt=""><br>
+          Forecasts</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="#"> <img src="{% static 'images/menu-icon-category.png' %}" alt=""><br>
+          Categories</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="#"> <img src="{% static 'images/menu-icon-results.png' %}" alt=""><br>
+          Results</a> </li>
+          <li class="nav-item"> <a class="nav-link" href="#"> <img src="{% static 'images/menu-icon-myforecasts.png' %}" alt=""><br>
+            My Forecasts</a> </li>
+        <li class="nav-item"> <a class="nav-link" href="#"> <img src="{% static 'images/menu-icon-friend.png' %}" alt=""><br>
+          My Account</a> </li>
+      </ul>
+    </nav>
+  </footer>
 
 
-  <script src="js/jquery-slim.min.js"></script>
-  <script src="js/bootstrap.min.js"></script>
-  <script>
-    $('#mobile-nav').click(function(event) {
-      $(this).toggleClass('active');
-      $('nav').toggleClass('active');
-      event.stopPropagation();
-    });
-    $("nav").click(function(e){
-      e.stopPropagation();
-    });
-    $(document).click(function(){
-      $('#mobile-nav').removeClass('active');
-      $('nav').removeClass('active');
-    });
-
-  </script>
-
-</body>
-
-</html>
+{% endblock %}
