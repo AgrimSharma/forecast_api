@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+
+  <div class="topspace2"></div>
+
+  <div class="container fixed_p_footer">
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="refer_container mt-4">
+
+          <h2 class="section_heading mb-3">
+            Invite friends and earn 20 points
+          </h2>
+
+
+          <div class="card withshadow">
+
+            <div class="card-header">
+             <h6 class="m-0">
+              Your invite code: <span class="invite_code"> XX209288</span></h6>
+            </div>
+
+            <div class="card-body">
+              <ul class="list-unstyled">
+                <li>
+                  Invite friends and share invitation link
+                </li>
+                <li>
+                  Using your code, they get 20 points on sign up
+                </li>
+                <li>
+                  Once they sign up, you get 20 points
+                </li>
+              </ul>
+            </div>
+
+            <div class="card-footer">
+              <a href="#" class="btn btn-orange"><i class="fa fa-share"></i> Share</a>
+            </div>
+
+          </div>
+
+        
+       </div>
+
+      </div>
+    </div>
+  </div>
+  <footer class="sticky-footer">
+    <nav class="navbar">
+      <ul class="navbar-nav nav-fill w-100 text-center">
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <img src="images/menu-icon-forecast.png" alt="">
+            <br> Forecasts
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <img src="images/menu-icon-category.png" alt="">
+            <br> Categories
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <img src="images/menu-icon-results.png" alt="">
+            <br> Results
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <img src="images/menu-icon-myforecasts.png" alt="">
+            <br> My Forecasts</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="#">
+            <img src="images/menu-icon-friend.png" alt="">
+            <br> My Account</a>
+        </li>
+      </ul>
+    </nav>
+  </footer>
+
+
+<div class="modal fade redeem_popup" id="redeem_popup">
+
+  <div class="modal-dialog">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+          <h2 class="section_heading">
+          Please enter the following question to get Paytm cashback</h2>
+        </div>
+
+      <div class="modal-body">
+
+        <div class="qa_div">
+        
+          <div class="mb-4">
+            <h6>What is the capital of India</h6>
+
+            <ul class="list-unstyled">
+              <li>
+                <label><input type="radio" name="q1" id=""> Delhi</label>
+              </li>
+              <li>
+                <label><input type="radio" name="q1" id="">  Mumbai</label>
+              </li>
+              <li>
+                <label><input type="radio" name="q1" id="">  Kolkata</label>
+              </li>
+              <li>
+                <label><input type="radio" name="q1" id="">  Chennai</label>
+              </li>
+            </ul>
+          </div>
+
+
+        </div>
+
+      </div>
+
+        <div class="modal-footer pt-2 pb-2">
+            <a href="#" class="btn btn-orange">Next</a>
+        </div>
+
+    </div>
+
+  </div>
+  
+
+</div>
+
+{% endblock %}

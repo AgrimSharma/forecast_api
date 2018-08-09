@@ -216,18 +216,18 @@ def live_forecast(request):
             totl = float(bet_against + bet_for)
             percent_for = (bet_for / totl) * 100
             percent_against = (100 - percent_for)
-
+            print(totl, percent_against, percent_for)
             total = Betting.objects.filter(forecast=f).count()
         except Exception:
             total_wagered = 0
             bet_against_user = 0
             bet_for_user = 0
-            percent_for = 0
-            percent_against = 0
-            bet_for = 0
-            bet_against = 0
+            bet_for = Betting.objects.filter(forecast=f).aggregate(bet_for=Sum('bet_for'))['bet_for']
+            bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))['bet_against']
+            totl = float(bet_against + bet_for)
+            percent_for = (bet_for / totl) * 100
+            percent_against = (100 - percent_for)
             total = Betting.objects.filter(forecast=f).count()
-        print(percent_for, "==>", percent_against)
         data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against), forecast=f,
                          total=total, start=start, total_user=betting_for + betting_against,
                          betting_for=betting_for, betting_against=betting_against, today=today,
@@ -379,11 +379,13 @@ def bet_post(request):
 @csrf_exempt
 def get_forecast(request):
     if request.method == "POST":
-        # try:
-        user = request.user.username
-        profile = Authentication.objects.get(facebook_id=user)
-        forecast = ForeCast.objects.get(id=request.POST.get('id', ''))
-        return HttpResponse(json.dumps(dict(heading=forecast.heading, id=forecast.id)))
+        try:
+            user = request.user.username
+            profile = Authentication.objects.get(facebook_id=user)
+            forecast = ForeCast.objects.get(id=request.POST.get('id', ''))
+            return HttpResponse(json.dumps(dict(heading=forecast.heading, id=forecast.id)))
+        except Exception:
+            return HttpResponse(json.dumps(dict(error="login")))
     else:
 
         return HttpResponse(json.dumps(dict(error="Try again later")))
@@ -1767,3 +1769,9 @@ def search_result(request):
         return render(request, "home/search_data_nf.html", {"data": "No result found", "heading": "Search Forecast",
                                                        "title": "ForecastGuru",
                                                        "user": "Guest" if request.user.is_anonymous() else request.user.first_name})
+
+
+def refer_earn(request):
+    return render(request, "home/refer_earn.html",{
+        "heading": "Refer And Earn",
+        "user": "Guest" if request.user.is_anonymous() else request.user.first_name})

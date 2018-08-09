@@ -243,11 +243,15 @@ $.ajax({
     success: function(resp){
         console.log(resp);
         var data = JSON.parse(resp);
+        if(data.error == 'login'){
+            window.location.href = "/login/&next=/live_forecast/";
+        }
+        else{
         $("#id_shipment_sold").modal('show');
         $("#heading").text(data.heading);
         $("#awb").val(data.id);
         $("#forecast").val(data.id);
-        <!--$("#shipment_sold_preview").html(resp);-->
+        }
 
     }
 });
