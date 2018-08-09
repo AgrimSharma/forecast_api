@@ -852,7 +852,7 @@ def profile(request):
         "created": fore,
         "total": total,
         "status": predict_status(profile, suc_per),
-        "balance": profile.fg_points_total,
+        "balance": total,
     })
 
 
