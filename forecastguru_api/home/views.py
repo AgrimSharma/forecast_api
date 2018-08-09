@@ -794,7 +794,7 @@ def profile(request):
             "users": user,
 
         })
-    date_joined = datetime.datetime.strftime(profile.date_joined, '%b %d, %Y')
+    date_joined = datetime.datetime.strftime(profile.created, '%b %d, %Y')
     try:
         bet_for = \
         Betting.objects.filter(users=profile, forecast__status__name="Progress").aggregate(bet_for=Sum('bet_for'))['bet_for']
@@ -825,8 +825,8 @@ def profile(request):
 
     point = bet_against + bet_for + bet_for_close + bet_against_close
 
-    total = profile.fg_points_free + profile.market_fee + profile.fg_points_won + profile.fg_points_bought - profile.fg_points_lost - profile.market_fee_paid - point
-    profile.fg_points_total = total
+    total = profile.joining_points + profile.points_won_public + profile.points_won_private + profile.points_earned \
+            - profile.points_lost_public - profile.points_lost_private
     totals = profile.successful_forecast + profile.unsuccessful_forecast
     try:
         suc_per = (profile.successful_forecast / totals) * 100
@@ -838,10 +838,7 @@ def profile(request):
     except Exception:
         suc_per = 0
         unsuc_per = 0
-    if profile.fg_points_total == 0:
-        profile.fg_points_total = profile.fg_points_free + profile.fg_points_bought + profile.fg_points_won - \
-                                  profile.fg_points_lost + profile.market_fee - profile.market_fee_paid
-    profile.market_fee_paid = int(profile.fg_points_won * 0.10)
+    profile.market_fee_paid = (profile.points_won_private + profile.points_won_public) * 0.10
     profile.save()
 
     fore = ForeCast.objects.filter(user=profile).count()
@@ -853,7 +850,7 @@ def profile(request):
         "user": request.user.first_name + " " + request.user.last_name,
         "point": point,
         "created": fore,
-        "total": profile.market_fee + profile.fg_points_won + profile.fg_points_bought - profile.fg_points_lost - profile.market_fee_paid - point,
+        "total": total,
         "status": predict_status(profile, suc_per),
         "balance": profile.fg_points_total,
     })
