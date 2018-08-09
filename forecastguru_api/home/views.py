@@ -795,39 +795,10 @@ def profile(request):
 
         })
     date_joined = datetime.datetime.strftime(profile.created, '%b %d, %Y')
-    try:
-        bet_for = \
-        Betting.objects.filter(users=profile, forecast__status__name="Progress").aggregate(bet_for=Sum('bet_for'))['bet_for']
-    except Exception:
-        bet_for = 0
-    try:
-        bet_for_close = \
-        Betting.objects.filter(users=profile, forecast__status__name="Closed").aggregate(bet_for=Sum('bet_for'))['bet_for']
-    except Exception:
-        bet_for_close = 0
-    try:
-        bet_against = Betting.objects.filter(users=profile, forecast__status__name="Progress").aggregate(bet_against=Sum('bet_against'))['bet_against']
-    except Exception:
-        bet_against = 0
-    try:
-        bet_against_close = Betting.objects.filter(users=profile, forecast__status__name="Closed").aggregate(bet_against=Sum('bet_against'))['bet_against']
-    except Exception:
-        bet_against_close = 0
-
-    if bet_against == None:
-        bet_against = 0
-    if bet_for == None:
-        bet_for = 0
-    if bet_for_close == None:
-        bet_for_close = 0
-    if bet_against_close == None:
-        bet_against_close = 0
-
-    point = bet_against + bet_for + bet_for_close + bet_against_close
 
     total = profile.joining_points + profile.points_won_public + profile.points_won_private + profile.points_earned \
             - profile.points_lost_public - profile.points_lost_private
-    totals = profile.successful_forecast + profile.unsuccessful_forecast
+    totals = float(profile.successful_forecast + profile.unsuccessful_forecast)
     try:
         suc_per = (profile.successful_forecast / totals) * 100
         unsuc_per = (profile.unsuccessful_forecast / totals) * 100
@@ -847,12 +818,15 @@ def profile(request):
         "date_joined": date_joined,
         "success": int(suc_per),
         "unsuccess": int(unsuc_per),
-        "user": request.user.first_name + " " + request.user.last_name,
-        "point": point,
         "created": fore,
         "total": total,
         "status": predict_status(profile, suc_per),
         "balance": total,
+        "first_name": "Guest" if request.user.is_anonymous() else request.user.first_name,
+        "won": profile.points_won_private + profile.points_won_public,
+        "heading": "User Profile",
+        "total_private": profile.joining_points + profile.points_earned + profile.points_won_private - profile.points_lost_private,
+        "total_public": profile.points_won_public - profile.points_lost_public
     })
 
 
