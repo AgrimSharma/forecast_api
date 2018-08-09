@@ -161,6 +161,8 @@ def interest(request):
                     if len(interest) == 0:
                         u = UserInterest.objects.create(user=profile, interest=i)
                         u.save()
+                profile.interest_status = 1
+                profile.save()
                 return HttpResponse("success")
             except Exception:
                 return HttpResponse("login")
