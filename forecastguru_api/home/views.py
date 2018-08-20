@@ -636,8 +636,8 @@ def forecast_result_page(forecast):
             bet_against = Betting.objects.filter(forecast=f).aggregate(bet_against=Sum('bet_against'))[
                 'bet_against']
             total_wagered = betting_against + betting_for
-            totl = bet_against + bet_for
-            percent_for = (bet_for / totl) * 100
+            totl = float(bet_against + bet_for)
+            percent_for = (float(bet_for) / totl) * 100
             percent_against = (100 - percent_for)
             total = bet_against + bet_for
         except Exception:
