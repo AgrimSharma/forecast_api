@@ -669,8 +669,7 @@ def forecast_result_page(forecast):
 
 def forecast_result(request):
 
-    forecast_live = ForeCast.objects.filter(private__name='No',
-                                            status__name='Result Declared').order_by("-expire")
+    forecast_live = ForeCast.objects.filter(status__name='Result Declared').order_by("-expire")
 
     return render(request, 'home/forecast_result.html', 
                   {
@@ -683,7 +682,7 @@ def forecast_result(request):
 
 def result_not_declared(request):
     try:
-        user = request.user
+        user = request.user.username
         profile = Authentication.objects.get(facebook_id=user)
         forecast_result = Betting.objects.filter(forecast__private__name='No', users=profile, forecast__status__name='Result Declared',).order_by("-forecast__expire")
         forecast_closed = Betting.objects.filter(forecast__status__name='Closed',
@@ -999,12 +998,12 @@ def my_forecast(request):
     try:
         user = request.user
         account = Authentication.objects.get(facebook_id=user)
-        forecast_live = Betting.objects.filter(forecast__approved__name="Yes", forecast__status__name='Progress',
+        forecast_live = Betting.objects.filter( forecast__status__name='Progress',
                                                users=account, forecast__private__name='No').order_by("forecast__expire")
-        forecast_result = Betting.objects.filter(forecast__approved__name="Yes",
+        forecast_result = Betting.objects.filter(
                                                  forecast__status__name='Result Declared', users=account,
                                                  forecast__private__name='No').order_by("forecast__expire")
-        forecast_closed = Betting.objects.filter(forecast__approved__name="Yes", forecast__status__name='Closed',
+        forecast_closed = Betting.objects.filter( forecast__status__name='Closed',
                                                users=account, forecast__private__name='No').order_by("forecast__expire")
 
         forecast_approval = ForeCast.objects.filter(approved__name="No", user=account, private__name='No').order_by(
