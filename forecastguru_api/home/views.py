@@ -669,7 +669,7 @@ def forecast_result_page(forecast):
 
 def forecast_result(request):
 
-    forecast_live = ForeCast.objects.filter(status__name='Result Declared').order_by("-expire")
+    forecast_live = ForeCast.objects.filter(private__name='No', status__name='Result Declared').order_by("-expire")
 
     return render(request, 'home/forecast_result.html', 
                   {
