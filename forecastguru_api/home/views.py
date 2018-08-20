@@ -647,12 +647,12 @@ def forecast_result_page(forecast):
             bet_for = 0
             bet_against = 0
             total = 0
-        try:
-            if f.won.name.lower() == 'Yes':
-                status = 'Yes'
-            elif f.won.name.lower() == 'No':
-                status = 'No'
-        except Exception:
+
+        if f.won.name.lower() == 'Yes':
+            status = 'Yes'
+        elif f.won.name.lower() == 'No':
+            status = 'No'
+        else:
             status = 'NA'
         data.append(dict(percent_for=int(percent_for), percent_against=int(percent_against),
                          forecast=f, total=total, start=start,
