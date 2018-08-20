@@ -1434,7 +1434,6 @@ def forecast_result_data_private(forecast_live, account):
 
 
 def my_forecast_private(request):
-    import pdb;pdb.set_trace()
     try:
         user = request.user.username
         account = Authentication.objects.get(facebook_id=user)
