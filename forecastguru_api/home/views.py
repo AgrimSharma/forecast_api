@@ -727,8 +727,8 @@ def forecast_result_page_my(forecast):
             bet_against = Betting.objects.filter(forecast=forecast).aggregate(bet_against=Sum('bet_against'))[
                 'bet_against']
             total_wagered = betting_against + betting_for
-            totl = bet_against + bet_for
-            percent_for = (bet_for / totl) * 100
+            totl = float(bet_against + bet_for)
+            percent_for = (float(bet_for) / totl) * 100
             percent_against = (100 - percent_for)
             total = bet_against + bet_for
             bet_for_user = f.bet_for
@@ -1231,8 +1231,8 @@ def live_forecast_data(forecast_live, account):
             bet_against_user = \
             Betting.objects.filter(forecast=forecast, users=account).aggregate(bet_against=Sum('bet_against'))[
                 'bet_against']
-            totl = bet_against + bet_for
-            percent_for = (bet_for / totl) * 100
+            totl = float(bet_against + bet_for)
+            percent_for = (float(bet_for) / totl) * 100
             percent_against = (100 - percent_for)
             total = Betting.objects.filter(forecast=forecast).count()
         except Exception:
