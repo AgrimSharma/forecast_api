@@ -686,7 +686,7 @@ def result_not_declared(request):
         user = request.user
         profile = Authentication.objects.get(facebook_id=user)
         forecast_result = Betting.objects.filter(forecast__private__name='No', users=profile, forecast__status__name='Result Declared',).order_by("-forecast__expire")
-        forecast_closed = Betting.objects.filter(forecast__approved__name="Yes", forecast__status__name='Closed',
+        forecast_closed = Betting.objects.filter(forecast__status__name='Closed',
                                                  users=profile, forecast__private__name='No').order_by("forecast__expire")
 
         return render(request, 'home/forecast_result_pending.html', 
@@ -699,7 +699,7 @@ def result_not_declared(request):
                       })
     except Exception:
 
-        return render(request, 'home/forecast_result_pending_No.html', 
+        return render(request, 'home/forecast_result_pending_no.html',
                       {
                           "user": "Guest" if request.user.is_anonymous() else request.user.first_name,
                           "heading": "My Results",
