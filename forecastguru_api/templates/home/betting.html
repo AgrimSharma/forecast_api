@@ -92,22 +92,18 @@
                     Created By : <strong>{{request.user.first_name |title}}</strong>
 
                 </div>
-                <!--<div class="col-7 text-right value-color">-->
-                <!--</div>-->
               </div>
 
               <div class="row mb-2">
                   <div class="col-12">
                       Status :
-                  <!--</div>-->
-                  <!--<div class="col-7 text-right value-color">-->
                       <strong><span>{{forecast.status.name}}</span>
-                          {% if forecast.won == 'yes' %}(<span class="result_yes" style="color:green;">YES</span>){% elif forecast.won == 'no' %} (<span class="result_no" style="color:red;">NO</span>){% endif %}</strong>
+                          {% if forecast.won.name == 'Yes' %}(<span class="result_yes" style="color:green;">YES</span>){% elif forecast.won.name == 'No' %} (<span class="result_no" style="color:red;">NO</span>){% endif %}</strong>
                   </div>
                 </div>
             <div class="row mb-2">
                   <div class="col-12">
-                      Win Ratio : <strong> {% if forecast.status.id == 3 %} {% if forecast.won == 'yes' %}<span class="result_yes" style="color:green;">1:{{ ratio }}{% elif forecast.won == 'no' %} <span class="result_no" style="color:red;">1:{{ratio}}{% endif %}  {% else %} NA {% endif %}</strong>
+                      Win Ratio : <strong> {% if forecast.status.name == "Result Declared" %} {% if forecast.won.name == 'Yes' %}<span class="result_yes" style="color:green;">1:{{ ratio }}</span>{% elif forecast.won.name == 'no' %} <span class="result_no" style="color:red;">1:{{ratio}}{% endif %}  {% else %} NA {% endif %}</span></strong>
                   </div>
                 </div>
         </div>

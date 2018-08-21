@@ -152,7 +152,7 @@ header .goback.position-absolute a{font-size: 30px; line-height: 1}
 .header-right span {font-size: 14px;}
 .header-right a{color: #fff}
 .topspace {
-	height: 110px
+	height: 50px
 }
 .topspace2 {
 	height: 60px
@@ -163,7 +163,7 @@ header h1 {
 	margin: 0
 }
 .topspace {
-	height: 90px
+	height: 50px
 }
 .topspace2 {
 	height: 50px
