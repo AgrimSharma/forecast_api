@@ -1804,7 +1804,7 @@ def category(request):
     data = []
     for c in category:
         data.append(dict(name=c.name, id=c.id, image=c.image))
-    return render(request, 'category.html', {'category': data,
+    return render(request, 'home/category.html', {'category': data,
                                              "heading": "Categories",
                                              "title": "ForecastGuru",
                                              "user": "Guest" if request.user.is_anonymous() else request.user.username})
@@ -1819,7 +1819,7 @@ def category_search(request, userid):
         if len(forecast_live_view(category_id, profile)) == 0:
             return HttpResponseRedirect("/trending/")
         else:
-            return render(request, 'category_search.html',
+            return render(request, 'home/category_search.html',
                           {
                               "live": forecast_live_view(category_id, profile),
                               "heading": category_id.name, "sub": sub,
@@ -1829,7 +1829,7 @@ def category_search(request, userid):
 
     except Exception:
 
-        return render(request, 'category_search.html',
+        return render(request, 'home/category_search.html',
                       {
                           "live": forecast_live_view_bt(category_id),
                           "heading": category_id.name, "sub": sub,
@@ -1848,7 +1848,7 @@ def sub_category_data(request, userid):
         if len(forecast_live_view_sub(subcategory, profile)) == 0:
             return HttpResponseRedirect("/trending/")
         else:
-            return render(request, 'category_search.html',
+            return render(request, 'home/category_search.html',
                           {
                               "live": forecast_live_view_sub(subcategory, profile),
                               "heading": subcategory.name, "sub": sub,
@@ -1858,7 +1858,7 @@ def sub_category_data(request, userid):
 
     except Exception:
 
-        return render(request, 'category_search.html',
+        return render(request, 'home/category_search.html',
                       {
                           "live": forecast_live_view_bt_sub(subcategory),
                           "heading": subcategory.name, "sub": sub,
