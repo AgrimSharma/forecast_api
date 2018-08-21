@@ -32,6 +32,9 @@ urlpatterns = [
     url(r'^private/', my_forecast_private, name='private'),
     url(r'^logout_user/', logout_view, name='logout_user'),
     url(r'^search_result/', search_result, name='search_result'),
+    url(r'^category/', category, name='category'),
+    url(r'^category_search/(?P<userid>\d+)/$', category_search, name='category_search'),
+    url(r'^sub_category_data/(?P<userid>\d+)/$', sub_category_data, name='sub_category_data'),
     url(r'^', index, name='index'),
 
 ]
