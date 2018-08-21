@@ -683,11 +683,11 @@ def result_not_declared(request):
         user = request.user.username
         profile = Authentication.objects.get(facebook_id=user)
         forecast_result = Betting.objects.filter(users=profile, forecast__status__name='Result Declared').order_by("-forecast__expire")
-        forecast_closed = Betting.objects.filter(forecast__status__name='Closed', users=profile).order_by("forecast__expire")
+        # forecast_closed = Betting.objects.filter(forecast__status__name='Closed', users=profile).order_by("forecast__expire")
         return render(request, 'home/forecast_result_pending.html',
                       {
                           "live": forecast_result_page_my(forecast_result),
-                          "closed": live_forecast_data(forecast_closed, profile),
+                          # "closed": live_forecast_data(forecast_closed, profile),
                           "user": "Guest" if request.user.is_anonymous() else request.user.first_name,
                           "heading": "My Results",
                           "title": "ForecastGuru",
