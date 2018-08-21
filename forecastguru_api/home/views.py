@@ -33,7 +33,7 @@ def login_user(request):
         try:
             user = User.objects.get(username=userID)
             auth = authenticate(request, username=userID, password=userID)
-            fuser = Authentication.objects.get(faceboo_id=user.username)
+            fuser = Authentication.objects.get(facebook_id=user.username)
             if auth:
                 login(request, auth)
                 today = datetime.datetime.now().date()
