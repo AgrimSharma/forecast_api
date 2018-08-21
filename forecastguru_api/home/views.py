@@ -36,6 +36,18 @@ def login_user(request):
 
             if auth:
                 login(request, auth)
+                today = datetime.datetime.now().date()
+                diff = today - auth.last_login
+                if diff.days == 1:
+                    auth.login_count += 1
+                    days = DailyFreePoints.objects.get(days=auth.login_count).points
+                    auth.points_earned += days
+                    auth.last_login = today
+                    auth.save()
+                else:
+                    auth.last_login = today
+                    auth.login_count = 0
+                    auth.save()
             return HttpResponse("registered")
         except Exception:
             user = User.objects.create(username=userID,
