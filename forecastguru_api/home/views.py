@@ -1924,8 +1924,8 @@ def forecast_live_view_sub(category, profile):
 
 def forecast_live_view_bt(category_id):
     data = []
-    forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no', category=category_id,
-                                            status__name='In-Progress').order_by("expire")
+    forecast_live = ForeCast.objects.filter(private__name='No', category=category_id,
+                                            status__name='Progress').order_by("expire")
 
     for f in forecast_live:
         date = current.date()
@@ -1947,8 +1947,8 @@ def forecast_live_view_bt(category_id):
             bet_for = Betting.objects.filter(forecast=forecast).aggregate(bet_for=Sum('bet_for'))['bet_for']
             bet_against = Betting.objects.filter(forecast=forecast).aggregate(bet_against=Sum('bet_against'))[
                 'bet_against']
-            totl = bet_against + bet_for
-            percent_for = (bet_for / totl) * 100
+            totl = float(bet_against + bet_for)
+            percent_for = (float(bet_for) / totl) * 100
             percent_against = (100 - percent_for)
             total = Betting.objects.filter(forecast=forecast).count()
         except Exception:
@@ -1972,8 +1972,8 @@ def forecast_live_view_bt(category_id):
 
 def forecast_live_view_bt_sub(category_id):
     data = []
-    forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no', sub_category=category_id,
-                                            status__name='In-Progress').order_by("expire")
+    forecast_live = ForeCast.objects.filter(private__name='No', sub_category=category_id,
+                                            status__name='Progress').order_by("expire")
 
     for f in forecast_live:
         date = current.date()
@@ -1994,8 +1994,8 @@ def forecast_live_view_bt_sub(category_id):
             bet_for = Betting.objects.filter(forecast=forecast).aggregate(bet_for=Sum('bet_for'))['bet_for']
             bet_against = Betting.objects.filter(forecast=forecast).aggregate(bet_against=Sum('bet_against'))[
                 'bet_against']
-            totl = bet_against + bet_for
-            percent_for = (bet_for / totl) * 100
+            totl = float(bet_against + bet_for)
+            percent_for = (float(bet_for) / totl) * 100
             percent_against = (100 - percent_for)
             total = Betting.objects.filter(forecast=forecast).count()
         except Exception:
@@ -2016,10 +2016,11 @@ def forecast_live_view_bt_sub(category_id):
                          ))
     return data
 
+
 def forecast_live_view(category, profile):
     data = []
-    forecast_live = ForeCast.objects.filter(approved__name="yes", private__name='no', category=category,
-                                            status__name='In-Progress').order_by("expire")
+    forecast_live = ForeCast.objects.filter(private__name='No', category=category,
+                                            status__name='Progress').order_by("expire")
 
     for f in forecast_live:
         date = current.date()
@@ -2046,8 +2047,8 @@ def forecast_live_view(category, profile):
             bet_against_user = \
             Betting.objects.filter(forecast=forecast, users=profile).aggregate(bet_against=Sum('bet_against'))[
                 'bet_against']
-            totl = bet_against + bet_for
-            percent_for = (bet_for / totl) * 100
+            totl = float(bet_against + bet_for)
+            percent_for = (float(bet_for) / totl) * 100
             percent_against = (100 - percent_for)
             total = Betting.objects.filter(forecast=forecast).count()
         except Exception:
