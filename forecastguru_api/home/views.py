@@ -44,6 +44,8 @@ def login_user(request):
                     auth.points_earned += days
                     auth.last_login = today
                     auth.save()
+                elif diff.days == 0:
+                    pass
                 else:
                     auth.last_login = today
                     auth.login_count = 0
