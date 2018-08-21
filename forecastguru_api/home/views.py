@@ -183,7 +183,7 @@ def live_forecast(request):
         user = request.user.username
         profile = Authentication.objects.get(facebook_id=user)
         today = datetime.datetime.now().date()
-        diff = today - fuser.last_login
+        diff = today - profile.last_login
         if diff.days == 1:
             profile.login_count += 1
             days = DailyFreePoints.objects.get(days=profile.login_count).points
