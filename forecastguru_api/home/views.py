@@ -33,24 +33,9 @@ def login_user(request):
         try:
             user = User.objects.get(username=userID)
             auth = authenticate(request, username=userID, password=userID)
-            fuser = Authentication.objects.get(facebook_id=user.username)
-            today = datetime.datetime.now().date()
-            diff = today - fuser.last_login
-            if diff.days == 1:
-                fuser.login_count += 1
-                days = DailyFreePoints.objects.get(days=fuser.login_count).points
-                fuser.points_earned += days
-                fuser.last_login = today
-                fuser.save()
-            elif diff.days == 0:
-                pass
-            else:
-                fuser.last_login = today
-                fuser.login_count = 0
-                fuser.save()
+
             if auth:
                 login(request, auth)
-
             return HttpResponse("registered")
         except Exception:
             user = User.objects.create(username=userID,
@@ -69,42 +54,13 @@ def login_user(request):
             user.set_password(userID)
             user.save()
             auth = authenticate(request, username=userID, password=userID)
-            today = datetime.datetime.now().date()
-            diff = today - fuser.last_login
-            if diff.days == 1:
-                fuser.login_count += 1
-                days = DailyFreePoints.objects.get(days=fuser.login_count).points
-                fuser.points_earned += days
-                fuser.last_login = today
-                fuser.save()
-            elif diff.days == 0:
-                pass
-            else:
-                fuser.last_login = today
-                fuser.login_count = 0
-                fuser.save()
             if auth:
                 login(request, auth)
-
             return HttpResponse("success")
     else:
         try:
             user = request.user.username
-            fuser = Authentication.objects.get(facebook_id=user)
-            today = datetime.datetime.now().date()
-            diff = today - fuser.last_login
-            if diff.days == 1:
-                fuser.login_count += 1
-                days = DailyFreePoints.objects.get(days=fuser.login_count).points
-                fuser.points_earned += days
-                fuser.last_login = today
-                fuser.save()
-            elif diff.days == 0:
-                pass
-            else:
-                fuser.last_login = today
-                fuser.login_count = 0
-                fuser.save()
+            auth = Authentication.objects.get(facebook_id=user)
             return redirect("/referral_code/")
         except Exception:
             return render(request, "home/index.html", {
@@ -226,6 +182,20 @@ def live_forecast(request):
     try:
         user = request.user.username
         profile = Authentication.objects.get(facebook_id=user)
+        today = datetime.datetime.now().date()
+        diff = today - fuser.last_login
+        if diff.days == 1:
+            profile.login_count += 1
+            days = DailyFreePoints.objects.get(days=profile.login_count).points
+            profile.points_earned += days
+            profile.last_login = today
+            profile.save()
+        elif diff.days == 0:
+            pass
+        else:
+            profile.last_login = today
+            profile.login_count = 0
+            profile.save()
         interest = UserInterest.objects.filter(user=profile)
         intrest = [i.interest.id for i in interest]
         forecast_live = ForeCast.objects.filter(status__name='Progress',
