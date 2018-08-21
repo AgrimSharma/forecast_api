@@ -1803,7 +1803,9 @@ def category(request):
     category = Category.objects.all().order_by('identifier')
     data = []
     for c in category:
-        data.append(dict(name=c.name, id=c.id, image=c.image))
+        image = c.subcategory_set.get(name='Others').image
+
+        data.append(dict(name=c.name, id=c.id, image=image))
     return render(request, 'home/category.html', {'category': data,
                                              "heading": "Categories",
                                              "title": "ForecastGuru",
