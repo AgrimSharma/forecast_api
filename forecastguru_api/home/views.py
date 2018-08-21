@@ -90,7 +90,21 @@ def login_user(request):
     else:
         try:
             user = request.user.username
-            auth = Authentication.objects.get(facebook_id=user)
+            fuser = Authentication.objects.get(facebook_id=user)
+            today = datetime.datetime.now().date()
+            diff = today - fuser.last_login
+            if diff.days == 1:
+                fuser.login_count += 1
+                days = DailyFreePoints.objects.get(days=fuser.login_count).points
+                fuser.points_earned += days
+                fuser.last_login = today
+                fuser.save()
+            elif diff.days == 0:
+                pass
+            else:
+                fuser.last_login = today
+                fuser.login_count = 0
+                fuser.save()
             return redirect("/referral_code/")
         except Exception:
             return render(request, "home/index.html", {
