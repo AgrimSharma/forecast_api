@@ -34,22 +34,23 @@ def login_user(request):
             user = User.objects.get(username=userID)
             auth = authenticate(request, username=userID, password=userID)
             fuser = Authentication.objects.get(facebook_id=user.username)
+            today = datetime.datetime.now().date()
+            diff = today - fuser.last_login
+            if diff.days == 1:
+                fuser.login_count += 1
+                days = DailyFreePoints.objects.get(days=fuser.login_count).points
+                fuser.points_earned += days
+                fuser.last_login = today
+                fuser.save()
+            elif diff.days == 0:
+                pass
+            else:
+                fuser.last_login = today
+                fuser.login_count = 0
+                fuser.save()
             if auth:
                 login(request, auth)
-                today = datetime.datetime.now().date()
-                diff = today - fuser.last_login
-                if diff.days == 1:
-                    fuser.login_count += 1
-                    days = DailyFreePoints.objects.get(days=fuser.login_count).points
-                    fuser.points_earned += days
-                    fuser.last_login = today
-                    fuser.save()
-                elif diff.days == 0:
-                    pass
-                else:
-                    fuser.last_login = today
-                    fuser.login_count = 0
-                    fuser.save()
+
             return HttpResponse("registered")
         except Exception:
             user = User.objects.create(username=userID,
@@ -68,22 +69,23 @@ def login_user(request):
             user.set_password(userID)
             user.save()
             auth = authenticate(request, username=userID, password=userID)
+            today = datetime.datetime.now().date()
+            diff = today - fuser.last_login
+            if diff.days == 1:
+                fuser.login_count += 1
+                days = DailyFreePoints.objects.get(days=fuser.login_count).points
+                fuser.points_earned += days
+                fuser.last_login = today
+                fuser.save()
+            elif diff.days == 0:
+                pass
+            else:
+                fuser.last_login = today
+                fuser.login_count = 0
+                fuser.save()
             if auth:
                 login(request, auth)
-                today = datetime.datetime.now().date()
-                diff = today - fuser.last_login
-                if diff.days == 1:
-                    fuser.login_count += 1
-                    days = DailyFreePoints.objects.get(days=fuser.login_count).points
-                    fuser.points_earned += days
-                    fuser.last_login = today
-                    fuser.save()
-                elif diff.days == 0:
-                    pass
-                else:
-                    fuser.last_login = today
-                    fuser.login_count = 0
-                    fuser.save()
+
             return HttpResponse("success")
     else:
         try:
