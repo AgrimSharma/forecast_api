@@ -33,23 +33,23 @@ def login_user(request):
         try:
             user = User.objects.get(username=userID)
             auth = authenticate(request, username=userID, password=userID)
-
+            fuser = Authentication.objects.get(faceboo_id=user.username)
             if auth:
                 login(request, auth)
                 today = datetime.datetime.now().date()
-                diff = today - auth.last_login
+                diff = today - fuser.last_login
                 if diff.days == 1:
-                    auth.login_count += 1
-                    days = DailyFreePoints.objects.get(days=auth.login_count).points
-                    auth.points_earned += days
-                    auth.last_login = today
-                    auth.save()
+                    fuser.login_count += 1
+                    days = DailyFreePoints.objects.get(days=fuser.login_count).points
+                    fuser.points_earned += days
+                    fuser.last_login = today
+                    fuser.save()
                 elif diff.days == 0:
                     pass
                 else:
-                    auth.last_login = today
-                    auth.login_count = 0
-                    auth.save()
+                    fuser.last_login = today
+                    fuser.login_count = 0
+                    fuser.save()
             return HttpResponse("registered")
         except Exception:
             user = User.objects.create(username=userID,
@@ -70,6 +70,20 @@ def login_user(request):
             auth = authenticate(request, username=userID, password=userID)
             if auth:
                 login(request, auth)
+                today = datetime.datetime.now().date()
+                diff = today - fuser.last_login
+                if diff.days == 1:
+                    fuser.login_count += 1
+                    days = DailyFreePoints.objects.get(days=fuser.login_count).points
+                    fuser.points_earned += days
+                    fuser.last_login = today
+                    fuser.save()
+                elif diff.days == 0:
+                    pass
+                else:
+                    fuser.last_login = today
+                    fuser.login_count = 0
+                    fuser.save()
             return HttpResponse("success")
     else:
         try:
