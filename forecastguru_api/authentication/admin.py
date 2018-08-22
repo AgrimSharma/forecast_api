@@ -107,12 +107,17 @@ class MarketFeeAdmin(admin.ModelAdmin):
     pass
 
 
+class RedeemAdmin(admin.ModelAdmin):
+    pass
+
+
 class UserInterestAdmin(admin.ModelAdmin):
     list_display = ["user", 'interest']
     raw_id_fields = ['user']
 
 
 admin.site.register(Authentication, AuthenticationAdmin)
+admin.site.register(RedeemPoints, RedeemAdmin)
 admin.site.register(MarketFee, MarketFeeAdmin)
 admin.site.register(ReferralCodePoints, ReferralPointsAdmin)
 admin.site.register(RateApp, RateAppAdmin)

@@ -14,6 +14,12 @@ import re
 from random import randrange
 import datetime
 from django.template import RequestContext
+from paytm.payments import PaytmPaymentPage
+from paytm import Checksum
+from django.http import HttpResponse
+from paytm.payments import VerifyPaytmResponse,JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
 
 current = datetime.datetime.now()
 
@@ -1805,11 +1811,14 @@ def redeem_points(request):
         profile = Authentication.objects.get(facebook_id=request.user.username)
     except Exception:
         profile =[]
+    redeem = RedeemPoints.objects.latest('id')
     return render(request, "home/redeem.html",
                   {
                       "heading": "Redeem Points",
                       "first_name": "Guest" if request.user.is_anonymous() else request.user.first_name,
                       "profile": profile,
+                      "redeem_from": redeem.redeem_points,
+                      "redeem_to": redeem.redeem_to,
                   })
 
 
@@ -2083,3 +2092,30 @@ def forecast_live_view(category, profile):
                          bet_for_user=bet_for_user if bet_for_user else 0,
                          ))
     return data
+
+
+@csrf_exempt
+def payment(request):
+    if request.method == "POST":
+        order_id = Checksum.__id_generator__()
+        cust_id = "payment_maker@email.com"
+        data_dict = {
+                    'ORDER_ID':order_id,
+                    'TXN_AMOUNT': request.POST.get('to_point', 0),
+                    'CUST_ID': cust_id
+                }
+        return HttpResponse(PaytmPaymentPage(data_dict))
+        # return render(request, "payment.html")
+    else:
+        return render(request, 'home/payments.html')
+
+
+@csrf_exempt
+def response(request):
+    resp = VerifyPaytmResponse(request)
+    if resp['verified']:
+        # save success details to db
+        print(resp['paytm']['ORDERID'])  #SAVE THIS ORDER ID TO DB FOR TRANSACTION HISTORY
+        return JsonResponse(resp['paytm'])
+    else:
+        return HttpResponse("Verification Failed")

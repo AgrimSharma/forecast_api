@@ -357,3 +357,17 @@ class LoginStatus(models.Model):
 
     def __unicode__(self):
         return "{} : {}".format(self.user.user.username, self.status)
+
+
+class RedeemPoints(models.Model):
+    redeem_points = models.IntegerField()
+    redeem_to = models.IntegerField()
+
+    class Meta:
+        verbose_name_plural = 'Redeem Points'
+
+    def __str__(self):
+        return "{} : {}" .format(self.redeem_points, self.redeem_to)
+
+    def __unicode__(self):
+        return "{} : {}".format(self.redeem_points, self.redeem_to)
