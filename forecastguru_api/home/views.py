@@ -387,7 +387,7 @@ def bet_post(request):
                     b.users.forecast_participated += 1
                     b.users.save()
                     b.save()
-                notif = UserNotification.objects.create(user=account, forecast=forecasts)
+                notif = UserNotifications.objects.create(user=account, forecast=forecasts)
                 notif.save()
             return HttpResponse(json.dumps(dict(message='success')))
         else:
@@ -451,7 +451,7 @@ def create_forecast(request):
         admin = Authentication.objects.get(facebook_id="admin")
         bet = Betting.objects.create(forecast=f, users=admin, bet_for=Yes, bet_against=No)
         bet.save()
-        notif = UserNotification.objects.create(user=users, forecast=f)
+        notif = UserNotifications.objects.create(user=users, forecast=f)
         notif.save()
         return HttpResponse(json.dumps(
             dict(status=200, message='Thank You for creating a private forecast', id=f.id)))
