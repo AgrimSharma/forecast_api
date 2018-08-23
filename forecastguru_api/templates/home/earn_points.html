@@ -118,8 +118,15 @@
 
     
   </div>
-<div id='afscontainer1'></div>
-
+<video id="my-video" class="video-js" controls preload="auto" width="640" height="264"
+  poster="MY_VIDEO_POSTER.jpg" data-setup="{}">
+    <source src="MY_VIDEO.mp4" type='video/mp4'>
+    <source src="MY_VIDEO.webm" type='video/webm'>
+    <p class="vjs-no-js">
+      To view this video please enable JavaScript, and consider upgrading to a web browser that
+      <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+    </p>
+  </video>
 
 
  <footer class="sticky-footer">
@@ -138,23 +145,6 @@
       </ul>
     </nav>
   </footer>
-<script type="text/javascript" charset="utf-8">
 
-  var pageOptions = {
-    "pubId": "pub-9616389000213823", // Make sure this the correct client ID!
-    "query": "hotels",
-    "adPage": 1,
-    "adtest": "on"
-  };
-
-  var adblock1 = {
-    "container": "afscontainer1",
-    "width": "700",
-    "number": 2
-  };
-
-  _googCsa('ads', pageOptions, adblock1);
-
-</script>
 
 {% endblock %}
