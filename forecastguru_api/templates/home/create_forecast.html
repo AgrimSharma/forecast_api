@@ -277,8 +277,8 @@ $(".create").click(function(){
                         url: "{% url 'create_forecast' %}",
                         data: {'heading': heading, "category":category, 'sub_cat':sub_cat,"time":user_time, "date":user_date,"user":user, "private":private, "tags":tags},
                         success: function(resp){
-                            console.log(resp);
                             var data = JSON.parse(resp);
+                            console.log(data);
 
                             if(data.message=="Forecast Created"){
                                 $("#public").modal('show');
@@ -286,11 +286,12 @@ $(".create").click(function(){
 
                                }
                             else if(data.message=="Thank You for creating a private forecast"){
+                                cons
                                 if("Notification" in window){
                                     let ask = Notification.requestPermission();
                                     ask.then( permission => {
                                     let msg = new Notification("ForecastGuru" ,{
-                                        "body": data.heading,
+                                        "body": heading,
                                         });
                                         msg.addEventListener("click", event => {
                                             window.location.href = "https://fstage.sirez.com/forecast/" + data.id + "/" ;
