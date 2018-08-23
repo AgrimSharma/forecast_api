@@ -387,6 +387,8 @@ def bet_post(request):
                     b.users.forecast_participated += 1
                     b.users.save()
                     b.save()
+                notif = UserNotification.objects.create(user=account, forecast=forecasts)
+                notif.save()
             return HttpResponse(json.dumps(dict(message='success')))
         else:
             return HttpResponse(json.dumps(dict(message='balance')))
@@ -441,7 +443,6 @@ def create_forecast(request):
         f = ForeCast.objects.get(category=cat, sub_category=sub_cat,
                                  user=users, heading=heading,
                                  )
-        # fid = f.id
         f.user.forecast_created += 1
         f.user.save()
         f.save()
@@ -450,11 +451,13 @@ def create_forecast(request):
         admin = Authentication.objects.get(facebook_id="admin")
         bet = Betting.objects.create(forecast=f, users=admin, bet_for=Yes, bet_against=No)
         bet.save()
+        notif = UserNotification.objects.create(user=users, forecast=f)
+        notif.save()
         return HttpResponse(json.dumps(
             dict(status=200, message='Thank You for creating a private forecast', id=f.id)))
 
     else:
-        # try:
+        try:
             user = request.user.username
             profile = Authentication.objects.get(facebook_id=user)
             category = Category.objects.all().order_by('identifier')
@@ -465,11 +468,11 @@ def create_forecast(request):
                 "heading": "Create Forecast",
                 "title": "ForecastGuru",
             })
-        # except Exception:
-        #     return render(request, 'home/create_forecast_nl.html', {
-        #         "heading": "Create Forecast",
-        #         "title": "ForecastGuru",
-        #         "user": "Guest" if request.user.is_anonymous() else request.user.first_name, })
+        except Exception:
+            return render(request, 'home/create_forecast_nl.html', {
+                "heading": "Create Forecast",
+                "title": "ForecastGuru",
+                "user": "Guest" if request.user.is_anonymous() else request.user.first_name, })
 
 
 @csrf_exempt
@@ -2126,3 +2129,11 @@ def test_notif(request):
     data = [dict(title='ForecastGuru', body='INDIA TOUR OF IRELAND AND ENGLAND 2018.03:30PM 4th Test,IND vs ENG at Southampton, Aug 30-Sep 3.INDIA will win.',forward='https://forecast.guru/forecast/925/'),
             dict(title='ForecastGuru', body='INDIA TOUR OF IRELAND AND ENGLAND 201803:30 PM 5th Test, IND vs ENG at London, Sep 7-11 2018.INDIA will win.', forward='https://forecast.guru/forecast/926/')]
     return HttpResponse(json.dumps(data))
+
+
+def notification(request):
+    user = request.user.username
+    profile = Authentication.objects.get(facebook_id=user)
+    notification = UserNotifications.objects.filter(user=profile)
+    return render(request, "home/notification.html", {"notification": notification,
+                                                      "heading": "Notification"})

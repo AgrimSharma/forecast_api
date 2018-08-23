@@ -371,3 +371,19 @@ class RedeemPoints(models.Model):
 
     def __unicode__(self):
         return "{} : {}".format(self.redeem_points, self.redeem_to)
+
+
+class UserNotifications(models.Model):
+    user = models.ForeignKey(to=Authentication, on_delete=models.CASCADE)
+    forecast = models.ForeignKey(to=ForeCast, on_delete=models.CASCADE)
+    notification_date = models.DateField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = 'User Notification'
+
+    def __str__(self):
+        return "{} : {} : {}" .format(self.user, self.forecast, self.notification_date)
+
+    def __unicode__(self):
+        return "{} : {} : {}".format(self.user, self.forecast, self.notification_date)
+

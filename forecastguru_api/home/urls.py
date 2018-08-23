@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^get_sub_cat/', get_sub_cat, name='get_sub_cat'),
     url(r'^get_sub_source/', get_sub_source, name='get_sub_source'),
     url(r'^bet_save/', bet_post, name='bet_save'),
+    url(r'^notification/', notification, name='notification'),
     url(r'^get_forecast/', get_forecast, name='get_forecast'),
     url(r'^forecast/(?P<userid>\d+)/$', betting, name='betting'),
     url(r'^result_save/', result_save, name='result_save'),
