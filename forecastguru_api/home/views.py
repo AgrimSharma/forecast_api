@@ -425,9 +425,11 @@ def create_forecast(request):
 
         if expires < current:
             return HttpResponse(json.dumps(dict(status=400, message='end')))
-
-        user = request.user.username
-        users = Authentication.objects.get(facebook_id=user)
+        try:
+            user = request.user.username
+            users = Authentication.objects.get(facebook_id=user)
+        except Exception:
+            return HttpResponse(json.dumps(dict(status=400, message='Please Login')))
         private = Private.objects.get(id=1)
         status = Status.objects.get(name='Progress')
         ForeCast.objects.create(category=cat, sub_category=sub_cat,
@@ -452,7 +454,7 @@ def create_forecast(request):
             dict(status=200, message='Thank You for creating a private forecast', id=f.id)))
 
     else:
-        try:
+        # try:
             user = request.user.username
             profile = Authentication.objects.get(facebook_id=user)
             category = Category.objects.all().order_by('identifier')
@@ -463,11 +465,11 @@ def create_forecast(request):
                 "heading": "Create Forecast",
                 "title": "ForecastGuru",
             })
-        except Exception:
-            return render(request, 'home/create_forecast_nl.html', {
-                "heading": "Create Forecast",
-                "title": "ForecastGuru",
-                "user": "Guest" if request.user.is_anonymous() else request.user.first_name, })
+        # except Exception:
+        #     return render(request, 'home/create_forecast_nl.html', {
+        #         "heading": "Create Forecast",
+        #         "title": "ForecastGuru",
+        #         "user": "Guest" if request.user.is_anonymous() else request.user.first_name, })
 
 
 @csrf_exempt
