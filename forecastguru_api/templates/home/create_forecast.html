@@ -283,8 +283,24 @@ $(".create").click(function(){
                             if(data.message=="Forecast Created"){
                                 $("#public").modal('show');
                                  $("#public_heading").text(heading);
+
                                }
                             else if(data.message=="Thank You for creating a private forecast"){
+                                if("Notification" in window){
+                                    let ask = Notification.requestPermission();
+                                    ask.then( permission => {
+                                    let =
+                                    let msg = new Notification("ForecastGuru" ,{
+                                        "body": data.heading,
+                                        });
+                                        msg.addEventListener("click", event => {
+                                            window.location.href = "{% url 'forecast' data.id %}";
+                                                })
+                                                }
+                                            }
+                                        });
+                                    });
+                                }
                                 $("#private").modal('show');
                                 $("#private_heading").text(heading);
 
