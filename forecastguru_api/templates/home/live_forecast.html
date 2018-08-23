@@ -336,5 +336,29 @@ $(document).ready(function(){
 });
 
 </script>
-
+<script>
+    if("Notification" in window){
+        let ask = Notification.requestPermission();
+        ask.then( permission => {
+            $.ajax({
+                type: "GET",
+                url: "{% url 'notif' %}",
+                data: {'vote': "radioValue",},
+                success: function(resp){
+                    let data = JSON.parse(resp);
+                    for(i=0; i < data.length; i++){
+                        let msg = new Notification(data[i].title ,{
+                        "body": data[i].body,
+                        });
+                        msg.addEventListener("click", event => {
+                            for(i=0; i < data.length; i++){
+                                window.location.href = data[i].forward;
+                                }
+                        })
+                    }
+                }
+            });
+        });
+    }
+</script>
 {% endblock %}

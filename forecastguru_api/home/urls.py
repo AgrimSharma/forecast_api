@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^category_search/(?P<userid>\d+)/$', category_search, name='category_search'),
     url(r'^sub_category_data/(?P<userid>\d+)/$', sub_category_data, name='sub_category_data'),
     url(r'^payment/', payment, name='payment'),
+    url(r'^notif/', test_notif, name='notif'),
     url(r'^response/', response, name='response'),
     url(r'^', index, name='index'),
 

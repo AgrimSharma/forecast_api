@@ -2119,3 +2119,9 @@ def response(request):
         return JsonResponse(resp['paytm'])
     else:
         return HttpResponse("Verification Failed")
+
+
+def test_notif(request):
+    data = [dict(title='ForecastGuru',body='INDIA TOUR OF IRELAND AND ENGLAND 2018.03:30PM 4th Test,IND vs ENG at Southampton, Aug 30-Sep 3.INDIA will win.',forward='https://forecast.guru/forecast/925/'),
+            dict(title='ForecastGuru', body='INDIA TOUR OF IRELAND AND ENGLAND 201803:30 PM 5th Test, IND vs ENG at London, Sep 7-11 2018.INDIA will win.', forward='https://forecast.guru/forecast/926/')]
+    return HttpResponse(json.dumps(data))
