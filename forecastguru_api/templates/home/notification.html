@@ -2,29 +2,29 @@
 {% load static %}
 {% block content %}
 <div class="topspace"></div>
-<div class="container">
+<div class="container" style="padding-top:10px;">
   <div class="row">
 
-            <table class="table table-responsive">
-                <thead>
+            <table class="table table-bordered">
+                <thead class="thead-dark">
                     <tr>
-                        <th>S.No.</th>
-                        <th>Forecast Heading</th>
-                        <th>Forecast Expire</th>
-                        <th>Forecast Source</th>
-                        <th>Forecast Category</th>
-                        <th>Forecast Sub-Category</th>
+                        <th style="text-align:center;">S.No.</th>
+                        <th style="text-align:center;">Forecast Heading</th>
+                        <th style="text-align:center;">Forecast Expire</th>
+                        <th style="text-align:center;">Forecast Source</th>
+                        <th style="text-align:center;">Forecast Category</th>
+                        <th style="text-align:center;">Forecast Sub-Category</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for n in notification %}
                         <tr>
-                            <td>{{forloop.counter}}</td>
+                            <td style="text-align:center;">{{forloop.counter}}</td>
                             <td>{{n.forecast.heading}}</td>
-                            <td>{{n.forecast.expire}}</td>
-                            <td>{{n.forecast.sub_category.source}}</td>
-                            <td>{{n.forecast.category.name}}</td>
-                            <td>{{n.forecast.sub_category.name}}</td>
+                            <td style="text-align:center;">{{n.forecast.expire}}</td>
+                            <td style="text-align:center;">{{n.forecast.sub_category.source}}</td>
+                            <td style="text-align:center;">{{n.forecast.category.name}}</td>
+                            <td style="text-align:center;">{{n.forecast.sub_category.name}}</td>
                         </tr>
 
                     {% endfor %}
