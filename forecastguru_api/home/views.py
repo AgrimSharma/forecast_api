@@ -389,7 +389,7 @@ def bet_post(request):
                     b.save()
                 notif = UserNotifications.objects.create(user=account, forecast=forecasts)
                 notif.save()
-            return HttpResponse(json.dumps(dict(message='success')))
+            return HttpResponse(json.dumps(dict(message='success', heading=forecasts.heading, id=forecasts.id)))
         else:
             return HttpResponse(json.dumps(dict(message='balance')))
     else:
@@ -2126,8 +2126,10 @@ def response(request):
 
 
 def test_notif(request):
-    data = [dict(title='ForecastGuru', body='INDIA TOUR OF IRELAND AND ENGLAND 2018.03:30PM 4th Test,IND vs ENG at Southampton, Aug 30-Sep 3.INDIA will win.',forward='https://forecast.guru/forecast/925/'),
-            dict(title='ForecastGuru', body='INDIA TOUR OF IRELAND AND ENGLAND 201803:30 PM 5th Test, IND vs ENG at London, Sep 7-11 2018.INDIA will win.', forward='https://forecast.guru/forecast/926/')]
+    # data = [dict(title='ForecastGuru', body='INDIA TOUR OF IRELAND AND ENGLAND 2018.03:30PM 4th Test,IND vs ENG at Southampton, Aug 30-Sep 3.INDIA will win.',forward='https://forecast.guru/forecast/925/'),
+    #         dict(title='ForecastGuru', body='INDIA TOUR OF IRELAND AND ENGLAND 201803:30 PM 5th Test, IND vs ENG at London, Sep 7-11 2018.INDIA will win.', forward='https://forecast.guru/forecast/926/')]
+    data = [dict(body=s.body, url=s.url) for s in SendNotification.objects.filter(status=0)]
+    SendNotification.objects.filter(status=0).update(status=1)
     return HttpResponse(json.dumps(data))
 
 

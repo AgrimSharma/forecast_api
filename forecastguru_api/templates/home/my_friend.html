@@ -518,10 +518,19 @@ $(".submit_forecast").click(function(){
                 data: {'vote': radioValue, "points":point, 'forecast':forecast},
 
                 success: function(resp){
-                    console.log(resp);
+
                     var data = JSON.parse(resp);
                     if(data.message=="success"){
-                    console.log(data.message);
+                        if("Notification" in window){
+                                    let ask = Notification.requestPermission();
+                                    ask.then( permission => {
+                                    let msg = new Notification("ForecastGuru" ,{
+                                        "body": "Thank you for playing forecast. " + data.heading,
+                                        });
+                                        msg.addEventListener("click", event => {
+                                            window.location.href = "https://fstage.sirez.com/forecast/" + data.id + "/" ;
+                                                })
+                                    });}
                         $("#id_shipment_sold").modal('hide');
                         $("#success_modal").modal('show');
                         $("#success_data").text("Thank you for playing this forecast.");

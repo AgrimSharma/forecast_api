@@ -111,6 +111,10 @@ class RedeemAdmin(admin.ModelAdmin):
     pass
 
 
+class SendNotificationAdmin(admin.ModelAdmin):
+    pass
+
+
 class UserNotificationAdmin(admin.ModelAdmin):
     list_display = ["user", 'forecast', 'notification_date']
     raw_id_fields = ['user', 'forecast']
@@ -135,6 +139,7 @@ admin.site.register(ForeCast, ForecastAdmin)
 admin.site.register(Status, StatusAdmin)
 admin.site.register(Private, PrivateAdmin)
 admin.site.register(UserInterest, UserInterestAdmin)
+admin.site.register(SendNotification, SendNotificationAdmin)
 admin.site.register(SubCategory, SubCategoryAdmin)
 admin.site.register(Winning, WinningAdmin)
 admin.site.register(Category, CategoryAdmin)
