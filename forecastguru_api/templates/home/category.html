@@ -17,9 +17,10 @@
 <script>
   $(document).ready(function() {
 _pcq.push(['APIReady', callbackFunction]);
-
+window._pcq.push(['triggerOptIn',{subscriberSegment: 'homepage'}]);
 
 function callbackFunction() {
+
       console.log(pushcrew.subscriberId); // will return something like this if current user is a subscriber '1c5d546172cfb4be65a8d51b047c4804'
 
   console.log(pushcrew.subscriberId); // will return false(boolean) if user is not subscribed to push notifications
