@@ -125,6 +125,27 @@ class UserInterestAdmin(admin.ModelAdmin):
     raw_id_fields = ['user']
 
 
+class NotificationUserAdmin(admin.ModelAdmin):
+    date_hierarchy = 'created'
+    list_display = ['user', 'subscriber_id']
+    search_fields = ['user']
+
+
+class NotificationAdmin(admin.ModelAdmin):
+    date_hierarchy = 'created'
+    list_display = ['user', 'title', "message", "show_firm_url", "status"]
+    list_filter = ('status',)
+
+    def show_firm_url(self, obj):
+        return '<a href="%s">%s</a>' % (obj.url, obj.url)
+
+    show_firm_url.allow_tags = True
+
+class NotificationAllAdmin(admin.ModelAdmin):
+    date_hierarchy = 'created'
+    list_display = ['title', "message", "url", "status", 'created']
+    list_filter = ('status',)
+
 admin.site.register(Authentication, AuthenticationAdmin)
 admin.site.register(RedeemPoints, RedeemAdmin)
 admin.site.register(MarketFee, MarketFeeAdmin)
@@ -146,6 +167,9 @@ admin.site.register(Category, CategoryAdmin)
 admin.site.register(Verified, VerifiedAdmin)
 admin.site.register(Approved, ApprovedAdmin)
 admin.site.register(AdvertisementPoints, AdvertisementPointsAdmin)
+admin.site.register(NotificationUser, NotificationUserAdmin)
+admin.site.register(SendNotificationAll, NotificationAllAdmin)
+admin.site.register(NotificationPanel, NotificationAdmin)
 
 
 admin.site.site_title = 'ForeCast Guru'

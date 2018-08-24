@@ -1,5 +1,45 @@
 {% extends 'base.html' %}
 {% load static %}
+
+{% block script %}
+<script type="text/javascript">
+  (function(p,u,s,h){
+      p._pcq=p._pcq||[];
+      p._pcq.push(['_currentTime',Date.now()]);
+      s=u.createElement('script');
+      s.type='text/javascript';
+      s.async=true;
+      s.src='https://cdn.pushcrew.com/js/7003dec4199edc6aed096ed47f3be896.js';
+      h=u.getElementsByTagName('script')[0];
+      h.parentNode.insertBefore(s,h);
+  })(window,document);
+</script>
+<script>
+  $(document).ready(function() {
+_pcq.push(['APIReady', callbackFunction]);
+
+
+function callbackFunction() {
+      console.log(pushcrew.subscriberId); // will return something like this if current user is a subscriber '1c5d546172cfb4be65a8d51b047c4804'
+
+  console.log(pushcrew.subscriberId); // will return false(boolean) if user is not subscribed to push notifications
+
+  console.log(pushcrew.subscriberId); // will return -1(integer) if user has blocked push notifications from your website
+    var sub_id = pushcrew.subscriberId;
+
+        $.ajax({
+                type: "POST",
+                url: "{% url 'notification_user' %}",
+                data: {'sub_id':sub_id},
+
+                success: function(resp){
+                    console.log(sub_id + " " + resp);
+                    }
+                });
+}
+});
+</script>
+{% endblock %}
 {% block content %}
 
 

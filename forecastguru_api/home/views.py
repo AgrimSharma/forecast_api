@@ -19,7 +19,7 @@ from paytm import Checksum
 from django.http import HttpResponse
 from paytm.payments import VerifyPaytmResponse,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-
+import requests
 
 current = datetime.datetime.now()
 
@@ -2139,3 +2139,90 @@ def notification(request):
     notification = UserNotifications.objects.filter(user=profile)
     return render(request, "home/notification.html", {"notification": notification,
                                                       "heading": "Notification"})
+
+
+@csrf_exempt
+def save_user_id(request):
+    if request.method == "POST":
+        sub_id = request.POST.get('sub_id', '')
+        user = request.user.username
+        profile = Authentication.objects.get(facebook_id=user)
+        if sub_id == 'false':
+            return HttpResponse(json.dumps(dict(message='fail')))
+        try:
+            n = NotificationUser.objects.get(user=profile, subscriber_id=sub_id)
+        except Exception:
+            NotificationUser.objects.create(user=profile, subscriber_id=sub_id)
+        return HttpResponse(json.dumps(dict(message='success')))
+
+
+def send_notification(text, message, url, subscriber_id, user):
+    headers = {
+        'Authorization': 'key=fb4f4d51a73cfe8b677223a031223fb6',
+    }
+    data = [
+        ('title', text),
+        ('message', message),
+        ('url', url),
+        ('subscriber_id', str(subscriber_id)),
+
+    ]
+    response = requests.post('https://pushcrew.com/api/v1/send/individual', headers=headers, data=data)
+    NotificationPanel.objects.create(title=text, message=message, url=url, status=1, user=user)
+    return response.status_code
+
+
+def send_notification_user(request):
+    notification = NotificationPanel.objects.filter(status=0)
+    headers = {
+        'Authorization': 'key=fb4f4d51a73cfe8b677223a031223fb6',
+    }
+
+    for n in notification:
+        n.status = 1
+        n.save()
+        sub_id = NotificationUser.objects.filter(user=n.user)
+        if len(sub_id) > 0:
+            for s in sub_id:
+                data = [
+                    ('title', n.title),
+                    ('message', n.message),
+                    ('url', n.url),
+                    ('subscriber_id', str(s.subscriber_id)),
+
+                ]
+                response = requests.post('https://pushcrew.com/api/v1/send/individual', headers=headers, data=data)
+    return HttpResponse("updated")
+
+
+def send_notification_all(request):
+    notification = SendNotificationAll.objects.filter(status=0)
+    headers = {
+        'Authorization': 'key=fb4f4d51a73cfe8b677223a031223fb6',
+    }
+
+    for f in notification:
+        f.status = 1
+        f.save()
+        data = [
+            ('title', str(f.title)),
+            ('message', str(f.message)),
+            ('url', f.url),
+        ]
+        response = requests.post('https://pushcrew.com/api/v1/send/all', headers=headers, data=data)
+    return HttpResponse("updated")
+
+
+def private_subscribe(request):
+    forecast = ForeCast.objects.filter(status__name = 'Closed', private__name = 'yes')
+    for f in forecast:
+        if f.private.name == 'yes':
+            try:
+                sub_id = f.user.notificationuser_set.all()
+                if len(sub_id) > 0:
+                    for i in sub_id:
+                        send_notification("Forecast Guru", "Hello " + str(f.user.user.username) + ". Please declare result for the forecast " + str(f.heading),
+                                      "https://forecast.guru/forecast/{}/".format(f.id), str(i.subscriber_id), f.user)
+            except Exception:
+                pass
+    return HttpResponse("updated")

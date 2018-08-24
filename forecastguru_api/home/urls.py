@@ -36,8 +36,14 @@ urlpatterns = [
     url(r'^category_search/(?P<userid>\d+)/$', category_search, name='category_search'),
     url(r'^sub_category_data/(?P<userid>\d+)/$', sub_category_data, name='sub_category_data'),
     url(r'^payment/', payment, name='payment'),
+    url(r'^send_notification_user/', send_notification_user, name='send_notification_user'),
+    url(r'^private_subscribe/', private_subscribe, name="private_subscribe"),
+    url(r'^send_notification_all/', send_notification_all, name="send_notification_all"),
+
     url(r'^notif/', test_notif, name='notif'),
     url(r'^response/', response, name='response'),
+    url(r'^notif_user/', save_user_id, name='notification_user'),
+
     url(r'^', index, name='index'),
 
 ]
