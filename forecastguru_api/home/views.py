@@ -2158,7 +2158,7 @@ def save_user_id(request):
 
 def send_notification(text, message, url, subscriber_id, user):
     headers = {
-        'Authorization': 'key=fb4f4d51a73cfe8b677223a031223fb6',
+        'Authorization': 'key=e5e48625ab5bc843ae9e215841414093',
     }
     data = [
         ('title', text),
@@ -2175,7 +2175,7 @@ def send_notification(text, message, url, subscriber_id, user):
 def send_notification_user(request):
     notification = NotificationPanel.objects.filter(status=0)
     headers = {
-        'Authorization': 'key=fb4f4d51a73cfe8b677223a031223fb6',
+        'Authorization': 'key=e5e48625ab5bc843ae9e215841414093',
     }
 
     for n in notification:
@@ -2198,7 +2198,7 @@ def send_notification_user(request):
 def send_notification_all(request):
     notification = SendNotificationAll.objects.filter(status=0)
     headers = {
-        'Authorization': 'key=fb4f4d51a73cfe8b677223a031223fb6',
+        'Authorization': 'key=e5e48625ab5bc843ae9e215841414093',
     }
 
     for f in notification:
