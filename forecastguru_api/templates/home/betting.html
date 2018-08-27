@@ -12,8 +12,26 @@
       <div class="col-12">
         <h2>{{forecast.heading}}</h2>
           {% if private == 'no' %}
-    {% else %}
 
+                <div class="row white_box mr-0 ml-0 mb-3">
+
+          <div class="col-12">
+            <div class="row mb-2">
+                <div class="col-12">
+                     Share<div class="addthis_inline_share_toolbox_a0ek"></div></div>
+                 </div>
+              </div>
+      </div>
+    {% else %}
+          <div class="row white_box mr-0 ml-0 mb-3">
+
+          <div class="col-12">
+            <div class="row mb-2">
+                <div class="col-12">
+                     Invite Friends<div class="addthis_inline_share_toolbox_a0ek"></div></div>
+                 </div>
+              </div>
+      </div>
     {% if request.user.username == users %}
             <div class="clearfix"></div>
       <div class="row white_box mr-0 ml-0 mb-3">
