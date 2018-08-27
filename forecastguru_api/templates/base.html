@@ -72,6 +72,7 @@
           <li><a href="{% url 'earn_points' %}"><i class="fa fa-money"></i> Earn Points</a></li>
             {% if first_name != 'Guest'%}
                 <li><a href="{% url 'notification' %}"><i class="fa fa-bell"></i> Notifications</a></li>
+                <li><a href="{% url 'create_forecast' %}"><i class="fa fa-bell"></i> Create Forecast</a></li>
                 <li><a href="#"><i class="fa fa-star"></i> Rate App</a></li>
             {% endif %}
           <li><a href="{% url 'faq' %}"><i class="fa fa-question-circle"></i> FAQ</a></li>
