@@ -9,6 +9,7 @@ from django.db.models import Sum
 import re
 from django.contrib.auth.models import User
 
+
 def id_generator(fname, lname):
     r = re.compile(r"\s+", re.MULTILINE)
     return r.sub("", str(fname)).capitalize() + str(lname).capitalize() + str(random.randrange(1111, 9999))

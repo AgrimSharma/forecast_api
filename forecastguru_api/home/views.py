@@ -183,6 +183,7 @@ def interest_skip(request):
     return redirect("/live_forecast/")
 
 
+@login_required
 def live_forecast(request):
     data = []
     try:
@@ -263,6 +264,7 @@ def live_forecast(request):
                   })
 
 
+@login_required
 def live_forecast_descending(request):
     data = []
     try:
@@ -280,7 +282,7 @@ def live_forecast_descending(request):
 
         bet_start = f.expire.date()
         if date == bet_start:
-            start = f.expire 
+            start = f.expire
             start = start.time()
             today = 'Yes'
         else:
@@ -396,6 +398,7 @@ def bet_post(request):
         return HttpResponse(json.dumps(dict(message='Please use POST')))
 
 
+
 @csrf_exempt
 def get_forecast(request):
     if request.method == "POST":
@@ -500,7 +503,7 @@ def betting(request, userid):
         status = 'Currently Closed'
     else:
         status = 'Result Declared'
-    expires = forecast.expire 
+    expires = forecast.expire
     end_date = datetime.datetime.strftime(expires, '%b %d, %Y')
     end_time = datetime.datetime.strftime(expires, '%H:%M')
     # try:/
@@ -557,15 +560,15 @@ def betting(request, userid):
             earned = 0
             market_fee_paid = earned * 0.10
             total_earning = earned - market_fee_paid + market_fee
-        return render(request, 'home/betting.html', 
+        return render(request, 'home/betting.html',
                       {
                           'forecast': forecast, 'betting': betting,
                           'bet_for': betting_sum['bet_for'] if betting_sum['bet_for'] else 0,
                           'against': betting_sum['bet_against'] if betting_sum['bet_against'] else 0,
                           'total': total_wagered if total_wagered else 0,
-                          "end_date": end_date, 
+                          "end_date": end_date,
                           "end_time": end_time,
-                          'status': status, 
+                          'status': status,
                           "percent": percent,
                           "success": success,
                           "users": request.user.username,
@@ -579,7 +582,7 @@ def betting(request, userid):
                           "title": "ForecastGuru",
                           "private": "no",
                           "bet_against_user": bet_against_user,
-                          "bet_for_user": bet_for_user, 
+                          "bet_for_user": bet_for_user,
                           "market_fee": int(market_fee),
                           "total_earn": int(total_earning)
                       })
@@ -601,16 +604,16 @@ def betting(request, userid):
             ratio = "NA"
             won = "NA"
         return render(request, 'home/betting.html', {
-            'forecast': forecast, 
+            'forecast': forecast,
             'betting': betting,
             "approved": approved,
             "user": users,'status': status,
             "users": forecast.user.first_name,
-            "end_date": end_date, 
+            "end_date": end_date,
             "end_time": end_time,
             "won": won,"ratio": ratio,
             "heading": "Forecast Details",
-            "title": "ForecastGuru", 
+            "title": "ForecastGuru",
             "private": "yes",
             "points": points
         })
@@ -643,7 +646,7 @@ def forecast_result_page(forecast):
         date = current.date()
         bet_start = f.expire.date()
         if date == bet_start:
-            start = f.expire 
+            start = f.expire
             start = start.time()
             today = 'Yes'
         else:
@@ -693,7 +696,7 @@ def forecast_result(request):
 
     forecast_live = ForeCast.objects.filter(status__name='Result Declared', private__name='No').order_by("-expire")
 
-    return render(request, 'home/forecast_result.html', 
+    return render(request, 'home/forecast_result.html',
                   {
                       "live": forecast_result_page(forecast_live),
                       "user": "Guest" if request.user.is_anonymous() else request.user.first_name,
@@ -733,7 +736,7 @@ def forecast_result_page_my(forecast):
         date = current.date()
         bet_start = forecast.expire.date()
         if date == bet_start:
-            start = forecast.expire  
+            start = forecast.expire
             start = start.time()
             today = 'Yes'
         else:
@@ -1074,7 +1077,7 @@ def search_result(request):
                     bet_start = (f.expire).date()
 
                     if date == bet_start:
-                        start = f.expire 
+                        start = f.expire
                         start = start.time()
                         today = 'Yes'
                     else:
@@ -1126,7 +1129,7 @@ def live_forecast_data_bet(forecast_live, account):
         bet_start = forecast.expire.date()
 
         if date == bet_start:
-            start = f.expire 
+            start = f.expire
             start = start.time()
             today = 'Yes'
         else:
@@ -1178,7 +1181,7 @@ def live_forecast_data_private(forecast_live, account):
         bet_start = forecast.expire.date()
 
         if date == bet_start:
-            start = forecast.expire 
+            start = forecast.expire
             start = start.time()
             today = 'Yes'
         else:
@@ -1229,7 +1232,7 @@ def live_forecast_data(forecast_live, account):
         bet_start = forecast.expire.date()
 
         if date == bet_start:
-            start = forecast.expire 
+            start = forecast.expire
             start = start.time()
             today = 'Yes'
         else:
@@ -1278,7 +1281,7 @@ def forecast_invite_data(forecast_live, account):
         date = current.date()
         bet_start = (forecast.expire).date()
         if date == bet_start:
-            start = forecast.expire 
+            start = forecast.expire
             start = start.time()
             today = 'Yes'
         else:
@@ -1337,7 +1340,7 @@ def forecast_result_data(forecast_live, account):
         date = current.date()
         bet_start = forecast.expire.date()
         if date == bet_start:
-            start = forecast.expire 
+            start = forecast.expire
             start = start.time()
             today = 'Yes'
         else:
@@ -1396,7 +1399,7 @@ def forecast_result_data_private(forecast_live, account):
         date = current.date()
         bet_start = forecast.expire.date()
         if date == bet_start:
-            start = forecast.expire 
+            start = forecast.expire
             start = start.time()
             today = 'Yes'
         else:
@@ -1457,7 +1460,7 @@ def my_forecast_private(request):
 
         forecast_result = ForeCast.objects.filter(status__name='Result Declared',user=account, private__name='Yes').order_by("expire")
         # forecast_approval = InviteFriends.objects.filter(user=account).exclude(forecast__in=forecast_result).exclude(forecast__in=forecast_live).order_by("-forecast__expire")
-        return render(request, 'home/my_friend_private.html', 
+        return render(request, 'home/my_friend_private.html',
                       {
                           "live": live_forecast_data_private(forecast_live, account),
                           "result": forecast_result_data_private(forecast_result, account),
@@ -1602,10 +1605,10 @@ def import_csv(request):
 
         return HttpResponse(json.dumps(dict(message="File Uploaded Successful")))
     else:
-        return render(request, 'home/import_csv.html', 
+        return render(request, 'home/import_csv.html',
                       {
                           "heading": "Import CSV",
-                          "title": "ForecastGuru", 
+                          "title": "ForecastGuru",
                           "user": "Guest" if request.user.is_anonymous() else request.user.first_name
                       })
 
@@ -1620,10 +1623,10 @@ def thank_you(request):
         else:
             status.status = 1
             status.save()
-            return render(request, "home/thank_you.html", 
+            return render(request, "home/thank_you.html",
                           {
                               "heading": "Registration Complete",
-                              "title": "ForecastGuru", 
+                              "title": "ForecastGuru",
                               "user": "Guest" if request.user.is_anonymous() else request.user.first_name
                           })
     except Exception:
@@ -1680,7 +1683,7 @@ def trending_data(objects):
         forecast = f
         bet_start = forecast.expire.date()
         if date == bet_start:
-            start = forecast.expire  
+            start = forecast.expire
             start = start.time()
             today = 'yes'
         else:
@@ -1741,7 +1744,7 @@ def search_result(request):
                     bet_start = f.expire.date()
 
                     if date == bet_start:
-                        start = f.expire 
+                        start = f.expire
                         start = start.time()
                         today = 'yes'
                     else:
