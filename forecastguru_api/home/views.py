@@ -5,7 +5,6 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Sum
 import json, random
 from django.shortcuts import render, HttpResponse, redirect, render_to_response
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -2229,3 +2228,7 @@ def private_subscribe(request):
             except Exception:
                 pass
     return HttpResponse("updated")
+
+
+def main_login(request):
+    return render(request, "home/login_main.html")

@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from .views import *
 urlpatterns = [
+    url(r'^main_login/', main_login, name='main_login'),
     url(r'^login/', login_user, name='login'),
     url(r'^referral_code/', referral_code, name='referral_code'),
     url(r'^check_referral/', check_referral, name='check_referral'),
