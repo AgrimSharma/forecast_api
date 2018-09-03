@@ -1,6 +1,4 @@
 {% load static %}
-{% load socialaccount %}
-{% providers_media_js %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -101,10 +99,7 @@
                 <a href="{% url 'main_login' %}" class="btn btn-orange text-uppercase">Forecast Now</a>
                 </div>
         </div>
-        <a href="{% provider_login_url 'facebook' method='js_sdk' %}" class="btn btn-block btn-social btn-facebook" style="background-color:#3b5998;text-align:center">
-  <span class="fa fa-facebook"></span>
-               Sign in with Facebook
- </a>        <div class="btmskip">
+         <div class="btmskip">
             <a href="{% url 'category' %}">Skip</a>
         </div>
         </div>

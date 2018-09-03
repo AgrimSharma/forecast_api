@@ -1,3 +1,5 @@
+{% load socialaccount %}
+{% providers_media_js %}
 
 {% load static %}
 
@@ -54,6 +56,10 @@
            <div class="btn_box mb-3">
                     <a href="{% url 'category' %}" class="btn btn-ghost w-100 text-uppercase" >Skip</a>
                 </div>
+            <a href="{% provider_login_url 'facebook' method='js_sdk %}" class="btn btn-block btn-social btn-facebook" style="background-color:#3b5998;text-align:center">
+  <span class="fa fa-facebook"></span>
+               Sign in with Facebook
+ </a>
                 <hr>
 
 
