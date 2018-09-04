@@ -43,7 +43,7 @@ urlpatterns = [
     url(r'^notif/', test_notif, name='notif'),
     url(r'^response/', response, name='response'),
     url(r'^notif_user/', save_user_id, name='notification_user'),
-    url(r'^login_facebook/', login_facebook, name='login_facebook'),
+    # url(r'^login_facebook/', login_facebook, name='login_facebook'),
     url(r'^', index, name='index'),
 
 ]

@@ -8,11 +8,61 @@ from rest_framework import viewsets
 from django.db.models import Sum
 import re
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
 
 
 def id_generator(fname, lname):
     r = re.compile(r"\s+", re.MULTILINE)
     return r.sub("", str(fname)).capitalize() + str(lname).capitalize() + str(random.randrange(1111, 9999))
+
+
+class LoginSignUpGeneric(generics.CreateAPIView):
+    queryset = Authentication.objects.all()
+    serializer_class = SignUpSerializer
+
+    def create(self, request, *args, **kwargs):
+        if request.data:
+            first_name = request.data['first_name']
+            last_name = request.data['last_name']
+            userID = request.data['facebook_id']
+            email = request.data['email']
+        else:
+            first_name = request.POST.get('first_name',"")
+            last_name = request.POST.get('last_name',"")
+            userID = request.POST.get('facebook_id', "")
+            email = request.POST.get('email',"")
+        try:
+            user = User.objects.get(username=userID)
+            auth = authenticate(request, username=userID, password=userID)
+
+            if auth:
+                login(request, auth)
+                return JsonResponse(dict(status=200, message='Login Success', url="https://fstage.sirez.com/referral_code/"))
+            else:
+                return JsonResponse(dict(status=400, message='Login Fail', url=""))
+        except Exception:
+            user = User.objects.create(username=userID,
+                                       email=email,
+                                       first_name=first_name,
+                                       last_name=last_name
+                                       )
+            fuser = Authentication.objects.create(facebook_id=userID,
+                                                  first_name=first_name,
+                                                  last_name=last_name,
+                                                  email=email
+                                                  )
+            fuser.referral_code = id_generator(first_name, last_name)
+            fuser.points_earned = JoiningPoints.objects.latest('id').points
+            fuser.save()
+            user.set_password(userID)
+            user.save()
+            auth = authenticate(request, username=userID, password=userID)
+            if auth:
+                login(request, auth)
+                return JsonResponse(dict(status=200, message="SignUP Success", url="https://fstage.sirez.com/referral_code/" ))
+            else:
+                return JsonResponse(
+                    dict(status=400, message="SignUP Fail", url=""))
 
 
 class SignUpGeneric(generics.CreateAPIView):
