@@ -2248,7 +2248,7 @@ def login_facebook(request):
 
             if auth:
                 login(request, auth)
-                return HttpResponse(json.dumps(dict(status=200, message='Login Success', url="https://fstage.sirez.com/referral_code/")))
+                return HttpResponse(json.dumps(dict(status=200, message='Login Success')))
             else:
                 return HttpResponse(json.dumps(dict(status=400, message='Login Fail')))
         except Exception:
@@ -2273,3 +2273,5 @@ def login_facebook(request):
                 return HttpResponse(json.dumps(dict(status=200, message='User Registered', url="https://fstage.sirez.com/referral_code/")))
             else:
                 return HttpResponse(json.dumps(dict(status=400, message='SignUp Fail')))
+    else:
+        return HttpResponse(json.dumps(dict(status=400, message='Only Post Request')))
