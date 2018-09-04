@@ -68,7 +68,7 @@ def login_user(request):
             auth = Authentication.objects.get(facebook_id=user)
             return redirect("/referral_code/")
         except Exception:
-            return render(request, "home/index.html", {
+            return render(request, "home/index_old.html", {
                 "points": JoiningPoints.objects.latest('id').points
             })
 
