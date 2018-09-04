@@ -2233,7 +2233,7 @@ def private_subscribe(request):
 def main_login(request):
     return render(request, "home/login_main.html")
 
-
+@csrf_exempt
 def login_facebook(request):
     if request.method == "POST":
         userID = request.POST.get('facebook_id', "")
