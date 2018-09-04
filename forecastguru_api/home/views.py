@@ -2231,7 +2231,8 @@ def private_subscribe(request):
 
 
 def main_login(request):
-    return render(request, "home/login_main.html")
+    return render(request, "home/test.html", {})
+
 
 @csrf_exempt
 def login_facebook(request):
