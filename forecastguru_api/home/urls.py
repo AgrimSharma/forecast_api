@@ -40,11 +40,10 @@ urlpatterns = [
     url(r'^send_notification_user/', send_notification_user, name='send_notification_user'),
     url(r'^private_subscribe/', private_subscribe, name="private_subscribe"),
     url(r'^send_notification_all/', send_notification_all, name="send_notification_all"),
-
     url(r'^notif/', test_notif, name='notif'),
     url(r'^response/', response, name='response'),
     url(r'^notif_user/', save_user_id, name='notification_user'),
-
+    url(r'^login_facebook/', login_facebook, name='login_facebook'),
     url(r'^', index, name='index'),
 
 ]

@@ -2232,3 +2232,44 @@ def private_subscribe(request):
 
 def main_login(request):
     return render(request, "home/login_main.html")
+
+
+def login_facebook(request):
+    if request.method == "POST":
+        userID = request.POST.get('facebook_id', "")
+        first_name = request.POST.get('first_name', "")
+        last_name = request.POST.get('last_name', "")
+        email = request.POST.get('email', "")
+        if not userID:
+            return HttpResponse(json.dumps(dict(status=400, message='Facebook ID missing')))
+        try:
+            user = User.objects.get(username=userID)
+            auth = authenticate(request, username=userID, password=userID)
+
+            if auth:
+                login(request, auth)
+                return HttpResponse(json.dumps(dict(status=200, message='Login Success', url="https://fstage.sirez.com/referral_code/")))
+            else:
+                return HttpResponse(json.dumps(dict(status=400, message='Login Fail')))
+        except Exception:
+            user = User.objects.create(username=userID,
+                                       email=email,
+                                       first_name=first_name,
+                                       last_name=last_name
+                                       )
+            fuser = Authentication.objects.create(facebook_id=userID,
+                                                  first_name=first_name,
+                                                  last_name=last_name,
+                                                  email=email
+                                                  )
+            fuser.referral_code = id_generator(first_name, last_name)
+            fuser.points_earned = JoiningPoints.objects.latest('id').points
+            fuser.save()
+            user.set_password(userID)
+            user.save()
+            auth = authenticate(request, username=userID, password=userID)
+            if auth:
+                login(request, auth)
+                return HttpResponse(json.dumps(dict(status=200, message='User Registered', url="https://fstage.sirez.com/referral_code/")))
+            else:
+                return HttpResponse(json.dumps(dict(status=400, message='SignUp Fail')))
